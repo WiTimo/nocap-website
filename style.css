@@ -382,15 +382,15 @@ Text Domain: salient-nocap-child
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 14px;
+  gap: 16px;
   align-items: start;
   padding: clamp(16px, 2.2vw, 24px) 0;
   border-top: 1px solid rgba(17, 19, 23, 0.14);
 }
 
 .home.nocap-frontpage-refresh .nocap-story-node-feature {
-  grid-template-columns: 58px minmax(0, 1fr);
-  gap: 18px;
+  grid-template-columns: minmax(24px, auto) minmax(0, 1fr);
+  gap: 16px;
   padding-right: clamp(6px, 1vw, 18px);
 }
 
@@ -399,18 +399,18 @@ Text Domain: salient-nocap-child
 }
 
 .home.nocap-frontpage-refresh .nocap-story-index {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: 1px solid rgba(17, 19, 23, 0.26);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: #161a21;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.72rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.96) 0 18%, rgba(255, 255, 255, 0) 19%),
+    linear-gradient(180deg, #111319 0%, #323844 100%);
+  box-shadow: 0 0 0 7px rgba(17, 19, 23, 0.06);
+  flex: 0 0 auto;
+  color: transparent;
+  overflow: hidden;
 }
 
 .home.nocap-frontpage-refresh .nocap-story-node-copy h3 {
@@ -535,15 +535,9 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-services-head {
   display: grid;
-  grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
-  gap: clamp(20px, 4vw, 48px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(16px, 2.8vw, 28px);
   align-items: end;
-}
-
-.home.nocap-frontpage-refresh .nocap-services-summary p {
-  margin: 0;
-  color: #50555d;
-  line-height: 1.72;
 }
 
 .home.nocap-frontpage-refresh .nocap-services-grid {
@@ -597,44 +591,35 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-service-item-top {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 14px;
+  align-items: flex-start;
 }
 
-.home.nocap-frontpage-refresh .nocap-service-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid rgba(17, 19, 23, 0.18);
-  color: #111319;
-  font-family: "Fraunces", Georgia, serif;
-  font-size: 1.05rem;
-  flex: 0 0 44px;
-}
-
-.home.nocap-frontpage-refresh .nocap-service-kicker {
-  margin: 0 0 6px;
-  color: #8a6a3c;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.home.nocap-frontpage-refresh .nocap-service-mark {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.7rem;
+  border-radius: 50%;
+  border: 1px solid rgba(17, 19, 23, 0.2);
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.92) 0 18%, rgba(255, 255, 255, 0) 19%),
+    linear-gradient(180deg, #c39a62 0%, #a87d42 100%);
+  box-shadow: 0 0 0 8px rgba(195, 154, 98, 0.08);
+  flex: 0 0 auto;
 }
 
 .home.nocap-frontpage-refresh .nocap-service-heading {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 44px;
+  min-height: 42px;
   flex: 1 1 auto;
 }
 
 .home.nocap-frontpage-refresh .nocap-service-heading h3 {
   margin: 0;
-  font-size: 1.24rem;
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
   line-height: 1.15;
 }
 
@@ -739,11 +724,11 @@ Text Domain: salient-nocap-child
 .home.nocap-frontpage-refresh .nocap-quote-copy::before {
   content: "\201C";
   position: absolute;
-  top: -0.08em;
-  left: -0.08em;
+  top: 0;
+  left: -20rem;
   color: rgba(195, 154, 98, 0.18);
   font-family: "Fraunces", Georgia, serif;
-  font-size: clamp(7rem, 12vw, 11rem);
+  font-size: 40dvw;
   line-height: 0.8;
   pointer-events: none;
 }
@@ -1367,18 +1352,21 @@ Text Domain: salient-nocap-child
   top: 16px;
   left: 16px;
   z-index: 2;
-  min-width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.36);
+  min-width: 0;
+  min-height: 36px;
+  border-radius: 0;
+  border: 0;
+  border-left: 2px solid rgba(195, 154, 98, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 7px 12px 7px 10px;
   color: #ffffff;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .home.nocap-frontpage-refresh .nocap-products .nocap-product-copy {
@@ -1448,99 +1436,274 @@ Text Domain: salient-nocap-child
   }
 }
 
-.home.nocap-frontpage-refresh .nocap-gallery-track {
-  margin-top: 24px;
+.home.nocap-frontpage-refresh .nocap-gallery-head,
+.home.nocap-frontpage-refresh .nocap-team-head {
   display: grid;
-  grid-template-columns: repeat(11, minmax(210px, 1fr));
-  gap: 14px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px 2px 16px;
+  grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
+  gap: clamp(20px, 4vw, 52px);
+  align-items: end;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-wall {
+  width: min(1380px, calc(100vw - 1rem));
+  margin: clamp(30px, 4vw, 52px) 0 0 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(72px, 8vw, 118px);
+  grid-auto-flow: dense;
+  gap: clamp(8px, 1vw, 14px);
+  align-items: stretch;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item {
   position: relative;
-  aspect-ratio: 5 / 6;
+  margin: 0;
+  min-height: 0;
   overflow: hidden;
-  border-radius: 16px;
-  scroll-snap-align: start;
-  box-shadow: var(--nc-shadow-sm);
+  background: #151923;
+  border: 1px solid rgba(17, 19, 23, 0.12);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
 }
 
-.home.nocap-frontpage-refresh .nocap-gallery-image {
+.home.nocap-frontpage-refresh .nocap-gallery-item:nth-child(4n + 2) {
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-xl {
+  grid-column: span 5;
+  grid-row: span 5;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-wide {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-tall {
+  grid-column: span 3;
+  grid-row: span 5;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-medium {
+  grid-column: span 3;
+  grid-row: span 3;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-small {
+  grid-column: span 2;
+  grid-row: span 3;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
+  grid-column: span 2;
+  grid-row: span 4;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-video {
+  grid-column: span 5;
+  grid-row: span 5;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-video-left {
+  grid-row: span 6;
+  transform: translateY(18px);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
+  grid-row: span 5;
+  transform: translateY(42px);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-pull {
+  transform: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item-push {
+  transform: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-image,
+.home.nocap-frontpage-refresh .nocap-gallery-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.home.nocap-frontpage-refresh .nocap-team-grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(16px, 2.6vw, 28px);
+.home.nocap-frontpage-refresh .nocap-gallery-video {
+  filter: saturate(0.96) contrast(1.02);
 }
 
-.home.nocap-frontpage-refresh .nocap-team-card {
-  border-radius: var(--nc-radius-md);
+.home.nocap-frontpage-refresh .nocap-team-roster {
+  position: relative;
+  margin-top: clamp(32px, 4vw, 54px);
+  display: grid;
+  gap: clamp(28px, 4vw, 54px);
+  padding-block: clamp(12px, 2vw, 24px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-head {
+  display: block;
+  margin-bottom: clamp(14px, 2vw, 22px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-head .nocap-section-title {
+  margin: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-team-roster::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgba(17, 19, 23, 0.18);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-person {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.28fr) minmax(0, 0.72fr);
+  gap: clamp(18px, 3vw, 46px);
+  align-items: center;
+  padding: clamp(22px, 3vw, 38px) 0;
+  border-bottom: 1px solid rgba(17, 19, 23, 0.14);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-person::after {
+  content: "";
+  position: absolute;
+  left: calc(28% + 12px);
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(17, 19, 23, 0), rgba(17, 19, 23, 0.2), rgba(17, 19, 23, 0));
+}
+
+.home.nocap-frontpage-refresh .nocap-team-person-alt {
+  grid-template-columns: minmax(0, 0.72fr) minmax(150px, 0.28fr);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-person-alt .nocap-team-photo-wrap {
+  order: 2;
+}
+
+.home.nocap-frontpage-refresh .nocap-team-person-alt .nocap-team-copy {
+  order: 1;
+  padding-left: 0;
+  padding-right: clamp(10px, 2vw, 26px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-photo-wrap {
+  position: relative;
+  width: min(100%, 260px);
+  justify-self: center;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: #ffffff;
-  box-shadow: var(--nc-shadow-sm);
+  background: #151923;
+  border: 1px solid rgba(17, 19, 23, 0.18);
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+}
+
+.home.nocap-frontpage-refresh .nocap-team-photo-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 18, 24, 0) 56%, rgba(15, 18, 24, 0.34) 100%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 22px);
+  pointer-events: none;
 }
 
 .home.nocap-frontpage-refresh .nocap-team-photo {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
 .home.nocap-frontpage-refresh .nocap-team-copy {
-  padding: clamp(18px, 2.4vw, 26px);
+  position: relative;
+  padding-left: clamp(10px, 2vw, 26px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-signal {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 8px 0 7px 12px;
+  border-left: 2px solid #111319;
+  color: #6f4f25;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .home.nocap-frontpage-refresh .nocap-team-copy h3 {
   margin: 0;
-  font-size: clamp(1.32rem, 2.1vw, 1.9rem);
+  font-size: clamp(2rem, 4.8vw, 4.2rem);
 }
 
 .home.nocap-frontpage-refresh .nocap-team-role {
-  margin-top: 4px;
+  margin: 8px 0 0;
   color: var(--nc-accent-strong);
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.09em;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .home.nocap-frontpage-refresh .nocap-team-copy p {
-  margin: 14px 0 0;
+  max-width: 62ch;
+  margin: 18px 0 0;
   color: #343741;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .home.nocap-frontpage-refresh .nocap-booking-strip {
-  margin-top: clamp(28px, 4vw, 46px);
-  border-radius: var(--nc-radius-lg);
-  padding: clamp(24px, 4vw, 42px);
-  background: linear-gradient(130deg, #11131a 0%, #1a1f2a 100%);
+  position: relative;
+  margin-top: clamp(28px, 4vw, 48px);
+  padding: clamp(22px, 3.6vw, 42px);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 28px),
+    linear-gradient(130deg, #11131a 0%, #1a1f2a 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  box-shadow: var(--nc-shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  clip-path: polygon(0 0, calc(100% - 32px) 0, 100% 32px, 100% 100%, 32px 100%, 0 calc(100% - 32px));
+}
+
+.home.nocap-frontpage-refresh .nocap-booking-kicker {
+  margin: 0 0 10px;
+  color: var(--nc-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .home.nocap-frontpage-refresh .nocap-booking-strip h3 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(1.32rem, 2.6vw, 2.25rem);
+  font-size: clamp(1.45rem, 3vw, 2.65rem);
 }
 
 .home.nocap-frontpage-refresh .nocap-booking-strip p {
   margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.home.nocap-frontpage-refresh .nocap-booking-strip .nocap-btn {
+  flex: 0 0 auto;
+  min-width: 176px;
+  min-height: 52px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
 .home.nocap-frontpage-refresh .nocap-contact {
@@ -1628,8 +1791,8 @@ Text Domain: salient-nocap-child
 }
 
 .home.nocap-frontpage-refresh .nocap-social a {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1639,6 +1802,18 @@ Text Domain: salient-nocap-child
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
+}
+
+.home.nocap-frontpage-refresh .nocap-social-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+}
+
+.home.nocap-frontpage-refresh .nocap-social-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .home.nocap-frontpage-refresh .nocap-social a:hover {
@@ -1680,7 +1855,6 @@ Text Domain: salient-nocap-child
 
   .home.nocap-frontpage-refresh .nocap-product-lab,
   .home.nocap-frontpage-refresh .nocap-review-layout,
-  .home.nocap-frontpage-refresh .nocap-team-grid,
   .home.nocap-frontpage-refresh .nocap-contact-grid,
   .home.nocap-frontpage-refresh .nocap-quote-grid,
   .home.nocap-frontpage-refresh .nocap-story-grid,
@@ -1701,6 +1875,8 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-services-head,
+  .home.nocap-frontpage-refresh .nocap-gallery-head,
+  .home.nocap-frontpage-refresh .nocap-team-head,
   .home.nocap-frontpage-refresh .nocap-quote-stage {
     grid-template-columns: 1fr;
   }
@@ -1747,6 +1923,42 @@ Text Domain: salient-nocap-child
   .home.nocap-frontpage-refresh .nocap-booking-strip {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-wall {
+    width: calc(100vw - 1rem);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-auto-rows: clamp(70px, 11vw, 108px);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-xl,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-wide {
+    grid-column: span 4;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-tall,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-medium {
+    grid-column: span 3;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-small,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
+    grid-column: span 2;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video {
+    grid-column: span 4;
+    grid-row: span 5;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video-left {
+    grid-row: span 6;
+    transform: translateY(12px);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
+    grid-row: span 5;
+    transform: translateY(28px);
   }
 }
 
@@ -1825,6 +2037,81 @@ Text Domain: salient-nocap-child
   .home.nocap-frontpage-refresh .nocap-meaning-band-editorial {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-index {
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-wall {
+    width: calc(100vw + 44px);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 86px;
+    gap: 8px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-xl,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-wide,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-tall,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-medium {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-small,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video {
+    grid-column: span 2;
+    grid-row: span 3;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video-left,
+  .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
+    transform: none;
+    grid-row: span 3;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-pull {
+    transform: translateX(-14px);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-item-push {
+    transform: translateY(16px);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-team-person,
+  .home.nocap-frontpage-refresh .nocap-team-person-alt {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-team-person::after {
+    display: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-team-person-alt .nocap-team-photo-wrap,
+  .home.nocap-frontpage-refresh .nocap-team-person-alt .nocap-team-copy {
+    order: initial;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-team-photo-wrap {
+    justify-self: start;
+    width: min(210px, 72vw);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-team-copy,
+  .home.nocap-frontpage-refresh .nocap-team-person-alt .nocap-team-copy {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-booking-strip .nocap-btn {
+    width: 100%;
   }
 
   .home.nocap-frontpage-refresh .nocap-map,
