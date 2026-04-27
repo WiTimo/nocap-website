@@ -1,0 +1,1860 @@
+/*
+Theme Name: Salient NoCap Child
+Theme URI: https://nocap-barbers.local
+Description: Child theme for NoCap Barbers modern front page redesign.
+Author: Local Team
+Template: salient
+Version: 1.0.0
+Text Domain: salient-nocap-child
+*/
+
+:root {
+  --nc-bg: #0e0f11;
+  --nc-panel: #13151a;
+  --nc-panel-soft: #1a1d24;
+  --nc-surface: #f4f1eb;
+  --nc-surface-2: #efebe3;
+  --nc-text: #161616;
+  --nc-muted: #6f737a;
+  --nc-light: #f8f6f2;
+  --nc-accent: #c39a62;
+  --nc-accent-strong: #a87d42;
+  --nc-shadow-sm: 0 12px 26px rgba(5, 6, 9, 0.16);
+  --nc-shadow-lg: 0 24px 52px rgba(5, 6, 9, 0.28);
+  --nc-radius-sm: 14px;
+  --nc-radius-md: 20px;
+  --nc-radius-lg: 30px;
+  --nc-max: 1260px;
+}
+
+.home.nocap-frontpage-refresh #ajax-content-wrap {
+  background: linear-gradient(180deg, #ece8df 0%, #f6f3ed 32%, #f0ece4 100%);
+}
+
+.home.nocap-frontpage-refresh .container-wrap,
+.home.nocap-frontpage-refresh .main-content {
+  background: transparent;
+}
+
+.home.nocap-frontpage-refresh .skip-link {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  z-index: 200000;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #111319;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.home.nocap-frontpage-refresh .skip-link:focus {
+  top: 14px;
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home {
+  color: var(--nc-text);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  overflow: clip;
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home * {
+  box-sizing: border-box;
+}
+
+.home.nocap-frontpage-refresh .nocap-shell {
+  width: min(var(--nc-max), calc(100% - 2.6rem));
+  margin: 0 auto;
+}
+
+.home.nocap-frontpage-refresh h1,
+.home.nocap-frontpage-refresh h2,
+.home.nocap-frontpage-refresh h3,
+.home.nocap-frontpage-refresh h4,
+.home.nocap-frontpage-refresh h5 {
+  font-family: "Fraunces", Georgia, serif;
+  color: #111215;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+}
+
+.home.nocap-frontpage-refresh p,
+.home.nocap-frontpage-refresh li,
+.home.nocap-frontpage-refresh a,
+.home.nocap-frontpage-refresh span {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+.home.nocap-frontpage-refresh .nocap-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-kicker::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.home.nocap-frontpage-refresh .nocap-hero {
+  position: relative;
+  padding: 120px 0 86px;
+  min-height: min(100vh, 980px);
+  color: #ffffff;
+  background: #08090d;
+  overflow: hidden;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(8, 9, 13, 0) 0%, rgba(8, 9, 13, 1) 100%);
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 10, 13, 0.42) 0%, rgba(9, 11, 14, 0.65) 40%, rgba(7, 9, 13, 0.88) 100%);
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  gap: clamp(24px, 4vw, 62px);
+  align-items: center;
+}
+
+.home.nocap-frontpage-refresh .nocap-shell {
+  position: relative;
+  z-index: 2;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-copy {
+  position: relative;
+  max-width: 720px;
+  padding-top: 24px;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.2rem, 5.8vw, 5.15rem);
+  text-wrap: balance;
+}
+
+.home.nocap-frontpage-refresh .nocap-lead {
+  margin: 22px 0 0;
+  max-width: 62ch;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1rem, 1.35vw, 1.22rem);
+  line-height: 1.72;
+}
+
+.home.nocap-frontpage-refresh .nocap-actions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home.nocap-frontpage-refresh .nocap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease, color 0.24s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-btn:hover {
+  transform: translateY(-2px);
+}
+
+.home.nocap-frontpage-refresh .nocap-btn-primary {
+  background: var(--nc-accent);
+  color: #121212;
+  box-shadow: var(--nc-shadow-sm);
+}
+
+.home.nocap-frontpage-refresh .nocap-btn-primary:hover {
+  background: #d4ac75;
+  box-shadow: var(--nc-shadow-lg);
+}
+
+.home.nocap-frontpage-refresh .nocap-btn-ghost {
+  border-color: rgba(255, 255, 255, 0.52);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.home.nocap-frontpage-refresh .nocap-btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.home.nocap-frontpage-refresh .nocap-proof {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.home.nocap-frontpage-refresh .nocap-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: saturate(0.95) brightness(0.85);
+}
+
+.home.nocap-frontpage-refresh .nocap-floating-note {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  max-width: 300px;
+  padding: 16px 17px;
+  border-radius: 14px;
+  background: rgba(12, 13, 18, 0.84);
+  color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.home.nocap-frontpage-refresh .nocap-floating-note strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #ffffff;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-floating-note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.home.nocap-frontpage-refresh .nocap-section {
+  position: relative;
+  padding: clamp(52px, 8vw, 110px) 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-section-title {
+  margin: 0;
+  font-size: clamp(1.85rem, 4.3vw, 3.45rem);
+  text-wrap: balance;
+}
+
+.home.nocap-frontpage-refresh .nocap-section-intro {
+  margin: 16px 0 0;
+  color: var(--nc-muted);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  line-height: 1.72;
+  max-width: 66ch;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-media-column {
+  position: relative;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-video-wrap {
+  position: sticky;
+  top: 110px;
+  overflow: hidden;
+  min-height: min(58vh, 620px);
+  border: 1px solid rgba(17, 19, 23, 0.14);
+  border-radius: 24px 24px 24px 6px;
+  background: #0d1015;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-video-wrap::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 32%;
+  background: linear-gradient(180deg, rgba(13, 16, 21, 0) 0%, rgba(13, 16, 21, 0.78) 100%);
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-video {
+  width: 100%;
+  height: 100%;
+  min-height: min(58vh, 620px);
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.home.nocap-frontpage-refresh .nocap-story-video-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(17, 19, 23, 0.12);
+  color: #51555d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-copy-column {
+  padding-top: clamp(8px, 2vw, 24px);
+  position: relative;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-copy-column::before {
+  content: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-lead {
+  max-width: 58ch;
+  position: relative;
+  margin-top: 18px;
+  padding: 18px 22px 0 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-lead::after {
+  content: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-flow {
+  margin-top: clamp(20px, 2.6vw, 34px);
+  display: grid;
+  gap: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-flow-editorial {
+  gap: 0;
+  margin-top: clamp(26px, 3vw, 38px);
+}
+
+.home.nocap-frontpage-refresh .nocap-story-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: clamp(16px, 2.2vw, 24px) 0;
+  border-top: 1px solid rgba(17, 19, 23, 0.14);
+}
+
+.home.nocap-frontpage-refresh .nocap-story-node-feature {
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 18px;
+  padding-right: clamp(6px, 1vw, 18px);
+}
+
+.home.nocap-frontpage-refresh .nocap-story-node-alt {
+  padding-left: clamp(12px, 2.2vw, 24px);
+}
+
+.home.nocap-frontpage-refresh .nocap-story-index {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 19, 23, 0.26);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #161a21;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-node-copy h3 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  color: #111319;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-node-copy p {
+  margin: 10px 0 0;
+  color: #333842;
+  line-height: 1.74;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-band {
+  margin-top: 8px;
+  padding: clamp(18px, 2.4vw, 28px) 0 0;
+  border-top: 1px dashed rgba(17, 19, 23, 0.26);
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-band-editorial {
+  display: grid;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+  gap: clamp(18px, 3vw, 32px);
+  border-top-style: solid;
+  margin-top: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-band h3 {
+  margin: 0;
+  color: #111319;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-band p {
+  margin: 12px 0 0;
+  color: #30353f;
+  line-height: 1.75;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-band-editorial p {
+  margin-top: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-story-actions {
+  margin-top: 26px;
+}
+
+.home.nocap-frontpage-refresh .nocap-kicker-dark::before {
+  background: rgba(17, 19, 23, 0.72);
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section {
+  padding-top: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.42fr) minmax(160px, 0.24fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: center;
+  padding: clamp(22px, 3vw, 34px) 0;
+  border-top: 1px solid rgba(17, 19, 23, 0.12);
+  border-bottom: 1px solid rgba(17, 19, 23, 0.12);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0)),
+    repeating-linear-gradient(90deg, rgba(17, 19, 23, 0.04) 0 1px, transparent 1px 80px);
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-title h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.8vw, 3.3rem);
+  margin-left: 1rem;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-copy p {
+  margin: 0;
+  color: #2f343d;
+  line-height: 1.78;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-copy p + p {
+  margin-top: 12px;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-mark {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  color: #111319;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(2.1rem, 4vw, 3.9rem);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+}
+
+.home.nocap-frontpage-refresh .nocap-meaning-section-mark span:last-child {
+  color: #c39a62;
+}
+
+.home.nocap-frontpage-refresh .nocap-services {
+  background:
+    linear-gradient(180deg, #f6f0e6 0%, #f3ece2 100%);
+  color: #14161a;
+  padding-bottom: clamp(72px, 9vw, 132px);
+  border-top: 1px solid rgba(15, 16, 20, 0.06);
+  border-bottom: 1px solid rgba(15, 16, 20, 0.08);
+}
+
+.home.nocap-frontpage-refresh .nocap-services::after {
+  display: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-services .nocap-section-title,
+.home.nocap-frontpage-refresh .nocap-services .nocap-section-intro {
+  color: #14161a;
+}
+
+.home.nocap-frontpage-refresh .nocap-services .nocap-section-intro {
+  color: #5a5f67;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.58fr) minmax(0, 0.42fr);
+  gap: clamp(20px, 4vw, 48px);
+  align-items: end;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-summary p {
+  margin: 0;
+  color: #50555d;
+  line-height: 1.72;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-grid {
+  margin-top: clamp(28px, 3vw, 40px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.24fr);
+  gap: clamp(18px, 2.4vw, 28px);
+  align-items: start;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 22px);
+}
+
+.home.nocap-frontpage-refresh .nocap-service-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 14px;
+  padding: 0;
+  border-top: 0;
+  align-content: start;
+  height: 100%;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-visual {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 4.7;
+  border-radius: 22px 6px 22px 6px;
+  background: #1b1f26;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-visual::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 38%;
+  background: linear-gradient(180deg, rgba(9, 11, 15, 0) 0%, rgba(9, 11, 15, 0.72) 100%);
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-item-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 19, 23, 0.18);
+  color: #111319;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.05rem;
+  flex: 0 0 44px;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-kicker {
+  margin: 0 0 6px;
+  color: #8a6a3c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 44px;
+  flex: 1 1 auto;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-heading h3 {
+  margin: 0;
+  font-size: 1.24rem;
+  line-height: 1.15;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-body {
+  display: flex;
+  align-items: flex-start;
+}
+
+.home.nocap-frontpage-refresh .nocap-service-body p {
+  margin: 0;
+  color: #30353f;
+  line-height: 1.68;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta {
+  align-self: stretch;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 20px 0 0 20px;
+  border-top: 0;
+  border-left: 2px solid #111319;
+  position: sticky;
+  top: 110px;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta-line {
+  margin: 0;
+  color: #222831;
+  line-height: 1.58;
+  max-width: 20ch;
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn {
+  width: 100%;
+  justify-self: start;
+  justify-content: center;
+  padding: 14px 18px;
+  min-height: 54px;
+  border-radius: 16px 4px 16px 4px;
+  border: 1px solid #111319;
+  background: #111319;
+  color: #111319;
+  color: #f6f0e6;
+  box-shadow: none;
+  letter-spacing: 0.12em;
+  position: relative;
+  text-align: center;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:hover,
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:focus-visible {
+  background: #8a6a3c;
+  border-color: #8a6a3c;
+  color: #ffffff;
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:hover::after,
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:focus-visible::after {
+  transform: translateY(-50%);
+}
+
+.home.nocap-frontpage-refresh .nocap-quote {
+  margin-top: 0;
+  background:
+    linear-gradient(180deg, #171d27 0%, #121821 100%);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: clamp(18px, 2.2vw, 24px);
+  position: relative;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.15rem, 4.5vw, 4.2rem);
+  line-height: 1.02;
+  max-width: 11ch;
+  text-wrap: balance;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-copy {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 100%;
+  padding: clamp(18px, 2vw, 28px) 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-copy::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.08em;
+  left: -0.08em;
+  color: rgba(195, 154, 98, 0.18);
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(7rem, 12vw, 11rem);
+  line-height: 0.8;
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-copy {
+  font-style: italic;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-content: start;
+  position: relative;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-stage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -18px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-media {
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 28px 6px 28px 6px;
+  background: #232837;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-media::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  background:
+    linear-gradient(160deg, rgba(7, 9, 12, 0.08), rgba(7, 9, 12, 0.46)),
+    var(--quote-image);
+  background-size: cover;
+  background-position: center;
+}
+
+.home.nocap-frontpage-refresh .nocap-quote-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 3.8vw, 58px);
+  align-items: stretch;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-badge {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: clamp(18px, 2.2vw, 28px);
+  border: 1px solid rgba(17, 19, 23, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.18)),
+    repeating-linear-gradient(0deg, rgba(17, 19, 23, 0.045) 0 1px, transparent 1px 44px);
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  min-height: 100%;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-ledger {
+  display: grid;
+  gap: 16px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-ledger-kicker {
+  margin: 0;
+  color: #11151d;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-spark {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(17, 21, 29, 0.12);
+  background: rgba(255, 252, 244, 0.8);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-star {
+  display: inline-block;
+  font-size: 5rem;
+  color: #f7c900;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-spark p {
+  margin: 0;
+  color: #242b34;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-scoreboard {
+  display: grid;
+  gap: 2px;
+  padding: 14px 0 12px;
+  border-top: 1px solid rgba(17, 19, 23, 0.2);
+  border-bottom: 1px solid rgba(17, 19, 23, 0.2);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-score {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  color: #10141a;
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  line-height: 0.9;
+  padding-bottom: 0.5rem;
+
+}
+
+.home.nocap-frontpage-refresh .nocap-review-label {
+  margin: 0;
+  color: #4b5058;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-score-note {
+  margin: 6px 0 0;
+  max-width: 22ch;
+  color: #4b5058;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 21, 29, 0.12);
+  color: #11151d;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.58);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-pill:hover,
+.home.nocap-frontpage-refresh .nocap-brand-pill:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(17, 21, 29, 0.3);
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #11151d;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-pill-google {
+  gap: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots i:nth-child(1) {
+  background: #4285f4;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots i:nth-child(2) {
+  background: #ea4335;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots i:nth-child(3) {
+  background: #fbbc05;
+}
+
+.home.nocap-frontpage-refresh .nocap-brand-google-dots i:nth-child(4) {
+  background: #34a853;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-list {
+  display: grid;
+  gap: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px 12px 16px;
+  border-left: 3px solid rgba(17, 21, 29, 0.72);
+  color: #141922;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.28);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(17, 21, 29, 0.12);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-badge img {
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-copy-wrap {
+  display: grid;
+  gap: 4px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source:hover,
+.home.nocap-frontpage-refresh .nocap-review-source:focus-visible {
+  transform: translateX(4px);
+  border-color: #6f4f25;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-source-meta,
+.home.nocap-frontpage-refresh .nocap-google-caption {
+  margin: 0;
+  color: #4b5058;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-proofline {
+  display: flex;
+  gap: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-proofline span {
+  display: block;
+  height: 2px;
+  background: rgba(17, 21, 29, 0.72);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-proofline span:nth-child(1) {
+  width: 34%;
+  background: #f4a261;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-proofline span:nth-child(2) {
+  width: 18%;
+  background: #11151d;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-proofline span:nth-child(3) {
+  width: 48%;
+  background: #4285f4;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-badge-foot {
+  padding-top: 2px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-metrics {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-metrics span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 19, 25, 0.18);
+  background: rgba(255, 255, 255, 0.52);
+  color: #222831;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-metrics strong {
+  color: #111319;
+  font-size: 13px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-switch {
+  margin-top: 20px;
+  display: inline-grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(17, 21, 29, 0.14);
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-chip {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #222831;
+  min-height: 48px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.22s ease, background-color 0.22s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-chip:hover,
+.home.nocap-frontpage-refresh .nocap-review-chip:focus-visible {
+  color: #11151d;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-chip.is-active {
+  background: #11151d;
+  color: #ffffff;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-stream {
+  position: relative;
+  margin-top: 16px;
+  min-height: 340px;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-quote {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: block;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  color: #1f242d;
+  padding: clamp(20px, 2.4vw, 30px);
+  border: 1px solid rgba(17, 21, 29, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.26)),
+    linear-gradient(90deg, rgba(17, 21, 29, 0.045) 0, rgba(17, 21, 29, 0.045) 1px, transparent 1px);
+  background-size: auto, 18px 18px;
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-quote.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-panel-label {
+  margin: 0 0 12px;
+  color: #6f4f25;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-quote-copy {
+  margin: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-quote-copy p {
+  margin: 0;
+  max-width: 30ch;
+  color: #1f242d;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1.5rem, 2.2vw, 2.45rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  padding-bottom: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(17, 21, 29, 0.14);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-author {
+  margin: 0;
+  color: #11151d;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-badge-cta {
+  display: grid;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-badge-copy {
+  margin: 0;
+  color: #343a43;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-booking {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 18px;
+  border: 1px solid rgba(17, 21, 29, 0.14);
+  background: rgba(255, 255, 255, 0.58);
+  color: #11151d;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-booking:hover,
+.home.nocap-frontpage-refresh .nocap-review-booking:focus-visible {
+  color: #11151d;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.home.nocap-frontpage-refresh .nocap-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #11151d;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.home.nocap-frontpage-refresh .nocap-text-link-muted {
+  color: #5d6168;
+}
+
+.home.nocap-frontpage-refresh .nocap-text-link:hover {
+  color: #6f4f25;
+}
+
+.home.nocap-frontpage-refresh .nocap-products {
+  background: linear-gradient(180deg, #111720 0%, #171f2d 100%);
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home.nocap-frontpage-refresh .nocap-products .nocap-section-title,
+.home.nocap-frontpage-refresh .nocap-products .nocap-section-intro {
+  color: #ffffff;
+}
+
+.home.nocap-frontpage-refresh .nocap-products-atlas {
+  margin-top: clamp(24px, 3.4vw, 44px);
+  display: grid;
+  gap: clamp(34px, 5vw, 64px);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-feature {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(18px, 3vw, 38px);
+  align-items: center;
+  padding-top: clamp(16px, 2.2vw, 24px);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-feature-alt .nocap-product-media {
+  order: 2;
+  border-radius: 8px 34px 8px 34px;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-feature-alt .nocap-product-copy {
+  order: 1;
+  padding-left: 0;
+  padding-right: clamp(4px, 1.2vw, 14px);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-media {
+  position: relative;
+  min-height: clamp(300px, 38vw, 470px);
+  border-radius: 34px 8px 34px 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(10, 13, 20, 0.74) 16%, rgba(10, 13, 20, 0.18) 62%, rgba(10, 13, 20, 0.68) 100%),
+    var(--product-image);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.62s ease, filter 0.62s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 100% 100%, rgba(195, 154, 98, 0.34) 0%, rgba(195, 154, 98, 0) 62%),
+    repeating-linear-gradient(112deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 22px);
+  opacity: 0.46;
+  pointer-events: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-media:hover::before {
+  transform: scale(1.04);
+  filter: saturate(1.08);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-number {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.home.nocap-frontpage-refresh .nocap-products .nocap-product-copy {
+  max-width: 58ch;
+  padding-left: clamp(4px, 1.2vw, 14px);
+}
+
+.home.nocap-frontpage-refresh .nocap-product-kicker {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-products .nocap-product-copy h3 {
+  margin: 10px 0 0;
+  color: #ffffff;
+  font-size: clamp(1.9rem, 4.2vw, 3.35rem);
+}
+
+.home.nocap-frontpage-refresh .nocap-products .nocap-product-copy p {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.72;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-points {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-points li {
+  position: relative;
+  padding-left: 20px;
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.6;
+  list-style: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-product-points li::before {
+  content: "";
+  position: absolute;
+  top: 0.66em;
+  left: 0;
+  width: 10px;
+  height: 1px;
+  background: rgba(195, 154, 98, 0.9);
+}
+
+.home.nocap-frontpage-refresh .nocap-products .nocap-product-copy h3 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.2vw, 3.35rem);
+}
+
+@keyframes nocap-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-track {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(11, minmax(210px, 1fr));
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 2px 16px;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item {
+  position: relative;
+  aspect-ratio: 5 / 6;
+  overflow: hidden;
+  border-radius: 16px;
+  scroll-snap-align: start;
+  box-shadow: var(--nc-shadow-sm);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home.nocap-frontpage-refresh .nocap-team-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.6vw, 28px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-card {
+  border-radius: var(--nc-radius-md);
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: var(--nc-shadow-sm);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.home.nocap-frontpage-refresh .nocap-team-copy {
+  padding: clamp(18px, 2.4vw, 26px);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-copy h3 {
+  margin: 0;
+  font-size: clamp(1.32rem, 2.1vw, 1.9rem);
+}
+
+.home.nocap-frontpage-refresh .nocap-team-role {
+  margin-top: 4px;
+  color: var(--nc-accent-strong);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.home.nocap-frontpage-refresh .nocap-team-copy p {
+  margin: 14px 0 0;
+  color: #343741;
+  line-height: 1.7;
+}
+
+.home.nocap-frontpage-refresh .nocap-booking-strip {
+  margin-top: clamp(28px, 4vw, 46px);
+  border-radius: var(--nc-radius-lg);
+  padding: clamp(24px, 4vw, 42px);
+  background: linear-gradient(130deg, #11131a 0%, #1a1f2a 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--nc-shadow-lg);
+}
+
+.home.nocap-frontpage-refresh .nocap-booking-strip h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.32rem, 2.6vw, 2.25rem);
+}
+
+.home.nocap-frontpage-refresh .nocap-booking-strip p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.home.nocap-frontpage-refresh .nocap-contact {
+  background: linear-gradient(180deg, #111319 0%, #171a21 100%);
+  color: #ffffff;
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(22px, 3vw, 36px);
+}
+
+.home.nocap-frontpage-refresh .nocap-map,
+.home.nocap-frontpage-refresh .nocap-contact-card {
+  border-radius: var(--nc-radius-md);
+  overflow: hidden;
+  min-height: 460px;
+  box-shadow: var(--nc-shadow-lg);
+}
+
+.home.nocap-frontpage-refresh .nocap-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  border: 0;
+  display: block;
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-card {
+  background: linear-gradient(180deg, #f5f1e8 0%, #ebe4d8 100%);
+  color: #14161a;
+  padding: clamp(20px, 2.4vw, 30px);
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-card h2 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+}
+
+.home.nocap-frontpage-refresh .nocap-hours {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(17, 19, 23, 0.2);
+}
+
+.home.nocap-frontpage-refresh .nocap-hours li span {
+  color: #353941;
+}
+
+.home.nocap-frontpage-refresh .nocap-hours li strong {
+  color: #111319;
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-links {
+  margin-top: 18px;
+  display: grid;
+  gap: 9px;
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-links a {
+  color: #111319;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-contact-links a:hover {
+  color: var(--nc-accent-strong);
+}
+
+.home.nocap-frontpage-refresh .nocap-social {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-social a {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #111319;
+  border: 1px solid rgba(17, 19, 23, 0.24);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.home.nocap-frontpage-refresh .nocap-social a:hover {
+  color: #ffffff;
+  border-color: var(--nc-accent-strong);
+  background: var(--nc-accent-strong);
+}
+
+.home.nocap-frontpage-refresh [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.72s ease, transform 0.72s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.home.nocap-frontpage-refresh [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-hero [data-reveal] {
+  transform: translateY(36px);
+}
+
+.home.nocap-frontpage-refresh.nocap-reduced-motion [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+@media (max-width: 1180px) {
+  .home.nocap-frontpage-refresh .nocap-shell {
+    width: calc(100% - 2rem);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-lab,
+  .home.nocap-frontpage-refresh .nocap-review-layout,
+  .home.nocap-frontpage-refresh .nocap-team-grid,
+  .home.nocap-frontpage-refresh .nocap-contact-grid,
+  .home.nocap-frontpage-refresh .nocap-quote-grid,
+  .home.nocap-frontpage-refresh .nocap-story-grid,
+  .home.nocap-frontpage-refresh .nocap-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-badge {
+    max-width: 620px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-meaning-section-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-meaning-section-mark {
+    justify-items: start;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-head,
+  .home.nocap-frontpage-refresh .nocap-quote-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-quote-stage::before {
+    display: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-list {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-selector {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-track,
+  .home.nocap-frontpage-refresh .nocap-product-track:hover,
+  .home.nocap-frontpage-refresh .nocap-product-track.is-active {
+    border-radius: 16px;
+    transform: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-video-wrap {
+    position: relative;
+    top: auto;
+    min-height: 46vh;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-video {
+    min-height: 46vh;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-cta {
+    position: relative;
+    top: auto;
+    padding-left: 0;
+    border-left: 0;
+    border-top: 2px solid #111319;
+    padding-top: 18px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-booking-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .home.nocap-frontpage-refresh .nocap-shell {
+    width: calc(100% - 1.2rem);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-hero {
+    padding: 92px 0 62px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn {
+    width: auto;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-quote-media,
+  .home.nocap-frontpage-refresh .nocap-quote-media::before {
+    min-height: 320px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-metrics {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-switch {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-chip {
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-quote {
+    padding: 18px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-quote-copy p {
+    max-width: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-stream {
+    min-height: 420px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-actions {
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-stage {
+    min-height: 390px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-floating-note {
+    right: 14px;
+    left: 14px;
+    bottom: 14px;
+    max-width: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-node-feature,
+  .home.nocap-frontpage-refresh .nocap-meaning-band-editorial {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-map,
+  .home.nocap-frontpage-refresh .nocap-contact-card,
+  .home.nocap-frontpage-refresh .nocap-map iframe {
+    min-height: 390px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-video-wrap,
+  .home.nocap-frontpage-refresh .nocap-story-video {
+    min-height: 34vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home.nocap-frontpage-refresh [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-ring {
+    animation: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-review-quote {
+    transition: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-stage::before {
+    transition: none;
+  }
+}
