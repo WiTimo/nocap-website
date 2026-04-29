@@ -7,6 +7,431 @@
   }
 
   var supportsHover = window.matchMedia("(hover: hover)").matches;
+  var STORAGE_KEY = "nocap-language";
+
+  var i18n = {
+    de: {
+      "Home": "Home",
+      "Über Uns": "Über Uns",
+      "Über uns": "Über Uns",
+      "Service & Preise": "Service & Preise",
+      "Galerie": "Galerie",
+      "Team": "Team",
+      "Kontakt": "Kontakt",
+      "Barber Shop 1010 Wien": "Barber Shop 1010 Wien",
+      "NoCap Barber Shop": "NoCap Barber Shop",
+      "Wir sind NoCap Barbers, der neue Barbershop im Herzen Wiens! Bei uns finden Sie professionelle und moderne Haar- und Bartschnitte.": "Wir sind NoCap Barbers, der neue Barbershop im Herzen Wiens! Bei uns finden Sie professionelle und moderne Haar- und Bartschnitte.",
+      "Online Booking": "Online Booking",
+      "3700+ Bewertungen": "3700+ Bewertungen",
+      "Hoher Markt 3, 1010 Wien": "Hoher Markt 3, 1010 Wien",
+      "1010 Wien": "1010 Wien",
+      "Montag bis Samstag geöffnet": "Montag bis Samstag geöffnet",
+      "Services": "Services",
+      "Die wichtigsten Services auf einen Blick.": "Die wichtigsten Services auf einen Blick.",
+      "Traditional Cut": "Traditional Cut",
+      "Der traditionelle Haarschnitt": "Der traditionelle Haarschnitt",
+      "Fade Cut": "Fade Cut",
+      "Mit einem modernen Übergang": "Mit einem modernen Übergang",
+      "Beard Service": "Beard Service",
+      "Trimmen & Stylen nach Wunsch": "Trimmen & Stylen nach Wunsch",
+      "Direkt zu Preisen, Services und Online-Buchung.": "Direkt zu Preisen, Services und Online-Buchung.",
+      "Anspruch": "Anspruch",
+      "\"Ich habe einen ganz einfachen Geschmack: Ich bin immer mit dem Besten zufrieden.\"": "\"Ich habe einen ganz einfachen Geschmack: Ich bin immer mit dem Besten zufrieden.\"",
+      "Passt zu unserem Handwerk": "Passt zu unserem Handwerk",
+      "Qualität ohne Theater.": "Qualität ohne Theater.",
+      "Saubere Arbeit. Klares Finish.": "Saubere Arbeit. Klares Finish.",
+      "Über Uns": "Über Uns",
+      "NoCap Barbers steht für präzise Arbeit, ehrliche Beratung und eine Atmosphäre, die gleichzeitig entspannt und fokussiert ist.": "NoCap Barbers steht für präzise Arbeit, ehrliche Beratung und eine Atmosphäre, die gleichzeitig entspannt und fokussiert ist.",
+      "Ein Barbershop mit Haltung": "Ein Barbershop mit Haltung",
+      "Wir sind ein junges Team mit Energie, Blick fürs Detail und Respekt vor klassischem Handwerk.": "Wir sind ein junges Team mit Energie, Blick fürs Detail und Respekt vor klassischem Handwerk.",
+      "Beratung, die tragbar bleibt": "Beratung, die tragbar bleibt",
+      "Ein guter Look muss nicht nur im Shop, sondern auch im Alltag funktionieren.": "Ein guter Look muss nicht nur im Shop, sondern auch im Alltag funktionieren.",
+      "Service ohne Showeffekte": "Service ohne Showeffekte",
+      "Entspannte Stimmung, klare Kommunikation und ein Team, das lieber solide abliefert als sich hinter großen Worten versteckt.": "Entspannte Stimmung, klare Kommunikation und ein Team, das lieber solide abliefert als sich hinter großen Worten versteckt.",
+      "Was bedeutet No Cap?": "Was bedeutet No Cap?",
+      "Der Ausdruck steht für Ehrlichkeit. Keine Übertreibung, keine Fassade, kein unnötiger Lärm.": "Der Ausdruck steht für Ehrlichkeit. Keine Übertreibung, keine Fassade, kein unnötiger Lärm.",
+      "Genau so verstehen wir unseren Shop: transparent in der Beratung, konsequent in der Qualität und aufmerksam in jedem Detail.": "Genau so verstehen wir unseren Shop: transparent in der Beratung, konsequent in der Qualität und aufmerksam in jedem Detail.",
+      "Rezensionen": "Rezensionen",
+      "3700+ Rezensionen": "3700+ Rezensionen",
+      "3000+ Treatwell Reviews": "3000+ Treatwell Reviews",
+      "700+ Google Reviews": "700+ Google Reviews",
+      "Termin direkt online sichern und den nächsten Cut bei uns buchen.": "Termin direkt online sichern und den nächsten Cut bei uns buchen.",
+      "Jetzt Termin buchen": "Jetzt Termin buchen",
+      "Was Kunden über uns sagen": "Was Kunden über uns sagen",
+      "Präzision": "Präzision",
+      "Schnitt": "Schnitt",
+      "Service": "Service",
+      "Saubere Linien, sauberes Finish.": "Saubere Linien, sauberes Finish.",
+      "Super Schnitt, super sauber, super nett!": "Super Schnitt, super sauber, super nett!",
+      "Starker Schnitt beginnt mit Zuhören.": "Starker Schnitt beginnt mit Zuhören.",
+      "A great barber doesn't just cut hair, they understand you.": "A great barber doesn't just cut hair, they understand you.",
+      "Der Ton bleibt so gut wie das Ergebnis.": "Der Ton bleibt so gut wie das Ergebnis.",
+      "Wie immer tolles Service und ein toller Haarschnitt.": "Wie immer tolles Service und ein toller Haarschnitt.",
+      "Produkte, denen wir vertrauen": "Produkte, denen wir vertrauen",
+      "Zwei Linien, zwei Stärken: Styling und Pflege.": "Zwei Linien, zwei Stärken: Styling und Pflege.",
+      "Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal für Pompadour, Textur oder kontrolliertes Volumen.": "Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal für Pompadour, Textur oder kontrolliertes Volumen.",
+      "Clay, Pomade und Grooming Tonics": "Clay, Pomade und Grooming Tonics",
+      "Starker Halt ohne steifes Finish": "Starker Halt ohne steifes Finish",
+      "Ideal für strukturierte Styles": "Ideal für strukturierte Styles",
+      "Pflege": "Pflege",
+      "Pflege für Haare, Kopfhaut und Bart - entwickelt für saubere Routinen und lang haltbare Ergebnisse.": "Pflege für Haare, Kopfhaut und Bart - entwickelt für saubere Routinen und lang haltbare Ergebnisse.",
+      "Shampoo, Scalp und Beard Care": "Shampoo, Scalp und Beard Care",
+      "Sauberes, alltagstaugliches Pflege-System": "Sauberes, alltagstaugliches Pflege-System",
+      "Für sensible Kopfhaut und definierte Bärte": "Für sensible Kopfhaut und definierte Bärte",
+      "Blick in Shop, Schnitte und Stimmung.": "Blick in Shop, Schnitte und Stimmung.",
+      "Barber, Geschäftsführer": "Barber, Geschäftsführer",
+      "Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und führt heute das Team mit klarer Qualitätsorientierung.": "Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und führt heute das Team mit klarer Qualitätsorientierung.",
+      "Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles präzise auf den Punkt.": "Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles präzise auf den Punkt.",
+      "Nächster Cut": "Nächster Cut",
+      "Termin sichern, Platz nehmen, frisch rausgehen.": "Termin sichern, Platz nehmen, frisch rausgehen.",
+      "Buchen Sie Ihren Wunschtermin direkt online.": "Buchen Sie Ihren Wunschtermin direkt online.",
+      "Jetzt buchen": "Jetzt buchen",
+      "Öffnungszeiten": "Öffnungszeiten",
+      "Montag - Mittwoch, Freitag": "Montag - Mittwoch, Freitag",
+      "Donnerstag": "Donnerstag",
+      "Samstag": "Samstag",
+      "Feiertage": "Feiertage",
+      "geschlossen": "geschlossen"
+    },
+    en: {
+      "Home": "Home",
+      "Über Uns": "About Us",
+      "Über uns": "About Us",
+      "Service & Preise": "Services & Prices",
+      "Galerie": "Gallery",
+      "Team": "Team",
+      "Kontakt": "Contact",
+      "Barber Shop 1010 Wien": "Barber Shop 1010 Vienna",
+      "NoCap Barber Shop": "NoCap Barber Shop",
+      "Wir sind NoCap Barbers, der neue Barbershop im Herzen Wiens! Bei uns finden Sie professionelle und moderne Haar- und Bartschnitte.": "We are NoCap Barbers, the new barbershop in the heart of Vienna. Here you get professional, modern haircuts and beard services.",
+      "Online Booking": "Online Booking",
+      "3700+ Bewertungen": "3700+ reviews",
+      "Hoher Markt 3, 1010 Wien": "Hoher Markt 3, 1010 Vienna",
+      "1010 Wien": "1010 Vienna",
+      "Montag bis Samstag geöffnet": "Open Monday to Saturday",
+      "Services": "Services",
+      "Die wichtigsten Services auf einen Blick.": "The most important services at a glance.",
+      "Traditional Cut": "Traditional Cut",
+      "Der traditionelle Haarschnitt": "The classic haircut",
+      "Fade Cut": "Fade Cut",
+      "Mit einem modernen Übergang": "With a modern fade",
+      "Beard Service": "Beard Service",
+      "Trimmen & Stylen nach Wunsch": "Trimmed and styled your way",
+      "Direkt zu Preisen, Services und Online-Buchung.": "Go straight to prices, services and online booking.",
+      "Anspruch": "Standard",
+      "\"Ich habe einen ganz einfachen Geschmack: Ich bin immer mit dem Besten zufrieden.\"": "\"I have the simplest tastes. I am always satisfied with the best.\"",
+      "Passt zu unserem Handwerk": "Fits our craft",
+      "Qualität ohne Theater.": "Quality without theatre.",
+      "Saubere Arbeit. Klares Finish.": "Clean work. Sharp finish.",
+      "NoCap Barbers steht für präzise Arbeit, ehrliche Beratung und eine Atmosphäre, die gleichzeitig entspannt und fokussiert ist.": "NoCap Barbers stands for precise work, honest advice and an atmosphere that feels relaxed and focused at the same time.",
+      "Ein Barbershop mit Haltung": "A barbershop with attitude",
+      "Wir sind ein junges Team mit Energie, Blick fürs Detail und Respekt vor klassischem Handwerk.": "We are a young team with energy, an eye for detail and respect for classic craft.",
+      "Beratung, die tragbar bleibt": "Advice that works in daily life",
+      "Ein guter Look muss nicht nur im Shop, sondern auch im Alltag funktionieren.": "A good look has to work not only in the shop, but also in everyday life.",
+      "Service ohne Showeffekte": "Service without empty show",
+      "Entspannte Stimmung, klare Kommunikation und ein Team, das lieber solide abliefert als sich hinter großen Worten versteckt.": "Relaxed mood, clear communication and a team that prefers solid results over big words.",
+      "Was bedeutet No Cap?": "What does No Cap mean?",
+      "Der Ausdruck steht für Ehrlichkeit. Keine Übertreibung, keine Fassade, kein unnötiger Lärm.": "The phrase stands for honesty. No exaggeration, no facade, no unnecessary noise.",
+      "Genau so verstehen wir unseren Shop: transparent in der Beratung, konsequent in der Qualität und aufmerksam in jedem Detail.": "That is how we understand our shop: transparent advice, consistent quality and attention in every detail.",
+      "Rezensionen": "Reviews",
+      "3700+ Rezensionen": "3700+ reviews",
+      "3000+ Treatwell Reviews": "3000+ Treatwell reviews",
+      "700+ Google Reviews": "700+ Google reviews",
+      "Termin direkt online sichern und den nächsten Cut bei uns buchen.": "Book online and secure your next cut with us.",
+      "Jetzt Termin buchen": "Book now",
+      "Was Kunden über uns sagen": "What clients say about us",
+      "Präzision": "Precision",
+      "Schnitt": "Cut",
+      "Service": "Service",
+      "Saubere Linien, sauberes Finish.": "Clean lines, clean finish.",
+      "Super Schnitt, super sauber, super nett!": "Great cut, super clean, super friendly!",
+      "Starker Schnitt beginnt mit Zuhören.": "A strong cut starts with listening.",
+      "A great barber doesn't just cut hair, they understand you.": "A great barber doesn't just cut hair, they understand you.",
+      "Der Ton bleibt so gut wie das Ergebnis.": "The vibe is as good as the result.",
+      "Wie immer tolles Service und ein toller Haarschnitt.": "As always, great service and a great haircut.",
+      "Produkte, denen wir vertrauen": "Products we trust",
+      "Zwei Linien, zwei Stärken: Styling und Pflege.": "Two lines, two strengths: styling and care.",
+      "Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal für Pompadour, Textur oder kontrolliertes Volumen.": "Tradition from Rotterdam with modern styling results. Ideal for pompadours, texture or controlled volume.",
+      "Clay, Pomade und Grooming Tonics": "Clay, pomade and grooming tonics",
+      "Starker Halt ohne steifes Finish": "Strong hold without a stiff finish",
+      "Ideal für strukturierte Styles": "Ideal for textured styles",
+      "Pflege": "Care",
+      "Pflege für Haare, Kopfhaut und Bart - entwickelt für saubere Routinen und lang haltbare Ergebnisse.": "Care for hair, scalp and beard - made for clean routines and long-lasting results.",
+      "Shampoo, Scalp und Beard Care": "Shampoo, scalp and beard care",
+      "Sauberes, alltagstaugliches Pflege-System": "Clean care system for daily use",
+      "Für sensible Kopfhaut und definierte Bärte": "For sensitive scalps and defined beards",
+      "Blick in Shop, Schnitte und Stimmung.": "A look inside the shop, the cuts and the atmosphere.",
+      "Barber, Geschäftsführer": "Barber, Managing Director",
+      "Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und führt heute das Team mit klarer Qualitätsorientierung.": "Dave has been part of NoCap Barbers from the beginning. With creative ideas, clean technique and a real service mindset, he helped build the concept and now leads the team with a clear focus on quality.",
+      "Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles präzise auf den Punkt.": "Steph combines clean craft with international experience. After working in different barbershops and spending time in Canada, he brings modern and classic styles precisely to the point.",
+      "Nächster Cut": "Next cut",
+      "Termin sichern, Platz nehmen, frisch rausgehen.": "Book your slot, take a seat, leave fresh.",
+      "Buchen Sie Ihren Wunschtermin direkt online.": "Book your preferred appointment directly online.",
+      "Jetzt buchen": "Book now",
+      "Öffnungszeiten": "Opening hours",
+      "Montag - Mittwoch, Freitag": "Monday - Wednesday, Friday",
+      "Donnerstag": "Thursday",
+      "Samstag": "Saturday",
+      "Feiertage": "Public holidays",
+      "geschlossen": "closed"
+    }
+  };
+
+  var getStoredLanguage = function () {
+    try {
+      return window.localStorage ? window.localStorage.getItem(STORAGE_KEY) : "";
+    } catch (error) {
+      return "";
+    }
+  };
+
+  var setStoredLanguage = function (language) {
+    try {
+      if (window.localStorage) {
+        window.localStorage.setItem(STORAGE_KEY, language);
+      }
+    } catch (error) {
+      return;
+    }
+  };
+
+  var getInitialLanguage = function () {
+    var stored = getStoredLanguage();
+    if (stored === "de" || stored === "en") {
+      return stored;
+    }
+    return (navigator.language || "").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+  };
+
+  var translationLookup = {};
+  Object.keys(i18n).forEach(function (language) {
+    Object.keys(i18n[language]).forEach(function (key) {
+      translationLookup[i18n[language][key]] = key;
+      translationLookup[key] = key;
+    });
+  });
+
+  var translatableNodes = [];
+
+  var normalizePrimaryNavigation = function () {
+    var orders = [
+      { id: "home", label: "Home" },
+      { id: "service", label: "Service & Preise" },
+      { id: "uber-uns", label: "Über Uns" },
+      { id: "gallerie", label: "Galerie" },
+      { id: "team", label: "Team" },
+      { id: "kontakt", label: "Kontakt" }
+    ];
+
+    document.querySelectorAll("#top nav ul.sf-menu:not(.buttons), .off-canvas-menu-container ul:not(.buttons)").forEach(function (menu) {
+      menu.querySelectorAll(".nocap-menu-generated").forEach(function (item) {
+        item.remove();
+      });
+
+      var social = menu.querySelector("#social-in-menu");
+      var existingItems = Array.prototype.slice.call(menu.children).filter(function (item) {
+        return item !== social;
+      });
+      var usedItems = [];
+      var seenTargets = {};
+
+      var findItem = function (config) {
+        var found = null;
+        existingItems.some(function (item) {
+          if (usedItems.indexOf(item) > -1) {
+            return false;
+          }
+          var link = item.querySelector("a");
+          var text = link ? (link.textContent || "").trim() : "";
+          var href = link ? link.getAttribute("href") || "" : "";
+          var matches = href.indexOf("#" + config.id) > -1 || text === config.label || translationLookup[text] === config.label;
+          if (config.id === "service") {
+            matches = matches || /service|preise|prices|treatwell/i.test(text + href);
+          }
+          if (matches) {
+            found = item;
+            return true;
+          }
+          return false;
+        });
+        return found;
+      };
+
+      orders.forEach(function (config) {
+        var item = findItem(config);
+        if (!item) {
+          item = document.createElement("li");
+          item.className = "menu-item menu-item-type-custom menu-item-object-custom nocap-menu-generated";
+          item.innerHTML = '<a href="#' + config.id + '">' + config.label + "</a>";
+        }
+        usedItems.push(item);
+
+        var link = item.querySelector("a");
+        if (link) {
+          link.setAttribute("href", "#" + config.id);
+          link.textContent = config.label;
+          seenTargets["#" + config.id] = true;
+        }
+      });
+
+      existingItems.forEach(function (item) {
+        var link = item.querySelector("a");
+        var href = link ? link.getAttribute("href") || "" : "";
+        var isManaged = orders.some(function (config) {
+          return href === "#" + config.id || href.indexOf("#" + config.id) > -1 || (config.id === "service" && /service|preise|prices|treatwell/i.test((link ? link.textContent : "") + href));
+        });
+        if (usedItems.indexOf(item) === -1 || isManaged || seenTargets[href]) {
+          item.remove();
+        }
+      });
+
+      usedItems.forEach(function (item) {
+        menu.appendChild(item);
+      });
+
+      if (social) {
+        menu.appendChild(social);
+      }
+    });
+  };
+
+  var rememberTranslatableText = function () {
+    var selector = "h1,h2,h3,p,span,a,button,li,strong,blockquote";
+    var scopedSelector = selector.split(",").map(function (item) {
+      return ".nocap-modern-home " + item;
+    }).join(",");
+    var candidates = Array.prototype.slice.call(document.querySelectorAll(scopedSelector + ", #top nav a, .off-canvas-menu-container a"));
+
+    candidates.forEach(function (node) {
+      if (node.children.length || node.closest(".nocap-lang-switcher") || node.closest(".nocap-social") || node.closest("#social-in-menu")) {
+        return;
+      }
+
+      var text = (node.textContent || "").trim().replace(/\s+/g, " ");
+      var key = translationLookup[text];
+      if (!key) {
+        return;
+      }
+
+      node.setAttribute("data-nocap-i18n", key);
+      translatableNodes.push(node);
+    });
+  };
+
+  var buildLanguageSwitcher = function () {
+    var flagDe = home.getAttribute("data-flag-de") || "";
+    var flagEn = home.getAttribute("data-flag-en") || "";
+    var switcher = document.createElement("div");
+    switcher.className = "nocap-lang-switcher";
+    switcher.setAttribute("role", "group");
+    switcher.setAttribute("aria-label", "Language");
+    switcher.innerHTML =
+      '<button type="button" data-nocap-lang="de" aria-label="Deutsch"><img src="' + flagDe + '" alt="">DE</button>' +
+      '<button type="button" data-nocap-lang="en" aria-label="English"><img src="' + flagEn + '" alt="">EN</button>';
+
+    var nav = document.querySelector("#top nav");
+    if (nav) {
+      nav.appendChild(switcher);
+    } else {
+      document.body.appendChild(switcher);
+    }
+
+    switcher.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-nocap-lang]");
+      if (!button) {
+        return;
+      }
+      var language = button.getAttribute("data-nocap-lang");
+      setStoredLanguage(language);
+      applyLanguage(language);
+    });
+  };
+
+  var applyLanguage = function (language) {
+    var strings = i18n[language] || i18n.en;
+    document.documentElement.lang = language === "de" ? "de" : "en";
+    home.setAttribute("data-current-language", language);
+
+    translatableNodes.forEach(function (node) {
+      var key = node.getAttribute("data-nocap-i18n");
+      if (key && strings[key]) {
+        node.textContent = strings[key];
+      }
+    });
+
+    document.querySelectorAll("[data-nocap-lang]").forEach(function (button) {
+      var isActive = button.getAttribute("data-nocap-lang") === language;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  };
+
+  var initLanguage = function () {
+    normalizePrimaryNavigation();
+    rememberTranslatableText();
+    buildLanguageSwitcher();
+    applyLanguage(getInitialLanguage());
+  };
+
+  var initNavScrollSpy = function () {
+    var sections = Array.prototype.slice.call(document.querySelectorAll(".nocap-modern-home section[id]"));
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll("#top nav a, .off-canvas-menu-container a")).filter(function (link) {
+      var href = link.getAttribute("href") || "";
+      return href.indexOf("#") === 0 || href.indexOf(window.location.origin + "/#") === 0 || href === window.location.origin + "/" || href === window.location.href.split("#")[0] + "/" || /treatwell|service|preise/i.test((link.textContent || "") + href);
+    });
+
+    if (!sections.length || !navLinks.length) {
+      return;
+    }
+
+    navLinks.forEach(function (link) {
+      link.removeAttribute("aria-current");
+      if (link.parentElement) {
+        link.parentElement.classList.remove("current-menu-item", "current_page_item", "current_page_parent", "current-menu-ancestor");
+      }
+    });
+
+    var normalizeHref = function (link) {
+      var href = link.getAttribute("href") || "";
+      if (href.indexOf("#") > -1) {
+        return href.slice(href.indexOf("#") + 1);
+      }
+      return "home";
+    };
+
+    var setActive = function (sectionId) {
+      navLinks.forEach(function (link) {
+        var id = normalizeHref(link);
+        var isServiceBooking = sectionId === "service" && /treatwell|service|preise/i.test(link.textContent || link.href || "");
+        var isActive = id === sectionId || isServiceBooking;
+        link.classList.toggle("nocap-nav-active", isActive);
+        link.parentElement && link.parentElement.classList.toggle("nocap-nav-active", isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "true");
+        } else if (link.getAttribute("aria-current") === "true" || link.getAttribute("aria-current") === "page") {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    var updateActiveSection = function () {
+      var anchorLine = Math.max(120, window.innerHeight * 0.38);
+      var current = "";
+
+      sections.forEach(function (section) {
+        var rect = section.getBoundingClientRect();
+        if (rect.top <= anchorLine && rect.bottom > anchorLine) {
+          current = section.id;
+        }
+      });
+
+      setActive(current);
+    };
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+    updateActiveSection();
+  };
 
   var bindArrowSwitch = function (buttons, onActivate) {
     buttons.forEach(function (button, index) {
@@ -131,6 +556,8 @@
 
   initReviewSwitch();
   initProductSwitch();
+  initLanguage();
+  initNavScrollSpy();
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var revealNodes = document.querySelectorAll("[data-reveal]");
@@ -202,6 +629,17 @@
   }
 
   var ticking = false;
+  var heroVideos = Array.prototype.slice.call(document.querySelectorAll(".nocap-hero-video"));
+
+  if (heroVideos.length > 1) {
+    heroVideos[0].addEventListener("play", function () {
+      heroVideos.slice(1).forEach(function (video) {
+        if (Math.abs(video.currentTime - heroVideos[0].currentTime) > 0.18) {
+          video.currentTime = heroVideos[0].currentTime;
+        }
+      });
+    });
+  }
 
   var updateParallax = function () {
     var rect = heroMedia.getBoundingClientRect();

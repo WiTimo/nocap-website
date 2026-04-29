@@ -43,7 +43,7 @@ $service_items = array(
 		'mark'   => 'Fade',
 		'image'  => 6007,
 		'title'  => 'Fade Cut',
-		'text'   => 'Mit einem modernen Uebergang',
+		'text'   => 'Mit einem modernen Übergang',
 	),
 	array(
 		'mark'   => 'Bart',
@@ -56,15 +56,15 @@ $service_items = array(
 $team_members = array(
 	array(
 		'name'   => 'Dave',
-		'role'   => 'Barber, Geschaeftsfuehrer',
+		'role'   => 'Barber, Geschäftsführer',
 		'image'  => 6121,
-		'bio_de' => 'Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und fuehrt heute das Team mit klarer Qualitaetsorientierung.',
+		'bio_de' => 'Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und führt heute das Team mit klarer Qualitätsorientierung.',
 	),
 	array(
 		'name'   => 'Steph',
 		'role'   => 'Barber',
 		'image'  => 6122,
-		'bio_de' => 'Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles praezise auf den Punkt.',
+		'bio_de' => 'Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles präzise auf den Punkt.',
 	),
 );
 
@@ -89,7 +89,7 @@ $gallery_media       = array(
 $review_entries = array(
 	array(
 		'key'        => 'praezision',
-		'label'      => 'Praezision',
+		'label'      => 'Präzision',
 		'headline'   => 'Saubere Linien, sauberes Finish.',
 		'quote'      => 'Super Schnitt, super sauber, super nett!',
 		'author'     => 'Thomas',
@@ -98,7 +98,7 @@ $review_entries = array(
 	array(
 		'key'        => 'schnitt',
 		'label'      => 'Schnitt',
-		'headline'   => 'Starker Schnitt beginnt mit Zuhoeren.',
+		'headline'   => 'Starker Schnitt beginnt mit Zuhören.',
 		'quote'      => 'A great barber doesn\'t just cut hair, they understand you.',
 		'author'     => 'Noel',
 		'source_url' => $treatwell_reviews_url,
@@ -114,10 +114,13 @@ $review_entries = array(
 );
 ?>
 
-<main id="nocap-main" class="nocap-modern-home" role="main">
+<main id="nocap-main" class="nocap-modern-home" role="main" data-flag-de="<?php echo esc_url( $asset_base_url . '/german.svg' ); ?>" data-flag-en="<?php echo esc_url( $asset_base_url . '/english.svg' ); ?>">
 	<section id="home" class="nocap-hero" aria-labelledby="nocap-hero-title">
 		<div class="nocap-hero-media" data-reveal style="--reveal-delay: 0.12s;">
 			<video id="nocap-hero-video" class="nocap-hero-video" autoplay muted loop playsinline preload="auto">
+				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>" type="video/mp4">
+			</video>
+			<video class="nocap-hero-video nocap-hero-video-soft" aria-hidden="true" autoplay muted loop playsinline preload="auto">
 				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>" type="video/mp4">
 			</video>
 			<div class="nocap-hero-overlay"></div>
@@ -134,7 +137,7 @@ $review_entries = array(
 				<div class="nocap-proof" data-reveal style="--reveal-delay: 0.3s;">
 					<span>3700+ Bewertungen</span>
 					<span>Hoher Markt 3, 1010 Wien</span>
-					<span>Montag bis Samstag geoeffnet</span>
+					<span>Montag bis Samstag geöffnet</span>
 				</div>
 			</div>
 		</div>
@@ -193,7 +196,7 @@ $review_entries = array(
 			</div>
 			<div class="nocap-quote-stage" data-reveal style="--reveal-delay: 0.14s;">
 				<div class="nocap-quote-media"<?php echo $quote_media_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></div>
-				<div class="nocap-quote-caption"><span>Qualitaet ohne Theater.</span><span>Saubere Arbeit. Klares Finish.</span></div>
+				<div class="nocap-quote-caption"><span>Qualität ohne Theater.</span><span>Saubere Arbeit. Klares Finish.</span></div>
 			</div>
 		</div></div>
 	</section>
@@ -205,12 +208,12 @@ $review_entries = array(
 				<div class="nocap-story-video-caption" aria-hidden="true"><span>Hoher Markt 3</span><span>1010 Wien</span><span>NoCap Barbers</span></div>
 			</div>
 			<div class="nocap-story-copy-column">
-				<h2 id="nocap-story-title" class="nocap-section-title" data-reveal>Ueber Uns</h2>
-				<p class="nocap-section-intro nocap-story-lead" data-reveal style="--reveal-delay: 0.08s;">NoCap Barbers steht fuer praezise Arbeit, ehrliche Beratung und eine Atmosphaere, die gleichzeitig entspannt und fokussiert ist.</p>
+				<h2 id="nocap-story-title" class="nocap-section-title" data-reveal>Über Uns</h2>
+				<p class="nocap-section-intro nocap-story-lead" data-reveal style="--reveal-delay: 0.08s;">NoCap Barbers steht für präzise Arbeit, ehrliche Beratung und eine Atmosphäre, die gleichzeitig entspannt und fokussiert ist.</p>
 				<div class="nocap-story-flow nocap-story-flow-editorial">
-					<article class="nocap-story-node nocap-story-node-feature" data-reveal style="--reveal-delay: 0.14s;"><span class="nocap-story-index" aria-hidden="true"></span><div class="nocap-story-node-copy"><h3>Ein Barbershop mit Haltung</h3><p>Wir sind ein junges Team mit Energie, Blick fuers Detail und Respekt vor klassischem Handwerk.</p></div></article>
+					<article class="nocap-story-node nocap-story-node-feature" data-reveal style="--reveal-delay: 0.14s;"><span class="nocap-story-index" aria-hidden="true"></span><div class="nocap-story-node-copy"><h3>Ein Barbershop mit Haltung</h3><p>Wir sind ein junges Team mit Energie, Blick fürs Detail und Respekt vor klassischem Handwerk.</p></div></article>
 					<article class="nocap-story-node nocap-story-node-feature" data-reveal style="--reveal-delay: 0.2s;"><span class="nocap-story-index" aria-hidden="true"></span><div class="nocap-story-node-copy"><h3>Beratung, die tragbar bleibt</h3><p>Ein guter Look muss nicht nur im Shop, sondern auch im Alltag funktionieren.</p></div></article>
-					<article class="nocap-story-node nocap-story-node-feature" data-reveal style="--reveal-delay: 0.26s;"><span class="nocap-story-index" aria-hidden="true"></span><div class="nocap-story-node-copy"><h3>Service ohne Showeffekte</h3><p>Entspannte Stimmung, klare Kommunikation und ein Team, das lieber solide abliefert als sich hinter grossen Worten versteckt.</p></div></article>
+					<article class="nocap-story-node nocap-story-node-feature" data-reveal style="--reveal-delay: 0.26s;"><span class="nocap-story-index" aria-hidden="true"></span><div class="nocap-story-node-copy"><h3>Service ohne Showeffekte</h3><p>Entspannte Stimmung, klare Kommunikation und ein Team, das lieber solide abliefert als sich hinter großen Worten versteckt.</p></div></article>
 				</div>
 			</div>
 		</div></div>
@@ -219,7 +222,7 @@ $review_entries = array(
 	<section class="nocap-section nocap-meaning-section" aria-labelledby="nocap-meaning-title">
 		<div class="nocap-shell"><div class="nocap-meaning-section-grid">
 			<div class="nocap-meaning-section-title" data-reveal><h2 id="nocap-meaning-title">Was bedeutet No Cap?</h2></div>
-			<div class="nocap-meaning-section-copy" data-reveal style="--reveal-delay: 0.08s;"><p>Der Ausdruck steht fuer Ehrlichkeit. Keine Uebertreibung, keine Fassade, kein unnoetiger Laerm.</p><p>Genau so verstehen wir unseren Shop: transparent in der Beratung, konsequent in der Qualitaet und aufmerksam in jedem Detail.</p></div>
+			<div class="nocap-meaning-section-copy" data-reveal style="--reveal-delay: 0.08s;"><p>Der Ausdruck steht für Ehrlichkeit. Keine Übertreibung, keine Fassade, kein unnötiger Lärm.</p><p>Genau so verstehen wir unseren Shop: transparent in der Beratung, konsequent in der Qualität und aufmerksam in jedem Detail.</p></div>
 			<div class="nocap-meaning-section-mark" aria-hidden="true" data-reveal style="--reveal-delay: 0.14s;"><span>NO</span><span>CAP</span></div>
 		</div></div>
 	</section>
@@ -236,10 +239,10 @@ $review_entries = array(
 					</div>
 					<div class="nocap-review-proofline" aria-hidden="true"><span></span><span></span><span></span></div>
 				</div>
-				<div class="nocap-review-badge-cta"><p class="nocap-review-badge-copy">Termin direkt online sichern und den naechsten Cut bei uns buchen.</p><a class="nocap-review-booking" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">Jetzt Termin buchen</a></div>
+				<div class="nocap-review-badge-cta"><p class="nocap-review-badge-copy">Termin direkt online sichern und den nächsten Cut bei uns buchen.</p><a class="nocap-review-booking" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">Jetzt Termin buchen</a></div>
 			</aside>
 			<div class="nocap-review-content">
-				<h2 id="nocap-reviews-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.08s;">Was Kunden ueber uns sagen</h2>
+				<h2 id="nocap-reviews-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.08s;">Was Kunden über uns sagen</h2>
 				<div class="nocap-review-switch" data-reveal style="--reveal-delay: 0.26s;" role="tablist" aria-label="Bewertungsfokus">
 					<?php foreach ( $review_entries as $review_index => $review_entry ) : ?><button class="nocap-review-chip<?php echo 0 === $review_index ? ' is-active' : ''; ?>" type="button" role="tab" aria-selected="<?php echo 0 === $review_index ? 'true' : 'false'; ?>" data-review-tab="<?php echo esc_attr( $review_entry['key'] ); ?>"><?php echo esc_html( $review_entry['label'] ); ?></button><?php endforeach; ?>
 				</div>
@@ -250,12 +253,12 @@ $review_entries = array(
 		</div></div>
 	</section>
 
-	<section class="nocap-section nocap-products" aria-labelledby="nocap-products-title">
+	<section id="products" class="nocap-section nocap-products" aria-labelledby="nocap-products-title">
 		<div class="nocap-shell">
-			<div class="nocap-products-head"><h2 id="nocap-products-title" class="nocap-section-title" data-reveal>Produkte, denen wir vertrauen</h2><p class="nocap-section-intro" data-reveal style="--reveal-delay: 0.08s;">Zwei Linien, zwei Staerken: Styling und Pflege.</p></div>
+			<div class="nocap-products-head"><h2 id="nocap-products-title" class="nocap-section-title" data-reveal>Produkte, denen wir vertrauen</h2><p class="nocap-section-intro" data-reveal style="--reveal-delay: 0.08s;">Zwei Linien, zwei Stärken: Styling und Pflege.</p></div>
 			<div class="nocap-products-atlas">
-				<article class="nocap-product-feature" data-reveal style="--reveal-delay: 0.14s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_1_img ); ?>);"><span class="nocap-product-number">Styling</span></div><div class="nocap-product-copy"><p class="nocap-product-kicker">Texture + Hold</p><h3>REUZEL</h3><p>Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal fuer Pompadour, Textur oder kontrolliertes Volumen.</p><ul class="nocap-product-points" aria-label="Reuzel Highlights"><li>Clay, Pomade und Grooming Tonics</li><li>Starker Halt ohne steifes Finish</li><li>Ideal fuer strukturierte Styles</li></ul></div></article>
-				<article class="nocap-product-feature nocap-product-feature-alt" data-reveal style="--reveal-delay: 0.2s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_2_img ); ?>);"><span class="nocap-product-number">Pflege</span></div><div class="nocap-product-copy"><p class="nocap-product-kicker">Care + Finish</p><h3>1922 by J.M. Keune</h3><p>Pflege fuer Haare, Kopfhaut und Bart - entwickelt fuer saubere Routinen und lang haltbare Ergebnisse.</p><ul class="nocap-product-points" aria-label="1922 Highlights"><li>Shampoo, Scalp und Beard Care</li><li>Sauberes, alltagstaugliches Pflege-System</li><li>Fuer sensible Kopfhaut und definierte Baerte</li></ul></div></article>
+				<article class="nocap-product-feature" data-reveal style="--reveal-delay: 0.14s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_1_img ); ?>);"><span class="nocap-product-number">Styling</span></div><div class="nocap-product-copy"><p class="nocap-product-kicker">Texture + Hold</p><h3>REUZEL</h3><p>Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal für Pompadour, Textur oder kontrolliertes Volumen.</p><ul class="nocap-product-points" aria-label="Reuzel Highlights"><li>Clay, Pomade und Grooming Tonics</li><li>Starker Halt ohne steifes Finish</li><li>Ideal für strukturierte Styles</li></ul></div></article>
+				<article class="nocap-product-feature nocap-product-feature-alt" data-reveal style="--reveal-delay: 0.2s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_2_img ); ?>);"><span class="nocap-product-number">Pflege</span></div><div class="nocap-product-copy"><p class="nocap-product-kicker">Care + Finish</p><h3>1922 by J.M. Keune</h3><p>Pflege für Haare, Kopfhaut und Bart - entwickelt für saubere Routinen und lang haltbare Ergebnisse.</p><ul class="nocap-product-points" aria-label="1922 Highlights"><li>Shampoo, Scalp und Beard Care</li><li>Sauberes, alltagstaugliches Pflege-System</li><li>Für sensible Kopfhaut und definierte Bärte</li></ul></div></article>
 			</div>
 		</div>
 	</section>
@@ -284,7 +287,7 @@ $review_entries = array(
 					<article class="nocap-team-person" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.08 + ( $index * 0.08 ) ) ); ?>s;"><div class="nocap-team-photo-wrap"><?php echo wp_get_attachment_image( (int) $member['image'], 'large', false, array( 'class' => 'nocap-team-photo', 'loading' => 'lazy', 'decoding' => 'async' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><div class="nocap-team-copy"><h3><?php echo esc_html( $member['name'] ); ?></h3><p class="nocap-team-role"><?php echo esc_html( $member['role'] ); ?></p><p><?php echo esc_html( $member['bio_de'] ); ?></p></div></article>
 				<?php endforeach; ?>
 			</div>
-			<div class="nocap-booking-strip" data-reveal style="--reveal-delay: 0.24s;"><div><p class="nocap-booking-kicker">Naechster Cut</p><h3>Termin sichern, Platz nehmen, frisch rausgehen.</h3><p>Buchen Sie Ihren Wunschtermin direkt online.</p></div><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">Jetzt buchen</a></div>
+			<div class="nocap-booking-strip" data-reveal style="--reveal-delay: 0.24s;"><div><p class="nocap-booking-kicker">Nächster Cut</p><h3>Termin sichern, Platz nehmen, frisch rausgehen.</h3><p>Buchen Sie Ihren Wunschtermin direkt online.</p></div><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">Jetzt buchen</a></div>
 		</div>
 	</section>
 
@@ -293,7 +296,7 @@ $review_entries = array(
 			<div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers Location"></iframe></div>
 			<div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;">
 				<h2 id="nocap-contact-title">Kontakt</h2>
-				<ul class="nocap-hours" aria-label="Oeffnungszeiten"><li><span>Montag - Mittwoch, Freitag</span><strong>10:00 - 19:00</strong></li><li><span>Donnerstag</span><strong>10:00 - 20:00</strong></li><li><span>Samstag</span><strong>10:00 - 17:00</strong></li><li><span>Feiertage</span><strong>geschlossen</strong></li></ul>
+				<ul class="nocap-hours" aria-label="Öffnungszeiten"><li><span>Montag - Mittwoch, Freitag</span><strong>10:00 - 19:00</strong></li><li><span>Donnerstag</span><strong>10:00 - 20:00</strong></li><li><span>Samstag</span><strong>10:00 - 17:00</strong></li><li><span>Feiertage</span><strong>geschlossen</strong></li></ul>
 				<div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>">Tel.: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><span>Hoher Markt 3, 1010 Wien</span></div>
 				<div class="nocap-social" aria-label="Social links"><a href="https://www.facebook.com/NoCapBarbersVienna/" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="https://www.instagram.com/nocap.barbers_mens_grooming/" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div>
 			</div>
