@@ -7,6 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$nocap_homepage_plugin = WP_PLUGIN_DIR . '/nocap-homepage-content/nocap-homepage-content.php';
+if ( ! class_exists( 'NoCap_Homepage_Content' ) && file_exists( $nocap_homepage_plugin ) ) {
+	require_once $nocap_homepage_plugin;
+}
+
 if ( ! function_exists( 'nocap_child_version' ) ) {
 	function nocap_child_version() {
 		$theme = wp_get_theme();
@@ -54,6 +59,14 @@ if ( ! function_exists( 'nocap_child_enqueue_assets' ) ) {
 			$script_version,
 			true
 		);
+
+		if ( function_exists( 'nocap_homepage_translations' ) ) {
+			wp_add_inline_script(
+				'nocap-home-modern',
+				'window.nocapHomeTranslations = ' . wp_json_encode( nocap_homepage_translations() ) . ';',
+				'before'
+			);
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'nocap_child_enqueue_assets', 120 );
@@ -68,6 +81,83 @@ if ( ! function_exists( 'nocap_child_skip_link' ) ) {
 	}
 }
 add_action( 'nectar_hook_after_body_open', 'nocap_child_skip_link', 2 );
+
+if ( ! function_exists( 'nocap_child_instagram_url' ) ) {
+	function nocap_child_instagram_url() {
+		if ( function_exists( 'nocap_homepage_content' ) ) {
+			$content = nocap_homepage_content( 'de' );
+			if ( ! empty( $content['settings']['instagram_url'] ) ) {
+				return $content['settings']['instagram_url'];
+			}
+		}
+
+		return 'https://www.instagram.com/nocap.barbers';
+	}
+}
+
+if ( ! function_exists( 'nocap_child_normalize_instagram_links' ) ) {
+	function nocap_child_normalize_instagram_links() {
+		$instagram_url = nocap_child_instagram_url();
+		?>
+		<script>
+			(function () {
+				var instagramUrl = <?php echo wp_json_encode( esc_url_raw( $instagram_url ) ); ?>;
+				if (!instagramUrl) {
+					return;
+				}
+				document.querySelectorAll('a[href*="instagram.com"]').forEach(function (link) {
+					link.setAttribute("href", instagramUrl);
+				});
+			})();
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_footer', 'nocap_child_normalize_instagram_links', 99 );
+
+if ( ! function_exists( 'nocap_child_footer_credit_override' ) ) {
+	function nocap_child_footer_credit_override() {
+		?>
+		<script>
+			(function () {
+				var creditPattern = /(Created|Crafted) by\s+webhouse Digital/i;
+				var footer = document.querySelector("footer, #footer-outer, #copyright");
+
+				if (!footer) {
+					return;
+				}
+
+				footer.querySelectorAll("a, span, p, div, small, li").forEach(function (element) {
+					var text = element.textContent || "";
+
+					if (!creditPattern.test(text)) {
+						return;
+					}
+
+					var childHasCredit = Array.prototype.some.call(element.children, function (child) {
+						return creditPattern.test(child.textContent || "");
+					});
+
+					if (childHasCredit) {
+						return;
+					}
+
+					if (element.tagName.toLowerCase() === "a") {
+						element.href = "https://wilde.cc";
+						element.target = "_blank";
+						element.rel = "noopener";
+						element.textContent = text.replace(/(Created|Crafted) by\s+webhouse Digital/i, "Created by Timo Wilde");
+						return;
+					}
+
+					element.innerHTML = 'Website created by <a href="https://wilde.cc" target="_blank" rel="noopener">Timo Wilde</a>';
+				});
+			})();
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_footer', 'nocap_child_footer_credit_override', 100 );
 
 if ( ! function_exists( 'nocap_child_has_primary_seo_plugin' ) ) {
 	function nocap_child_has_primary_seo_plugin() {
@@ -106,7 +196,7 @@ if ( ! function_exists( 'nocap_child_seo_data' ) ) {
 			),
 			'same_as'        => array(
 				'https://www.facebook.com/NoCapBarbersVienna/',
-				'https://www.instagram.com/nocap.barbers_mens_grooming/',
+				nocap_child_instagram_url(),
 				'https://www.treatwell.at/ort/no-cap-barbers/',
 			),
 			'booking_url'    => 'https://buchung.treatwell.at/ort/412028/menue/',

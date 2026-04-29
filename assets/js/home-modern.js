@@ -201,6 +201,12 @@
     }
   };
 
+  if (window.nocapHomeTranslations) {
+    Object.keys(window.nocapHomeTranslations).forEach(function (language) {
+      i18n[language] = Object.assign(i18n[language] || {}, window.nocapHomeTranslations[language]);
+    });
+  }
+
   var getStoredLanguage = function () {
     try {
       return window.localStorage ? window.localStorage.getItem(STORAGE_KEY) : "";
@@ -333,7 +339,7 @@
       }
 
       var text = (node.textContent || "").trim().replace(/\s+/g, " ");
-      var key = translationLookup[text];
+      var key = node.getAttribute("data-nocap-i18n") || translationLookup[text];
       if (!key) {
         return;
       }

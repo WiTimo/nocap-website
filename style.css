@@ -1375,6 +1375,90 @@ Text Domain: salient-nocap-child
   background: rgba(255, 255, 255, 0.74);
 }
 
+.home.nocap-frontpage-refresh .nocap-review-score-value {
+  display: inline-block;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 500;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-score-max {
+  display: inline-block;
+  margin-left: 4px;
+  transform: translateY(-0.12em);
+  color: #3f454d;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-meta {
+  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(20, 122, 72, 0.2);
+  border-radius: 999px;
+  background: rgba(229, 247, 237, 0.92);
+  color: #12683d;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 6px 10px;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-verified-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #16864d;
+  color: #fff;
+  font-size: 0.68rem;
+  line-height: 1;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-booking {
+  justify-content: space-between;
+  gap: 12px;
+  border-color: rgba(17, 21, 29, 0.9);
+  border-radius: 999px;
+  background: #11151d;
+  box-shadow: none;
+  color: #fff;
+  padding: 12px 16px 12px 22px;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-review-booking:hover,
+.home.nocap-frontpage-refresh .nocap-review-booking:focus-visible {
+  color: #11151d;
+  background: #d7ff72;
+  transform: translateY(-2px);
+}
+
+.home.nocap-frontpage-refresh .nocap-review-booking-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
 .home.nocap-frontpage-refresh .nocap-review-actions {
   display: flex;
   flex-wrap: wrap;
