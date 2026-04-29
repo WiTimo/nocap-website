@@ -16,7 +16,7 @@ $google_reviews_url    = 'https://www.google.com/search?q=NoCap+Barbers+Wien';
 $treatwell_reviews_url = 'https://www.treatwell.at/ort/no-cap-barbers/';
 $map_embed_url         = 'https://www.google.com/maps?q=Hoher+Markt+3,+1010+Wien&output=embed';
 $asset_base_url        = get_stylesheet_directory_uri() . '/assets/images';
-$about_video_url       = get_stylesheet_directory_uri() . '/assets/video/about-us.mp4';
+$about_video_url       = get_stylesheet_directory_uri() . '/assets/video/about-nocap-barber-best-barbershop-vienna.mp4';
 $google_logo_url       = $asset_base_url . '/google.jpg';
 $treatwell_logo_url    = $asset_base_url . '/treatwell.png';
 $contact_email         = 'office@nocap-barbers.at';
@@ -139,10 +139,10 @@ $review_entries = array(
 	<section id="home" class="nocap-hero" aria-labelledby="nocap-hero-title">
 		<div class="nocap-hero-media" data-reveal style="--reveal-delay: 0.12s;">
 			<video id="nocap-hero-video" class="nocap-hero-video" autoplay muted loop playsinline preload="auto">
-				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>" type="video/mp4">
+				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/nocap-barbers-showcase-best-barber-shop-vienna.mp4' ); ?>" type="video/mp4">
 			</video>
 			<video class="nocap-hero-video nocap-hero-video-soft" aria-hidden="true" autoplay muted loop playsinline preload="auto">
-				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>" type="video/mp4">
+				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/nocap-barbers-showcase-best-barber-shop-vienna.mp4' ); ?>" type="video/mp4">
 			</video>
 			<div class="nocap-hero-overlay"></div>
 		</div>

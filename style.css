@@ -1956,21 +1956,41 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-faq {
   position: relative;
+  margin-top: clamp(34px, 6vw, 86px);
+  padding-top: clamp(74px, 10vw, 140px);
   background:
     linear-gradient(90deg, rgba(17, 19, 25, 0.08) 1px, transparent 1px) 0 0 / 44px 44px,
     linear-gradient(180deg, #f7f3eb 0%, #eee7da 100%);
+  overflow: visible;
 }
 
 .home.nocap-frontpage-refresh .nocap-faq::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background: linear-gradient(110deg, rgba(195, 154, 98, 0.18), transparent 42%);
 }
 
+.home.nocap-frontpage-refresh .nocap-faq::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(-86px, -6vw, -34px);
+  height: clamp(110px, 12vw, 176px);
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #f0ece4 0%, rgba(247, 243, 235, 0.96) 46%, rgba(247, 243, 235, 0) 100%),
+    linear-gradient(90deg, rgba(17, 19, 25, 0.065) 1px, transparent 1px) center top / 44px 44px;
+  clip-path: polygon(0 0, 100% 22%, 100% 100%, 0 78%);
+}
+
 .home.nocap-frontpage-refresh .nocap-faq-grid {
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
   gap: clamp(28px, 5vw, 76px);
