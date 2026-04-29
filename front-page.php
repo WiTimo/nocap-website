@@ -11,6 +11,7 @@ get_header();
 
 $booking_url           = 'https://buchung.treatwell.at/ort/no-cap-barbers/';
 $booking_cta           = 'https://buchung.treatwell.at/ort/412028/menue/';
+$instagram_url         = 'https://www.instagram.com/nocap.barbers';
 $google_reviews_url    = 'https://www.google.com/search?q=NoCap+Barbers+Wien';
 $treatwell_reviews_url = 'https://www.treatwell.at/ort/no-cap-barbers/';
 $map_embed_url         = 'https://www.google.com/maps?q=Hoher+Markt+3,+1010+Wien&output=embed';
@@ -38,18 +39,21 @@ $service_items = array(
 		'image'  => 6009,
 		'title'  => 'Traditional Cut',
 		'text'   => 'Der traditionelle Haarschnitt',
+		'alt'    => 'Traditional Cut bei NoCap Barbers in Wien 1010',
 	),
 	array(
 		'mark'   => 'Fade',
 		'image'  => 6007,
 		'title'  => 'Fade Cut',
 		'text'   => 'Mit einem modernen Übergang',
+		'alt'    => 'Fade Cut mit sauberem Übergang im Barber Shop Wien',
 	),
 	array(
 		'mark'   => 'Bart',
 		'image'  => 6008,
 		'title'  => 'Beard Service',
 		'text'   => 'Trimmen & Stylen nach Wunsch',
+		'alt'    => 'Bart trimmen und stylen bei NoCap Barbers Wien',
 	),
 );
 
@@ -58,32 +62,49 @@ $team_members = array(
 		'name'   => 'Dave',
 		'role'   => 'Barber, Geschäftsführer',
 		'image'  => 6121,
+		'alt'    => 'Dave, Barber und Geschäftsführer bei NoCap Barbers Wien',
 		'bio_de' => 'Dave war von Beginn an Teil von NoCap Barbers. Mit kreativen Ideen, sauberer Technik und echtem Servicegedanken hat er das Konzept mit aufgebaut und führt heute das Team mit klarer Qualitätsorientierung.',
 	),
 	array(
 		'name'   => 'Steph',
 		'role'   => 'Barber',
 		'image'  => 6122,
+		'alt'    => 'Steph, Barber bei NoCap Barbers am Hohen Markt Wien',
 		'bio_de' => 'Steph verbindet sauberes Handwerk mit internationaler Erfahrung. Nach Stationen in verschiedenen Barbershops und einer Zeit in Kanada bringt er moderne und klassische Styles präzise auf den Punkt.',
 	),
 );
 
-$gallery_video_1_url = get_stylesheet_directory_uri() . '/assets/video/galery_1.mp4';
-$gallery_video_2_url = get_stylesheet_directory_uri() . '/assets/video/galery_2.mp4';
+$gallery_video_1_url = get_stylesheet_directory_uri() . '/assets/video/gallery-barbershop-cuts-1.mp4';
+$gallery_video_2_url = get_stylesheet_directory_uri() . '/assets/video/gallery-barbershop-cuts-2.mp4';
 $gallery_media       = array(
-	array( 'type' => 'image', 'id' => 6142, 'class' => 'nocap-gallery-item-xl' ),
-	array( 'type' => 'video', 'src' => $gallery_video_1_url, 'class' => 'nocap-gallery-item-video nocap-gallery-item-video-left' ),
-	array( 'type' => 'image', 'id' => 6143, 'class' => 'nocap-gallery-item-tall' ),
-	array( 'type' => 'image', 'id' => 6144, 'class' => 'nocap-gallery-item-wide' ),
-	array( 'type' => 'image', 'id' => 6145, 'class' => 'nocap-gallery-item-medium' ),
-	array( 'type' => 'image', 'id' => 6146, 'class' => 'nocap-gallery-item-tall' ),
-	array( 'type' => 'video', 'src' => $gallery_video_2_url, 'class' => 'nocap-gallery-item-video nocap-gallery-item-video-right' ),
-	array( 'type' => 'image', 'id' => 6147, 'class' => 'nocap-gallery-item-medium' ),
-	array( 'type' => 'image', 'id' => 6148, 'class' => 'nocap-gallery-item-wide' ),
-	array( 'type' => 'image', 'id' => 6149, 'class' => 'nocap-gallery-item-small' ),
-	array( 'type' => 'image', 'id' => 6150, 'class' => 'nocap-gallery-item-tall' ),
-	array( 'type' => 'image', 'id' => 6151, 'class' => 'nocap-gallery-item-medium' ),
-	array( 'type' => 'image', 'id' => 6152, 'class' => 'nocap-gallery-item-wide' ),
+	array( 'type' => 'image', 'id' => 6142, 'class' => 'nocap-gallery-item-xl', 'alt' => 'NoCap Barbers Shop in Wien mit modernem Barber Interior' ),
+	array( 'type' => 'video', 'src' => $gallery_video_1_url, 'class' => 'nocap-gallery-item-video nocap-gallery-item-video-left', 'label' => 'Video aus dem NoCap Barbershop in Wien' ),
+	array( 'type' => 'image', 'id' => 6143, 'class' => 'nocap-gallery-item-tall', 'alt' => 'Barber Arbeit bei NoCap Barbers am Hohen Markt' ),
+	array( 'type' => 'image', 'id' => 6144, 'class' => 'nocap-gallery-item-wide', 'alt' => 'Herrenhaarschnitt und Styling im Barber Shop Wien' ),
+	array( 'type' => 'image', 'id' => 6145, 'class' => 'nocap-gallery-item-medium', 'alt' => 'Detailaufnahme sauberer Barber Cut in 1010 Wien' ),
+	array( 'type' => 'image', 'id' => 6146, 'class' => 'nocap-gallery-item-tall', 'alt' => 'Fade Cut Ergebnis bei NoCap Barbers' ),
+	array( 'type' => 'video', 'src' => $gallery_video_2_url, 'class' => 'nocap-gallery-item-video nocap-gallery-item-video-right', 'label' => 'Video von Haarschnitt und Barber Service' ),
+	array( 'type' => 'image', 'id' => 6147, 'class' => 'nocap-gallery-item-medium', 'alt' => 'Barbershop Stimmung bei NoCap Barbers Wien' ),
+	array( 'type' => 'image', 'id' => 6148, 'class' => 'nocap-gallery-item-wide', 'alt' => 'Professioneller Herrenhaarschnitt in Wien Zentrum' ),
+	array( 'type' => 'image', 'id' => 6149, 'class' => 'nocap-gallery-item-small', 'alt' => 'Barber Tools und Styling Details' ),
+	array( 'type' => 'image', 'id' => 6150, 'class' => 'nocap-gallery-item-tall', 'alt' => 'NoCap Barbers Cut und Bartpflege' ),
+	array( 'type' => 'image', 'id' => 6151, 'class' => 'nocap-gallery-item-medium', 'alt' => 'Moderner Barber Service in 1010 Wien' ),
+	array( 'type' => 'image', 'id' => 6152, 'class' => 'nocap-gallery-item-wide', 'alt' => 'NoCap Barbers Galerie mit Shop und Schnitten' ),
+);
+
+$faq_items = array(
+	array(
+		'question' => 'Wo ist NoCap Barbers in Wien?',
+		'answer'   => 'Sie finden uns am Hohen Markt 3 im 1. Bezirk, direkt im Zentrum von Wien.',
+	),
+	array(
+		'question' => 'Kann ich online einen Termin buchen?',
+		'answer'   => 'Ja. Termine für Haarschnitt, Fade Cut und Bartservice können direkt online über Treatwell gebucht werden.',
+	),
+	array(
+		'question' => 'Welche Services bietet NoCap Barbers an?',
+		'answer'   => 'Unser Fokus liegt auf Traditional Cuts, Fade Cuts, Bartpflege, Styling und ehrlicher Beratung für Herren.',
+	),
 );
 
 $review_entries = array(
@@ -165,6 +186,7 @@ $review_entries = array(
 										'class'    => 'nocap-service-image',
 										'loading'  => 'lazy',
 										'decoding' => 'async',
+										'alt'      => $service_item['alt'],
 									)
 								); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?>
@@ -271,10 +293,20 @@ $review_entries = array(
 					<h2 id="nocap-gallery-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;">Blick in Shop, Schnitte und Stimmung.</h2>
 				</div>
 			</div>
-			<div class="nocap-gallery-wall">
+			<div class="nocap-gallery-wall" aria-label="NoCap Barbers Galerie">
 				<?php foreach ( $gallery_media as $gallery_index => $gallery_item ) : ?>
-					<figure class="<?php echo esc_attr( 'nocap-gallery-item ' . $gallery_item['class'] ); ?>" data-reveal data-reveal-style="<?php echo esc_attr( 0 === $gallery_index % 3 ? 'scale' : ( 1 === $gallery_index % 3 ? 'tilt' : 'lift' ) ); ?>" style="--reveal-delay: <?php echo esc_attr( (string) ( ( $gallery_index % 5 ) * 0.045 ) ); ?>s;"><?php if ( 'video' === $gallery_item['type'] ) : ?><video class="nocap-gallery-video" autoplay muted loop playsinline preload="metadata"><source src="<?php echo esc_url( $gallery_item['src'] ); ?>" type="video/mp4"></video><?php else : ?><?php echo wp_get_attachment_image( (int) $gallery_item['id'], 'large', false, array( 'class' => 'nocap-gallery-image', 'loading' => 'lazy', 'decoding' => 'async' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></figure>
+					<figure class="<?php echo esc_attr( 'nocap-gallery-item ' . $gallery_item['class'] ); ?>" data-reveal data-reveal-style="<?php echo esc_attr( 0 === $gallery_index % 3 ? 'scale' : ( 1 === $gallery_index % 3 ? 'tilt' : 'lift' ) ); ?>" style="--reveal-delay: <?php echo esc_attr( (string) ( ( $gallery_index % 5 ) * 0.045 ) ); ?>s;"><?php if ( 'video' === $gallery_item['type'] ) : ?><video class="nocap-gallery-video" aria-label="<?php echo esc_attr( $gallery_item['label'] ); ?>" autoplay muted loop playsinline preload="metadata"><source src="<?php echo esc_url( $gallery_item['src'] ); ?>" type="video/mp4"></video><?php else : ?><?php echo wp_get_attachment_image( (int) $gallery_item['id'], 'large', false, array( 'class' => 'nocap-gallery-image', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => $gallery_item['alt'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></figure>
 				<?php endforeach; ?>
+			</div>
+			<div class="nocap-gallery-cta-row" data-reveal style="--reveal-delay: 0.12s;" aria-label="Galerie Aktionen">
+				<a class="nocap-gallery-cta nocap-gallery-cta-instagram" href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener">
+					<span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span>
+					<span class="nocap-gallery-cta-copy"><span>Mehr Cuts auf Instagram</span><strong>@nocap.barbers</strong></span>
+				</a>
+				<a class="nocap-gallery-cta nocap-gallery-cta-booking" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">
+					<span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 2h2v2h6V2h2v2h2.5A2.5 2.5 0 0 1 22 6.5v12A2.5 2.5 0 0 1 19.5 21h-15A2.5 2.5 0 0 1 2 18.5v-12A2.5 2.5 0 0 1 4.5 4H7V2Zm12.5 8h-15v8.5c0 .28.22.5.5.5h14c.28 0 .5-.22.5-.5V10ZM5 6c-.28 0-.5.22-.5.5V8h15V6.5c0-.28-.22-.5-.5-.5H5Zm3 7h3v3H8v-3Z" fill="currentColor"/></svg></span>
+					<span class="nocap-gallery-cta-copy"><span>Dein nächster Termin</span><strong>Jetzt online buchen</strong></span>
+				</a>
 			</div>
 		</div>
 	</section>
@@ -284,21 +316,40 @@ $review_entries = array(
 			<div class="nocap-team-head"><h2 id="nocap-team-title" class="nocap-section-title" data-reveal>Team</h2></div>
 			<div class="nocap-team-roster">
 				<?php foreach ( $team_members as $index => $member ) : ?>
-					<article class="nocap-team-person" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.08 + ( $index * 0.08 ) ) ); ?>s;"><div class="nocap-team-photo-wrap"><?php echo wp_get_attachment_image( (int) $member['image'], 'large', false, array( 'class' => 'nocap-team-photo', 'loading' => 'lazy', 'decoding' => 'async' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><div class="nocap-team-copy"><h3><?php echo esc_html( $member['name'] ); ?></h3><p class="nocap-team-role"><?php echo esc_html( $member['role'] ); ?></p><p><?php echo esc_html( $member['bio_de'] ); ?></p></div></article>
+					<article class="nocap-team-person" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.08 + ( $index * 0.08 ) ) ); ?>s;"><div class="nocap-team-photo-wrap"><?php echo wp_get_attachment_image( (int) $member['image'], 'large', false, array( 'class' => 'nocap-team-photo', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => $member['alt'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><div class="nocap-team-copy"><h3><?php echo esc_html( $member['name'] ); ?></h3><p class="nocap-team-role"><?php echo esc_html( $member['role'] ); ?></p><p><?php echo esc_html( $member['bio_de'] ); ?></p></div></article>
 				<?php endforeach; ?>
 			</div>
 			<div class="nocap-booking-strip" data-reveal style="--reveal-delay: 0.24s;"><div><p class="nocap-booking-kicker">Nächster Cut</p><h3>Termin sichern, Platz nehmen, frisch rausgehen.</h3><p>Buchen Sie Ihren Wunschtermin direkt online.</p></div><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener">Jetzt buchen</a></div>
 		</div>
 	</section>
 
+	<section id="faq" class="nocap-section nocap-faq" aria-labelledby="nocap-faq-title">
+		<div class="nocap-shell">
+			<div class="nocap-faq-grid">
+				<div class="nocap-faq-heading">
+					<p class="nocap-kicker nocap-kicker-dark" data-reveal>FAQ</p>
+					<h2 id="nocap-faq-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;">Barber Shop Wien: kurz beantwortet.</h2>
+				</div>
+				<div class="nocap-faq-list">
+					<?php foreach ( $faq_items as $faq_index => $faq_item ) : ?>
+						<article class="nocap-faq-item" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.1 + ( $faq_index * 0.06 ) ) ); ?>s;">
+							<h3><?php echo esc_html( $faq_item['question'] ); ?></h3>
+							<p><?php echo esc_html( $faq_item['answer'] ); ?></p>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section id="kontakt" class="nocap-section nocap-contact" aria-labelledby="nocap-contact-title">
 		<div class="nocap-shell"><div class="nocap-contact-grid">
-			<div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers Location"></iframe></div>
+			<div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers am Hohen Markt 3 in 1010 Wien"></iframe></div>
 			<div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;">
 				<h2 id="nocap-contact-title">Kontakt</h2>
 				<ul class="nocap-hours" aria-label="Öffnungszeiten"><li><span>Montag - Mittwoch, Freitag</span><strong>10:00 - 19:00</strong></li><li><span>Donnerstag</span><strong>10:00 - 20:00</strong></li><li><span>Samstag</span><strong>10:00 - 17:00</strong></li><li><span>Feiertage</span><strong>geschlossen</strong></li></ul>
 				<div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>">Tel.: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><span>Hoher Markt 3, 1010 Wien</span></div>
-				<div class="nocap-social" aria-label="Social links"><a href="https://www.facebook.com/NoCapBarbersVienna/" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="https://www.instagram.com/nocap.barbers_mens_grooming/" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div>
+				<div class="nocap-social" aria-label="Social links"><a href="https://www.facebook.com/NoCapBarbersVienna/" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div>
 			</div>
 		</div></div>
 	</section>

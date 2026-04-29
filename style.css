@@ -1673,6 +1673,116 @@ Text Domain: salient-nocap-child
   mix-blend-mode: soft-light;
 }
 
+.home.nocap-frontpage-refresh .nocap-gallery-cta-row {
+  position: relative;
+  width: min(1180px, 100%);
+  margin: clamp(28px, 4vw, 52px) auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 20px);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta {
+  position: relative;
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(14px, 2vw, 22px);
+  padding: clamp(18px, 2.6vw, 30px);
+  color: #111319;
+  text-decoration: none;
+  border: 1px solid rgba(17, 19, 23, 0.18);
+  overflow: hidden;
+  box-shadow: none;
+  isolation: isolate;
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 18px);
+  opacity: 0.72;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta:hover,
+.home.nocap-frontpage-refresh .nocap-gallery-cta:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(17, 19, 23, 0.42);
+  color: #111319;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-instagram {
+  background:
+    linear-gradient(135deg, rgba(245, 198, 89, 0.74), rgba(230, 55, 121, 0.62) 50%, rgba(93, 54, 194, 0.56)),
+    #f3eee5;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-booking {
+  background:
+    linear-gradient(135deg, rgba(17, 19, 25, 0.96), rgba(58, 47, 31, 0.9)),
+    #111319;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-booking:hover,
+.home.nocap-frontpage-refresh .nocap-gallery-cta-booking:focus-visible {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-copy span {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-copy strong {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1.45rem, 2.5vw, 2.2rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-cta-arrow {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-left: 1px solid currentColor;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
 .home.nocap-frontpage-refresh .nocap-team-roster {
   position: relative;
   margin-top: clamp(32px, 4vw, 54px);
@@ -1844,6 +1954,63 @@ Text Domain: salient-nocap-child
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
+.home.nocap-frontpage-refresh .nocap-faq {
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(17, 19, 25, 0.08) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(180deg, #f7f3eb 0%, #eee7da 100%);
+}
+
+.home.nocap-frontpage-refresh .nocap-faq::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, rgba(195, 154, 98, 0.18), transparent 42%);
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(28px, 5vw, 76px);
+  align-items: start;
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-heading {
+  position: sticky;
+  top: 120px;
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-list {
+  display: grid;
+  gap: 0;
+  border-top: 2px solid #111319;
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-item {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.48fr) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 36px);
+  padding: clamp(20px, 3.2vw, 36px) 0;
+  border-bottom: 1px solid rgba(17, 19, 25, 0.22);
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-item h3 {
+  margin: 0;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 1.55vw, 1.28rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.home.nocap-frontpage-refresh .nocap-faq-item p {
+  margin: 0;
+  color: #3d4148;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
+  line-height: 1.7;
+}
+
 .home.nocap-frontpage-refresh .nocap-contact {
   background: linear-gradient(180deg, #111319 0%, #171a21 100%);
   color: #ffffff;
@@ -1860,7 +2027,8 @@ Text Domain: salient-nocap-child
   border-radius: var(--nc-radius-md);
   overflow: hidden;
   min-height: 460px;
-  box-shadow: var(--nc-shadow-lg);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .home.nocap-frontpage-refresh .nocap-map iframe {
@@ -2052,6 +2220,7 @@ Text Domain: salient-nocap-child
 
   .home.nocap-frontpage-refresh .nocap-product-lab,
   .home.nocap-frontpage-refresh .nocap-review-layout,
+  .home.nocap-frontpage-refresh .nocap-faq-grid,
   .home.nocap-frontpage-refresh .nocap-contact-grid,
   .home.nocap-frontpage-refresh .nocap-quote-grid,
   .home.nocap-frontpage-refresh .nocap-story-grid,
@@ -2121,6 +2290,11 @@ Text Domain: salient-nocap-child
     min-height: 46vh;
   }
 
+  .home.nocap-frontpage-refresh .nocap-faq-heading {
+    position: relative;
+    top: auto;
+  }
+
   .home.nocap-frontpage-refresh .nocap-services-cta {
     position: relative;
     top: auto;
@@ -2143,6 +2317,10 @@ Text Domain: salient-nocap-child
   .home.nocap-frontpage-refresh .nocap-gallery-item-video {
     width: 100%;
     aspect-ratio: 0.88;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-cta-row {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2255,6 +2433,11 @@ Text Domain: salient-nocap-child
     align-items: flex-start;
   }
 
+  .home.nocap-frontpage-refresh .nocap-faq-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
   .home.nocap-frontpage-refresh .nocap-product-stage {
     min-height: 390px;
   }
@@ -2296,6 +2479,15 @@ Text Domain: salient-nocap-child
   .home.nocap-frontpage-refresh .nocap-gallery-item-video-left,
   .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
     transform: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-cta {
+    min-height: 118px;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-cta-arrow {
+    display: none;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-pull {
