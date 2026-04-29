@@ -405,9 +405,7 @@ Text Domain: salient-nocap-child
   margin-top: 0.72rem;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.96) 0 18%, rgba(255, 255, 255, 0) 19%),
     linear-gradient(180deg, #111319 0%, #323844 100%);
-  box-shadow: 0 0 0 7px rgba(17, 19, 23, 0.06);
   flex: 0 0 auto;
   color: transparent;
   overflow: hidden;
@@ -603,9 +601,7 @@ Text Domain: salient-nocap-child
   border-radius: 50%;
   border: 1px solid rgba(17, 19, 23, 0.2);
   background:
-    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.92) 0 18%, rgba(255, 255, 255, 0) 19%),
     linear-gradient(180deg, #c39a62 0%, #a87d42 100%);
-  box-shadow: 0 0 0 8px rgba(195, 154, 98, 0.08);
   flex: 0 0 auto;
 }
 
@@ -1448,22 +1444,23 @@ Text Domain: salient-nocap-child
   width: min(1380px, calc(100vw - 1rem));
   margin: clamp(30px, 4vw, 52px) 0 0 50%;
   transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-rows: clamp(72px, 8vw, 118px);
-  grid-auto-flow: dense;
-  gap: clamp(8px, 1vw, 14px);
-  align-items: stretch;
+  columns: 4 250px;
+  column-gap: clamp(8px, 1vw, 14px);
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item {
   position: relative;
+  display: inline-block;
+  width: 100%;
   margin: 0;
+  margin-bottom: clamp(8px, 1vw, 14px);
   min-height: 0;
   overflow: hidden;
   background: #151923;
   border: 1px solid rgba(17, 19, 23, 0.12);
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  break-inside: avoid;
+  contain: layout paint;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item:nth-child(4n + 2) {
@@ -1471,48 +1468,40 @@ Text Domain: salient-nocap-child
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-xl {
-  grid-column: span 5;
-  grid-row: span 5;
+  aspect-ratio: 1.12;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-wide {
-  grid-column: span 4;
-  grid-row: span 3;
+  aspect-ratio: 1.62;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-tall {
-  grid-column: span 3;
-  grid-row: span 5;
+  aspect-ratio: 0.72;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-medium {
-  grid-column: span 3;
-  grid-row: span 3;
+  aspect-ratio: 1;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-small {
-  grid-column: span 2;
-  grid-row: span 3;
+  aspect-ratio: 1.18;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
-  grid-column: span 2;
-  grid-row: span 4;
+  aspect-ratio: 0.82;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-video {
-  grid-column: span 5;
-  grid-row: span 5;
+  width: 100%;
+  aspect-ratio: 0.86;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-video-left {
-  grid-row: span 6;
-  transform: translateY(18px);
+  transform: none;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
-  grid-row: span 5;
-  transform: translateY(42px);
+  transform: none;
 }
 
 .home.nocap-frontpage-refresh .nocap-gallery-item-pull {
@@ -1533,6 +1522,15 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-gallery-video {
   filter: saturate(0.96) contrast(1.02);
+}
+
+.home.nocap-frontpage-refresh .nocap-gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 28%, transparent 72%, rgba(0, 0, 0, 0.18));
+  mix-blend-mode: soft-light;
 }
 
 .home.nocap-frontpage-refresh .nocap-team-roster {
@@ -1822,20 +1820,65 @@ Text Domain: salient-nocap-child
   background: var(--nc-accent-strong);
 }
 
-.home.nocap-frontpage-refresh [data-reveal] {
+.home.nocap-frontpage-refresh .nocap-modern-home:not(.is-reveal-ready) [data-reveal] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.72s ease, transform 0.72s ease;
+  filter: blur(8px);
+  transition: opacity 0.48s ease, transform 0.48s ease, clip-path 0.54s cubic-bezier(0.22, 1, 0.36, 1), filter 0.48s ease;
   transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform, clip-path, filter;
 }
 
-.home.nocap-frontpage-refresh [data-reveal].is-visible {
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="hero"] {
+  transform: translateY(36px) scale(1.015);
+  filter: blur(12px) saturate(0.92);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="clip"] {
+  transform: translateY(20px);
+  clip-path: inset(0 100% 0 0);
+  filter: blur(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="tilt"] {
+  transform: translateY(34px) rotate(-1.8deg);
+  transform-origin: 25% 80%;
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="slide-left"] {
+  transform: translateX(-34px);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="scale"] {
+  transform: translateY(24px) scale(0.96);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="lift"] {
+  transform: translateY(42px);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
-.home.nocap-frontpage-refresh .nocap-hero [data-reveal] {
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready .nocap-hero [data-reveal] {
   transform: translateY(36px);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready [data-reveal-style="clip"].is-visible {
+  clip-path: inset(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-modern-home.is-reveal-ready .nocap-hero [data-reveal].is-visible {
+  transform: translateY(0);
 }
 
 .home.nocap-frontpage-refresh.nocap-reduced-motion [data-reveal] {
@@ -1927,38 +1970,12 @@ Text Domain: salient-nocap-child
 
   .home.nocap-frontpage-refresh .nocap-gallery-wall {
     width: calc(100vw - 1rem);
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-auto-rows: clamp(70px, 11vw, 108px);
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-xl,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-wide {
-    grid-column: span 4;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-tall,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-medium {
-    grid-column: span 3;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-small,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
-    grid-column: span 2;
+    columns: 3 220px;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-video {
-    grid-column: span 4;
-    grid-row: span 5;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-video-left {
-    grid-row: span 6;
-    transform: translateY(12px);
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
-    grid-row: span 5;
-    transform: translateY(28px);
+    width: 100%;
+    aspect-ratio: 0.88;
   }
 }
 
@@ -2045,43 +2062,27 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-wall {
-    width: calc(100vw + 44px);
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: 86px;
-    gap: 8px;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-xl,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-wide,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-tall,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-medium {
-    grid-column: span 2;
-    grid-row: span 3;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-gallery-item-small,
-  .home.nocap-frontpage-refresh .nocap-gallery-item-portrait {
-    grid-column: span 2;
-    grid-row: span 2;
+    width: calc(100vw - 1rem);
+    columns: 2 150px;
+    column-gap: 8px;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-video {
-    grid-column: span 2;
-    grid-row: span 3;
+    width: 100%;
+    aspect-ratio: 0.9;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-video-left,
   .home.nocap-frontpage-refresh .nocap-gallery-item-video-right {
     transform: none;
-    grid-row: span 3;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-pull {
-    transform: translateX(-14px);
+    transform: none;
   }
 
   .home.nocap-frontpage-refresh .nocap-gallery-item-push {
-    transform: translateY(16px);
+    transform: none;
   }
 
   .home.nocap-frontpage-refresh .nocap-team-person,

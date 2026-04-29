@@ -134,6 +134,40 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var revealNodes = document.querySelectorAll("[data-reveal]");
+  var revealStyles = ["lift", "slide-left", "tilt", "scale"];
+
+  home.classList.add("is-reveal-ready");
+
+  revealNodes.forEach(function (node, index) {
+    var delay = node.style.getPropertyValue("--reveal-delay");
+    if (delay && delay.indexOf("s") !== -1) {
+      var delaySeconds = parseFloat(delay);
+      if (!Number.isNaN(delaySeconds)) {
+        node.style.setProperty("--reveal-delay", Math.min(delaySeconds * 0.65, 0.22).toFixed(3) + "s");
+      }
+    }
+
+    if (node.hasAttribute("data-reveal-style")) {
+      return;
+    }
+
+    if (node.closest(".nocap-hero")) {
+      node.setAttribute("data-reveal-style", "hero");
+      return;
+    }
+
+    if (node.matches(".nocap-section-title, h2, h3")) {
+      node.setAttribute("data-reveal-style", "slide-left");
+      return;
+    }
+
+    if (node.querySelector("img, video, iframe") || node.matches(".nocap-map, .nocap-quote-stage, .nocap-product-media")) {
+      node.setAttribute("data-reveal-style", index % 2 ? "tilt" : "scale");
+      return;
+    }
+
+    node.setAttribute("data-reveal-style", revealStyles[index % revealStyles.length]);
+  });
 
   if (reduceMotion || typeof IntersectionObserver === "undefined") {
     document.body.classList.add("nocap-reduced-motion");
@@ -152,8 +186,8 @@
         });
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -9% 0px"
+        threshold: 0.08,
+        rootMargin: "0px 0px -4% 0px"
       }
     );
 
@@ -165,41 +199,6 @@
   var heroMedia = document.querySelector(".nocap-hero-media");
   if (!heroMedia) {
     return;
-  }
-
-  var heroVideo = document.querySelector("#nocap-hero-video");
-  if (heroVideo) {
-    var heroSource = heroVideo.querySelector("source");
-    var desktopVideo = heroVideo.getAttribute("data-src-desktop");
-    var mobileVideo = heroVideo.getAttribute("data-src-mobile");
-    var currentMode = null;
-
-    var updateHeroVideoSource = function () {
-      var useMobile = window.innerWidth <= 900;
-      var desiredSrc = useMobile ? mobileVideo : desktopVideo;
-      var mode = useMobile ? "mobile" : "desktop";
-
-      if (currentMode === mode || !heroSource || !desiredSrc) {
-        return;
-      }
-
-      currentMode = mode;
-      heroSource.setAttribute("src", desiredSrc);
-      heroVideo.load();
-    };
-
-    var resizeTimer = null;
-    var onResizeVideo = function () {
-      if (resizeTimer) {
-        window.clearTimeout(resizeTimer);
-      }
-      resizeTimer = window.setTimeout(function () {
-        updateHeroVideoSource();
-      }, 200);
-    };
-
-    updateHeroVideoSource();
-    window.addEventListener("resize", onResizeVideo);
   }
 
   var ticking = false;

@@ -117,9 +117,7 @@ $review_entries = array(
 <main id="nocap-main" class="nocap-modern-home" role="main">
 	<section id="home" class="nocap-hero" aria-labelledby="nocap-hero-title">
 		<div class="nocap-hero-media" data-reveal style="--reveal-delay: 0.12s;">
-			<video id="nocap-hero-video" class="nocap-hero-video" autoplay muted loop playsinline preload="auto"
-				data-src-desktop="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>"
-				data-src-mobile="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg-mobile.mp4' ); ?>">
+			<video id="nocap-hero-video" class="nocap-hero-video" autoplay muted loop playsinline preload="auto">
 				<source src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/video/hero-bg.mp4' ); ?>" type="video/mp4">
 			</video>
 			<div class="nocap-hero-overlay"></div>
@@ -242,7 +240,6 @@ $review_entries = array(
 			</aside>
 			<div class="nocap-review-content">
 				<h2 id="nocap-reviews-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.08s;">Was Kunden ueber uns sagen</h2>
-				<p class="nocap-section-intro" data-reveal style="--reveal-delay: 0.14s;">Kurz, echt und nachvollziehbar: jede gezeigte Stimme basiert auf einer oeffentlich sichtbaren Treatwell-Bewertung.</p>
 				<div class="nocap-review-switch" data-reveal style="--reveal-delay: 0.26s;" role="tablist" aria-label="Bewertungsfokus">
 					<?php foreach ( $review_entries as $review_index => $review_entry ) : ?><button class="nocap-review-chip<?php echo 0 === $review_index ? ' is-active' : ''; ?>" type="button" role="tab" aria-selected="<?php echo 0 === $review_index ? 'true' : 'false'; ?>" data-review-tab="<?php echo esc_attr( $review_entry['key'] ); ?>"><?php echo esc_html( $review_entry['label'] ); ?></button><?php endforeach; ?>
 				</div>
@@ -265,9 +262,15 @@ $review_entries = array(
 
 	<section id="gallerie" class="nocap-section" aria-labelledby="nocap-gallery-title">
 		<div class="nocap-shell">
+			<div class="nocap-gallery-head">
+				<div>
+					<p class="nocap-kicker nocap-kicker-dark" data-reveal>Galerie</p>
+					<h2 id="nocap-gallery-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;">Blick in Shop, Schnitte und Stimmung.</h2>
+				</div>
+			</div>
 			<div class="nocap-gallery-wall">
-				<?php foreach ( $gallery_media as $gallery_item ) : ?>
-					<figure class="<?php echo esc_attr( 'nocap-gallery-item ' . $gallery_item['class'] ); ?>"><?php if ( 'video' === $gallery_item['type'] ) : ?><video class="nocap-gallery-video" autoplay muted loop playsinline preload="metadata"><source src="<?php echo esc_url( $gallery_item['src'] ); ?>" type="video/mp4"></video><?php else : ?><?php echo wp_get_attachment_image( (int) $gallery_item['id'], 'large', false, array( 'class' => 'nocap-gallery-image', 'loading' => 'lazy', 'decoding' => 'async' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></figure>
+				<?php foreach ( $gallery_media as $gallery_index => $gallery_item ) : ?>
+					<figure class="<?php echo esc_attr( 'nocap-gallery-item ' . $gallery_item['class'] ); ?>" data-reveal data-reveal-style="<?php echo esc_attr( 0 === $gallery_index % 3 ? 'scale' : ( 1 === $gallery_index % 3 ? 'tilt' : 'lift' ) ); ?>" style="--reveal-delay: <?php echo esc_attr( (string) ( ( $gallery_index % 5 ) * 0.045 ) ); ?>s;"><?php if ( 'video' === $gallery_item['type'] ) : ?><video class="nocap-gallery-video" autoplay muted loop playsinline preload="metadata"><source src="<?php echo esc_url( $gallery_item['src'] ); ?>" type="video/mp4"></video><?php else : ?><?php echo wp_get_attachment_image( (int) $gallery_item['id'], 'large', false, array( 'class' => 'nocap-gallery-image', 'loading' => 'lazy', 'decoding' => 'async' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></figure>
 				<?php endforeach; ?>
 			</div>
 		</div>
