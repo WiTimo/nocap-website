@@ -71,6 +71,161 @@ if ( ! function_exists( 'nocap_child_enqueue_assets' ) ) {
 }
 add_action( 'wp_enqueue_scripts', 'nocap_child_enqueue_assets', 120 );
 
+if ( ! function_exists( 'nocap_child_update_homepage_cta_text' ) ) {
+	function nocap_child_update_homepage_cta_text() {
+		$content = get_option( 'nocap_homepage_content', array() );
+
+		if ( ! is_array( $content ) ) {
+			$content = array();
+		}
+
+		if ( ! isset( $content['hero'] ) || ! is_array( $content['hero'] ) ) {
+			$content['hero'] = array();
+		}
+
+		$current = isset( $content['hero']['primary_cta'] ) && is_array( $content['hero']['primary_cta'] ) ? $content['hero']['primary_cta'] : array();
+		$next    = array(
+			'de' => isset( $current['de'] ) && ! in_array( $current['de'], array( '', 'Online Booking' ), true ) ? $current['de'] : 'Jetzt Termin sichern',
+			'en' => isset( $current['en'] ) && ! in_array( $current['en'], array( '', 'Online Booking' ), true ) ? $current['en'] : 'Book your appointment',
+		);
+
+		if ( $next !== $current ) {
+			$content['hero']['primary_cta'] = $next;
+			update_option( 'nocap_homepage_content', $content );
+		}
+	}
+}
+add_action( 'init', 'nocap_child_update_homepage_cta_text', 20 );
+
+if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
+	function nocap_child_homepage_extension_defaults() {
+		return array(
+			'hero_reviews' => array(
+				'eyebrow'        => array( 'de' => 'Bewertet auf Google & Treatwell', 'en' => 'Rated on Google & Treatwell' ),
+				'count'          => array( 'de' => '3700+', 'en' => '3700+' ),
+				'label'          => array( 'de' => 'Bewertungen', 'en' => 'reviews' ),
+				'score'          => array( 'de' => '4.9/5 Durchschnitt', 'en' => '4.9/5 average' ),
+				'treatwell_meta' => array( 'de' => '3000+ Treatwell', 'en' => '3000+ Treatwell' ),
+				'google_meta'    => array( 'de' => '700+ Google', 'en' => '700+ Google' ),
+			),
+			'hero_news'    => array(
+				'kicker'  => array( 'de' => 'Neu in 1010 Wien', 'en' => 'New in 1010 Vienna' ),
+				'title'   => array( 'de' => 'Zweiter Shop kommt', 'en' => 'Second shop coming' ),
+				'text'    => array( 'de' => 'Wir eröffnen bald am Bauernmarkt 10, 1010 Wien.', 'en' => 'We are opening soon at Bauernmarkt 10, 1010 Vienna.' ),
+				'address' => array( 'de' => 'Bauernmarkt 10, 1010 Wien', 'en' => 'Bauernmarkt 10, 1010 Vienna' ),
+			),
+		);
+	}
+}
+
+if ( ! function_exists( 'nocap_child_localize_extension_defaults' ) ) {
+	function nocap_child_localize_extension_defaults( $lang = 'de' ) {
+		$defaults = nocap_child_homepage_extension_defaults();
+
+		if ( class_exists( 'NoCap_Homepage_Content' ) ) {
+			return NoCap_Homepage_Content::localize( $defaults, 'en' === $lang ? 'en' : 'de' );
+		}
+
+		$localize = function( $value ) use ( &$localize, $lang ) {
+			if ( is_array( $value ) && isset( $value['de'], $value['en'] ) ) {
+				return ( 'en' === $lang && '' !== (string) $value['en'] ) ? $value['en'] : $value['de'];
+			}
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $key => $item ) {
+					$value[ $key ] = $localize( $item );
+				}
+			}
+
+			return $value;
+		};
+
+		return $localize( $defaults );
+	}
+}
+
+if ( ! function_exists( 'nocap_child_homepage_extension_admin_fields' ) ) {
+	function nocap_child_homepage_extension_admin_fields() {
+		$defaults = nocap_child_homepage_extension_defaults();
+		$saved    = get_option( 'nocap_homepage_content', array() );
+		$content  = array_replace_recursive( $defaults, is_array( $saved ) ? $saved : array() );
+		?>
+		<script>
+			window.nocapChildHomepageExtension = <?php echo wp_json_encode( array( 'content' => $content ) ); ?>;
+		</script>
+		<?php
+	}
+}
+add_action( 'admin_print_footer_scripts-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_fields', 5 );
+
+if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
+	function nocap_child_homepage_extension_admin_script() {
+		?>
+		<script>
+			(function () {
+				var data = window.nocapChildHomepageExtension && window.nocapChildHomepageExtension.content;
+				var form = document.querySelector('.nocap-admin form');
+				var saveBar = document.querySelector('.nocap-save-bar');
+
+				if (!data || !form || !saveBar || form.querySelector('[data-nocap-child-extension]')) {
+					return;
+				}
+
+				var labels = {
+					hero_reviews: 'Hero Bewertungs-Komponente - neue Felder',
+					hero_news: 'Shop News Anzeige - neue Felder'
+				};
+				var fields = {
+					hero_reviews: ['eyebrow', 'count', 'label', 'score', 'treatwell_meta', 'google_meta'],
+					hero_news: ['kicker', 'title', 'text', 'address']
+				};
+				var niceLabel = function (key) {
+					return key.replace(/_/g, ' ').replace(/\b\w/g, function (letter) {
+						return letter.toUpperCase();
+					});
+				};
+				var field = function (section, key, lang, value) {
+					var label = document.createElement('label');
+					var text = document.createElement('span');
+					var input = document.createElement('textarea');
+					label.className = 'nocap-field';
+					text.textContent = lang === 'de' ? 'Deutsch' : 'English';
+					input.name = 'nocap_homepage_content[' + section + '][' + key + '][' + lang + ']';
+					input.rows = 2;
+					input.value = value || '';
+					label.appendChild(text);
+					label.appendChild(input);
+					return label;
+				};
+
+				Object.keys(fields).forEach(function (section) {
+					var wrapper = document.createElement('section');
+					wrapper.className = 'nocap-admin-section';
+					wrapper.setAttribute('data-nocap-child-extension', section);
+					wrapper.innerHTML = '<h2>' + labels[section] + '</h2><p class="description">Neue Child-Theme Felder. Bewertungsfelder erscheinen in der Hero Section; Shop News erscheint unter den Services. CTA Text nutzt das bestehende Hero Feld Primary Cta.</p><div class="nocap-grid"></div>';
+
+					var grid = wrapper.querySelector('.nocap-grid');
+					fields[section].forEach(function (key) {
+						var group = document.createElement('div');
+						var title = document.createElement('strong');
+						var value = (data[section] && data[section][key]) || {};
+						group.className = 'nocap-lang-field';
+						title.textContent = niceLabel(key);
+						group.appendChild(title);
+						group.appendChild(field(section, key, 'de', value.de));
+						group.appendChild(field(section, key, 'en', value.en));
+						grid.appendChild(group);
+					});
+
+					form.insertBefore(wrapper, saveBar);
+				});
+			})();
+		</script>
+		<?php
+	}
+}
+add_action( 'admin_print_footer_scripts-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_script', 20 );
+
 if ( ! function_exists( 'nocap_child_skip_link' ) ) {
 	function nocap_child_skip_link() {
 		if ( ! is_front_page() ) {

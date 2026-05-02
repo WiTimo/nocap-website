@@ -157,6 +157,8 @@ if ( ! empty( $homepage_content ) ) {
 	$contact_phone_href    = $settings['phone_href'];
 	$google_logo_url       = $media_url( $settings['google_logo'] );
 	$treatwell_logo_url    = $media_url( $settings['treatwell_logo'] );
+	$google_logo_url       = $google_logo_url ? $google_logo_url : $asset_base_url . '/google.jpg';
+	$treatwell_logo_url    = $treatwell_logo_url ? $treatwell_logo_url : $asset_base_url . '/treatwell.png';
 	$flag_de_url           = $media_url( $settings['flag_de'] );
 	$flag_en_url           = $media_url( $settings['flag_en'] );
 	$hero                  = $homepage_content['hero'];
@@ -185,7 +187,7 @@ if ( ! empty( $homepage_content ) ) {
 		'kicker'        => 'Barber Shop 1010 Wien',
 		'title'         => 'NoCap Barber Shop',
 		'lead'          => 'Wir sind NoCap Barbers, der neue Barbershop im Herzen Wiens! Bei uns finden Sie professionelle und moderne Haar- und Bartschnitte.',
-		'primary_cta'   => 'Online Booking',
+		'primary_cta'   => 'Jetzt Termin sichern',
 		'secondary_cta' => 'Kontakt',
 		'proof_1'       => '3700+ Bewertungen',
 		'proof_2'       => 'Hoher Markt 3, 1010 Wien',
@@ -276,6 +278,18 @@ if ( ! empty( $homepage_content ) ) {
 	);
 }
 
+$homepage_extension_defaults = function_exists( 'nocap_child_localize_extension_defaults' ) ? nocap_child_localize_extension_defaults( 'de' ) : array();
+$hero_reviews                = isset( $homepage_extension_defaults['hero_reviews'] ) ? $homepage_extension_defaults['hero_reviews'] : array();
+$hero_news                   = isset( $homepage_extension_defaults['hero_news'] ) ? $homepage_extension_defaults['hero_news'] : array();
+
+if ( ! empty( $homepage_content['hero_reviews'] ) && is_array( $homepage_content['hero_reviews'] ) ) {
+	$hero_reviews = array_replace_recursive( $hero_reviews, $homepage_content['hero_reviews'] );
+}
+
+if ( ! empty( $homepage_content['hero_news'] ) && is_array( $homepage_content['hero_news'] ) ) {
+	$hero_news = array_replace_recursive( $hero_news, $homepage_content['hero_news'] );
+}
+
 foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 	if ( ! empty( $homepage_content ) && 'video' === ( $gallery_item['type'] ?? '' ) ) {
 		$gallery_media[ $gallery_index ]['video_url'] = ! empty( $gallery_item['video'] ) ? $media_url( $gallery_item['video'] ) : '';
@@ -307,7 +321,15 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 			<h1 id="nocap-hero-title" data-reveal style="--reveal-delay: 0.08s;"><?php echo esc_html( $hero['title'] ); ?></h1>
 			<p class="nocap-lead" data-reveal style="--reveal-delay: 0.16s;"><?php echo esc_html( $hero['lead'] ); ?></p>
 			<div class="nocap-actions" data-reveal style="--reveal-delay: 0.24s;"><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $hero['primary_cta'] ); ?></a><a class="nocap-btn nocap-btn-ghost" href="#kontakt"><?php echo esc_html( $hero['secondary_cta'] ); ?></a></div>
-			<div class="nocap-proof" data-reveal style="--reveal-delay: 0.3s;"><span><?php echo esc_html( $hero['proof_1'] ); ?></span><span><?php echo esc_html( $hero['proof_2'] ); ?></span><span><?php echo esc_html( $hero['proof_3'] ); ?></span></div>
+			<div class="nocap-hero-signal" data-reveal style="--reveal-delay: 0.3s;" aria-label="<?php echo esc_attr( $hero_reviews['label'] ); ?>">
+				<a class="nocap-hero-reviews" href="<?php echo esc_url( $treatwell_reviews_url ); ?>" target="_blank" rel="noopener">
+					<span class="nocap-hero-reviews-kicker"><?php echo esc_html( $hero_reviews['eyebrow'] ); ?></span>
+					<span class="nocap-hero-reviews-main"><span class="nocap-hero-stars" aria-hidden="true">★★★★★</span><strong><?php echo esc_html( $hero_reviews['score'] ); ?></strong></span>
+					<span class="nocap-hero-reviews-foot"><span><?php echo esc_html( $hero_reviews['count'] ); ?> <?php echo esc_html( $hero_reviews['label'] ); ?></span><span class="nocap-hero-review-logos" aria-hidden="true"><?php if ( $treatwell_logo_url ) : ?><img src="<?php echo esc_url( $treatwell_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?><?php if ( $google_logo_url ) : ?><img src="<?php echo esc_url( $google_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?></span></span>
+					<span class="nocap-hero-review-sources"><span><?php echo esc_html( $hero_reviews['treatwell_meta'] ); ?></span><span><?php echo esc_html( $hero_reviews['google_meta'] ); ?></span></span>
+				</a>
+			</div>
+			<div class="nocap-proof" data-reveal style="--reveal-delay: 0.36s;"><span><?php echo esc_html( $hero['proof_2'] ); ?></span><span><?php echo esc_html( $hero['proof_3'] ); ?></span></div>
 		</div></div>
 	</section>
 
@@ -318,6 +340,22 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 					<article class="nocap-service-item" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.18 + ( $index * 0.06 ) ) ); ?>s;"><div class="nocap-service-visual"><?php echo wp_get_attachment_image( (int) $service_item['image'], 'large', false, array( 'class' => 'nocap-service-image', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => $service_item['alt'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div><div class="nocap-service-item-top"><span class="nocap-service-mark" aria-hidden="true"></span><div class="nocap-service-heading"><h3><?php echo esc_html( $service_item['title'] ); ?></h3></div></div><div class="nocap-service-body"><p><?php echo esc_html( $service_item['text'] ); ?></p></div></article>
 				<?php endforeach; ?>
 			</div><div class="nocap-services-cta" data-reveal style="--reveal-delay: 0.34s;"><p class="nocap-services-cta-line"><?php echo esc_html( $services_section['cta_text'] ); ?></p><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $services_section['cta_label'] ); ?></a></div></div>
+		</div>
+	</section>
+
+	<section class="nocap-shop-news" aria-labelledby="nocap-shop-news-title">
+		<div class="nocap-shell">
+			<div class="nocap-shop-news-grid" data-reveal>
+				<div class="nocap-shop-news-mark" aria-hidden="true"><span>NEW</span></div>
+				<div class="nocap-shop-news-copy">
+					<p class="nocap-shop-news-kicker"><?php echo esc_html( $hero_news['kicker'] ); ?></p>
+					<h2 id="nocap-shop-news-title"><?php echo esc_html( $hero_news['title'] ); ?></h2>
+					<p><?php echo esc_html( $hero_news['text'] ); ?></p>
+				</div>
+				<div class="nocap-shop-news-address">
+					<span><?php echo esc_html( $hero_news['address'] ); ?></span>
+				</div>
+			</div>
 		</div>
 	</section>
 
