@@ -97,9 +97,193 @@ if ( ! function_exists( 'nocap_child_update_homepage_cta_text' ) ) {
 }
 add_action( 'init', 'nocap_child_update_homepage_cta_text', 20 );
 
+if ( ! function_exists( 'nocap_child_asset_url' ) ) {
+	function nocap_child_asset_url( $path ) {
+		return get_stylesheet_directory_uri() . '/assets/' . ltrim( (string) $path, '/' );
+	}
+}
+
+if ( ! function_exists( 'nocap_child_tiktok_url' ) ) {
+	function nocap_child_tiktok_url() {
+		if ( function_exists( 'nocap_homepage_content' ) ) {
+			$content = nocap_homepage_content( 'de' );
+			if ( ! empty( $content['settings']['tiktok_url'] ) ) {
+				return $content['settings']['tiktok_url'];
+			}
+		}
+
+		return 'https://www.tiktok.com/@nocap.barbershop';
+	}
+}
+
+if ( ! function_exists( 'nocap_child_brand_logo_url' ) ) {
+	function nocap_child_brand_logo_url() {
+		if ( function_exists( 'nocap_homepage_content' ) ) {
+			$content = nocap_homepage_content( 'de' );
+			$logo_id = isset( $content['settings']['brand_logo'] ) ? (int) $content['settings']['brand_logo'] : 0;
+			$logo    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
+
+			if ( $logo ) {
+				return $logo;
+			}
+		}
+
+		return nocap_child_asset_url( 'images/new_logo/ncp_barbers_cropped.png' );
+	}
+}
+
+if ( ! function_exists( 'nocap_child_partner_defaults' ) ) {
+	function nocap_child_partner_defaults() {
+		return array(
+			'items' => array(
+				array(
+					'name'     => 'REUZEL',
+					'url'      => 'https://www.reuzel.com/',
+					'logo'     => '',
+					'logo_url' => nocap_child_asset_url( 'images/partners/reuzel.png' ),
+				),
+				array(
+					'name'     => '1922 by J.M. Keune',
+					'url'      => 'https://www.keune.com/men/',
+					'logo'     => '',
+					'logo_url' => nocap_child_asset_url( 'images/partners/jm_keune.jpg' ),
+				),
+				array(
+					'name'     => 'Proraso',
+					'url'      => 'https://proraso.com/en/',
+					'logo'     => '',
+					'logo_url' => nocap_child_asset_url( 'images/partners/poraso.svg' ),
+				),
+				array(
+					'name'     => 'Slick Gorilla',
+					'url'      => 'https://slickgorilla.com/',
+					'logo'     => '',
+					'logo_url' => nocap_child_asset_url( 'images/partners/slick_gorilla.png' ),
+				),
+			),
+		);
+	}
+}
+
+if ( ! function_exists( 'nocap_child_extra_product_defaults' ) ) {
+	function nocap_child_extra_product_defaults() {
+		return array(
+			array(
+				'image'     => '',
+				'image_url' => nocap_child_asset_url( 'images/new_products/proraso.jpg' ),
+				'number'    => array( 'de' => 'Rasur', 'en' => 'Shave' ),
+				'kicker'    => array( 'de' => 'Shave + Beard', 'en' => 'Shave + Beard' ),
+				'title'     => array( 'de' => 'PRORASO', 'en' => 'PRORASO' ),
+				'text'      => array( 'de' => 'Italienische Barber-Klassiker für Rasur, Bart und Haut. Frisch, direkt und verlässlich, wenn Konturen sauber bleiben sollen.', 'en' => 'Italian barber classics for shaving, beard and skin. Fresh, direct and reliable when contours need to stay clean.' ),
+				'points'    => array(
+					array( 'de' => 'Pre-shave, Rasiercreme und Aftershave', 'en' => 'Pre-shave, shaving cream and aftershave' ),
+					array( 'de' => 'Starker Standard für saubere Konturen', 'en' => 'Strong standard for clean contours' ),
+					array( 'de' => 'Bewährt für Bartpflege im Shop', 'en' => 'Proven for beard care in the shop' ),
+				),
+			),
+			array(
+				'image'     => '',
+				'image_url' => nocap_child_asset_url( 'images/new_products/slick_gorilla.webp' ),
+				'number'    => array( 'de' => 'Textur', 'en' => 'Texture' ),
+				'kicker'    => array( 'de' => 'Volume + Matte', 'en' => 'Volume + Matte' ),
+				'title'     => array( 'de' => 'Slick Gorilla', 'en' => 'Slick Gorilla' ),
+				'text'      => array( 'de' => 'Moderne Texturprodukte für matte Looks mit Griff. Gut für lockere Styles, die leicht bleiben und trotzdem Form halten.', 'en' => 'Modern texture products for matte looks with grip. Good for loose styles that stay light while keeping shape.' ),
+				'points'    => array(
+					array( 'de' => 'Styling Powder, Clay und Sea Salt Finish', 'en' => 'Styling powder, clay and sea salt finish' ),
+					array( 'de' => 'Volumen ohne schweres Produktgefühl', 'en' => 'Volume without a heavy product feel' ),
+					array( 'de' => 'Ideal für messy, matte und natürliche Looks', 'en' => 'Ideal for messy, matte and natural looks' ),
+				),
+			),
+		);
+	}
+}
+
+if ( ! function_exists( 'nocap_child_seed_homepage_extension_content' ) ) {
+	function nocap_child_seed_homepage_extension_content() {
+		$content = get_option( 'nocap_homepage_content', array() );
+
+		if ( ! is_array( $content ) ) {
+			$content = array();
+		}
+
+		$changed = false;
+
+		if ( ! isset( $content['settings'] ) || ! is_array( $content['settings'] ) ) {
+			$content['settings'] = array();
+		}
+
+		foreach ( array(
+			'tiktok_url' => 'https://www.tiktok.com/@nocap.barbershop',
+			'brand_logo' => '',
+		) as $key => $value ) {
+			if ( ! array_key_exists( $key, $content['settings'] ) ) {
+				$content['settings'][ $key ] = $value;
+				$changed = true;
+			}
+		}
+
+		if ( ! isset( $content['partners']['items'] ) || ! is_array( $content['partners']['items'] ) ) {
+			$content['partners'] = nocap_child_partner_defaults();
+			$changed = true;
+		}
+
+		if ( ! isset( $content['products'] ) || ! is_array( $content['products'] ) ) {
+			$content['products'] = array();
+		}
+
+		$old_titles = array( '', 'Produkte, denen wir vertrauen' );
+		if ( empty( $content['products']['title']['de'] ) || in_array( $content['products']['title']['de'], $old_titles, true ) ) {
+			$content['products']['title'] = array( 'de' => 'Partner denen wir vertrauen', 'en' => 'Partners we trust' );
+			$changed = true;
+		}
+
+		$current_intro_de = is_array( $content['products']['intro'] ?? null ) ? (string) ( $content['products']['intro']['de'] ?? '' ) : (string) ( $content['products']['intro'] ?? '' );
+		if ( ! array_key_exists( 'intro', $content['products'] ) || 'Zwei Linien, zwei StÃ¤rken: Styling und Pflege.' === $current_intro_de || 'Zwei Linien, zwei Stärken: Styling und Pflege.' === $current_intro_de ) {
+			$content['products']['intro'] = array( 'de' => '', 'en' => '' );
+			$changed = true;
+		}
+
+		if ( ! isset( $content['products']['items'] ) || ! is_array( $content['products']['items'] ) ) {
+			$content['products']['items'] = array();
+		}
+
+		if ( empty( $content['products']['items'] ) && class_exists( 'NoCap_Homepage_Content' ) ) {
+			$plugin_defaults = NoCap_Homepage_Content::defaults();
+			if ( ! empty( $plugin_defaults['products']['items'] ) && is_array( $plugin_defaults['products']['items'] ) ) {
+				$content['products']['items'] = $plugin_defaults['products']['items'];
+				$changed = true;
+			}
+		}
+
+		$existing_products = array_map(
+			static function( $item ) {
+				return strtolower( (string) ( $item['title']['de'] ?? $item['title'] ?? '' ) );
+			},
+			$content['products']['items']
+		);
+
+		foreach ( nocap_child_extra_product_defaults() as $product ) {
+			if ( ! in_array( strtolower( $product['title']['de'] ), $existing_products, true ) ) {
+				$content['products']['items'][] = $product;
+				$changed = true;
+			}
+		}
+
+		if ( $changed ) {
+			update_option( 'nocap_homepage_content', $content, false );
+		}
+	}
+}
+add_action( 'init', 'nocap_child_seed_homepage_extension_content', 22 );
+
 if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 	function nocap_child_homepage_extension_defaults() {
 		return array(
+			'settings'     => array(
+				'tiktok_url' => 'https://www.tiktok.com/@nocap.barbershop',
+				'brand_logo' => '',
+			),
+			'partners'     => nocap_child_partner_defaults(),
 			'hero_reviews' => array(
 				'eyebrow'        => array( 'de' => 'Bewertet auf Google & Treatwell', 'en' => 'Rated on Google & Treatwell' ),
 				'count'          => array( 'de' => '3700+', 'en' => '3700+' ),
@@ -197,6 +381,125 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					label.appendChild(input);
 					return label;
 				};
+				var simpleField = function (name, labelText, value, isMedia) {
+					var label = document.createElement('label');
+					var text = document.createElement('span');
+					var input = document.createElement('textarea');
+					label.className = isMedia ? 'nocap-field nocap-media-field' : 'nocap-field';
+					text.textContent = labelText;
+					input.name = name;
+					input.rows = 2;
+					input.value = value || '';
+					label.appendChild(text);
+					if (isMedia) {
+						input = document.createElement('input');
+						input.type = 'number';
+						input.name = name;
+						input.value = value || '';
+						label.appendChild(input);
+						var button = document.createElement('button');
+						button.type = 'button';
+						button.className = 'button nocap-pick-media';
+						button.textContent = 'Datei aus Mediathek w\u00e4hlen';
+						label.appendChild(button);
+						var preview = document.createElement('span');
+						preview.className = 'nocap-media-preview';
+						label.appendChild(preview);
+						return label;
+					}
+					label.appendChild(input);
+					return label;
+				};
+				var insertSettings = function () {
+					var wrapper = document.createElement('section');
+					var grid = document.createElement('div');
+					var settings = data.settings || {};
+					wrapper.className = 'nocap-admin-section';
+					wrapper.setAttribute('data-nocap-child-extension', 'settings-social-brand');
+					wrapper.innerHTML = '<h2>Logo & TikTok - Child Theme</h2><p class="description">Diese Werte ueberschreiben Fallbacks aus dem Child Theme. Brand Logo steuert Navbar und Footer Logo.</p>';
+					grid.className = 'nocap-grid';
+					grid.appendChild(simpleField('nocap_homepage_content[settings][tiktok_url]', 'TikTok URL', settings.tiktok_url || ''));
+					grid.appendChild(simpleField('nocap_homepage_content[settings][brand_logo]', 'Brand Logo', settings.brand_logo || '', true));
+					wrapper.appendChild(grid);
+					form.insertBefore(wrapper, saveBar);
+				};
+				var partnerCard = function (item, index) {
+					var card = document.createElement('div');
+					var title = document.createElement('div');
+					var grid = document.createElement('div');
+					var base = 'nocap_homepage_content[partners][items][' + index + ']';
+					card.className = 'nocap-repeater-card';
+					title.className = 'nocap-card-title';
+					title.innerHTML = '<strong>Partner ' + (index + 1) + '</strong><button type="button" class="button-link-delete nocap-remove-card">Entfernen</button>';
+					grid.className = 'nocap-grid';
+					grid.appendChild(simpleField(base + '[name]', 'Name', item.name || ''));
+					grid.appendChild(simpleField(base + '[url]', 'Website URL', item.url || ''));
+					grid.appendChild(simpleField(base + '[logo]', 'Logo aus Mediathek', item.logo || '', true));
+					grid.appendChild(simpleField(base + '[logo_url]', 'Fallback Logo URL', item.logo_url || ''));
+					card.appendChild(title);
+					card.appendChild(grid);
+					return card;
+				};
+				var insertPartners = function () {
+					var wrapper = document.createElement('section');
+					var repeater = document.createElement('div');
+					var add = document.createElement('button');
+					var partners = (data.partners && data.partners.items) || [];
+					wrapper.className = 'nocap-admin-section';
+					wrapper.setAttribute('data-nocap-child-extension', 'partners');
+					wrapper.innerHTML = '<h2>Partner Logo Carousel - Child Theme</h2><p class="description">Logos drehen im dunklen Produkte-Bereich. Website URL oeffnet bei Klick.</p>';
+					repeater.className = 'nocap-repeater';
+					repeater.setAttribute('data-section', 'partners');
+					repeater.setAttribute('data-field', 'items');
+					partners.forEach(function (item, index) {
+						repeater.appendChild(partnerCard(item, index));
+					});
+					add.type = 'button';
+					add.className = 'button nocap-add-card';
+					add.textContent = 'Eintrag duplizieren';
+					wrapper.appendChild(repeater);
+					wrapper.appendChild(add);
+					form.insertBefore(wrapper, saveBar);
+				};
+				var insertProductFallbackFields = function () {
+					var products = (data.products && data.products.items) || [];
+					var repeater = form.querySelector('.nocap-repeater[data-section="products"][data-field="items"]');
+					if (!repeater) {
+						return;
+					}
+
+					Array.prototype.slice.call(repeater.querySelectorAll('.nocap-repeater-card')).forEach(function (card, index) {
+						if (card.querySelector('[name="nocap_homepage_content[products][items][' + index + '][image_url]"]')) {
+							return;
+						}
+
+						var grid = card.querySelector('.nocap-grid');
+						if (!grid) {
+							return;
+						}
+
+						grid.appendChild(simpleField(
+							'nocap_homepage_content[products][items][' + index + '][image_url]',
+							'Fallback Bild URL',
+							products[index] && products[index].image_url ? products[index].image_url : ''
+						));
+						grid.appendChild(simpleField(
+							'nocap_homepage_content[products][items][' + index + '][logo]',
+							'Produkt Logo aus Mediathek',
+							products[index] && products[index].logo ? products[index].logo : '',
+							true
+						));
+						grid.appendChild(simpleField(
+							'nocap_homepage_content[products][items][' + index + '][logo_url]',
+							'Produkt Logo Fallback URL',
+							products[index] && products[index].logo_url ? products[index].logo_url : ''
+						));
+					});
+				};
+
+				insertSettings();
+				insertPartners();
+				insertProductFallbackFields();
 
 				Object.keys(fields).forEach(function (section) {
 					var wrapper = document.createElement('section');
@@ -270,6 +573,94 @@ if ( ! function_exists( 'nocap_child_normalize_instagram_links' ) ) {
 }
 add_action( 'wp_footer', 'nocap_child_normalize_instagram_links', 99 );
 
+if ( ! function_exists( 'nocap_child_brand_social_footer_script' ) ) {
+	function nocap_child_brand_social_footer_script() {
+		$brand_logo_url = nocap_child_brand_logo_url();
+		$tiktok_url     = nocap_child_tiktok_url();
+		?>
+		<script>
+			(function () {
+				var logoUrl = <?php echo wp_json_encode( esc_url_raw( $brand_logo_url ) ); ?>;
+				var tiktokUrl = <?php echo wp_json_encode( esc_url_raw( $tiktok_url ) ); ?>;
+				var tikTokIcon = '<span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span>';
+
+				if (logoUrl) {
+					document.querySelectorAll('#header-outer #logo img, #header-outer .logo img, #footer-outer #block-3 img, #footer-outer .widget_media_image img').forEach(function (image) {
+						var src = image.getAttribute('src') || '';
+						var alt = (image.getAttribute('alt') || '').toLowerCase();
+						if (image.closest('#footer-outer') && !image.closest('#block-3') && src.indexOf('logo') === -1 && alt.indexOf('nocap') === -1 && alt.indexOf('no cap') === -1) {
+							return;
+						}
+						image.setAttribute('src', logoUrl);
+						image.setAttribute('data-src', logoUrl);
+						image.removeAttribute('srcset');
+						image.removeAttribute('data-srcset');
+						image.removeAttribute('sizes');
+						image.removeAttribute('data-sizes');
+						image.setAttribute('alt', 'NoCap Barbers');
+						image.classList.remove('lazyload', 'lazyloaded');
+					});
+				}
+
+				if (!tiktokUrl) {
+					return;
+				}
+
+				document.querySelectorAll('.nocap-gallery-cta-row').forEach(function (row) {
+					if (row.querySelector('a[href*="tiktok.com"]')) {
+						return;
+					}
+
+					var instagram = row.querySelector('a[href*="instagram.com"]');
+					if (!instagram) {
+						return;
+					}
+
+					var tiktok = instagram.cloneNode(true);
+					tiktok.className = 'nocap-gallery-cta nocap-gallery-cta-tiktok';
+					tiktok.setAttribute('href', tiktokUrl);
+					tiktok.setAttribute('aria-label', 'TikTok');
+					tiktok.innerHTML = '<span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span><span class="nocap-gallery-cta-copy"><span>TikTok</span><strong>@nocap.<br>barbershop</strong></span>';
+					var booking = row.querySelector('.nocap-gallery-cta-booking');
+					if (booking) {
+						booking.insertAdjacentElement('afterend', tiktok);
+					} else {
+						instagram.insertAdjacentElement('afterend', tiktok);
+					}
+				});
+
+				document.querySelectorAll('.nocap-social, #social-in-menu, #footer-outer .social, #footer-outer .nectar-social').forEach(function (list) {
+					if (list.querySelector('a[href*="tiktok.com"]')) {
+						return;
+					}
+
+					var instagram = list.querySelector('a[href*="instagram.com"]');
+					if (!instagram) {
+						return;
+					}
+
+					var tiktok = instagram.cloneNode(true);
+					tiktok.setAttribute('href', tiktokUrl);
+					tiktok.setAttribute('aria-label', 'TikTok');
+					tiktok.setAttribute('target', '_blank');
+					tiktok.setAttribute('rel', 'noopener');
+					tiktok.innerHTML = tikTokIcon;
+
+					if (list.tagName && list.tagName.toLowerCase() === 'ul' && instagram.closest('li')) {
+						var item = document.createElement('li');
+						item.appendChild(tiktok);
+						instagram.closest('li').insertAdjacentElement('afterend', item);
+					} else {
+						instagram.insertAdjacentElement('afterend', tiktok);
+					}
+				});
+			})();
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_footer', 'nocap_child_brand_social_footer_script', 101 );
+
 if ( ! function_exists( 'nocap_child_footer_credit_override' ) ) {
 	function nocap_child_footer_credit_override() {
 		?>
@@ -326,6 +717,7 @@ if ( ! function_exists( 'nocap_child_seo_data' ) ) {
 		$host        = wp_parse_url( $site_url, PHP_URL_HOST );
 		$logo_id     = get_theme_mod( 'custom_logo' );
 		$logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
+		$logo_url    = $logo_url ? $logo_url : nocap_child_brand_logo_url();
 		$hero_image  = wp_get_attachment_image_url( 6142, 'full' );
 		$image_url   = $hero_image ? $hero_image : $logo_url;
 		$email       = ( 'nocap-barbers.local' === $host ) ? 'office@nocap-barbers.local' : 'office@nocap-barbers.at';
@@ -352,6 +744,7 @@ if ( ! function_exists( 'nocap_child_seo_data' ) ) {
 			'same_as'        => array(
 				'https://www.facebook.com/NoCapBarbersVienna/',
 				nocap_child_instagram_url(),
+				nocap_child_tiktok_url(),
 				'https://www.treatwell.at/ort/no-cap-barbers/',
 			),
 			'booking_url'    => 'https://buchung.treatwell.at/ort/412028/menue/',

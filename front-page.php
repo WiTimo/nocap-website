@@ -12,6 +12,7 @@ get_header();
 $booking_url           = 'https://buchung.treatwell.at/ort/no-cap-barbers/';
 $booking_cta           = 'https://buchung.treatwell.at/ort/412028/menue/';
 $instagram_url         = 'https://www.instagram.com/nocap.barbers';
+$tiktok_url            = 'https://www.tiktok.com/@nocap.barbershop';
 $google_reviews_url    = 'https://www.google.com/search?q=NoCap+Barbers+Wien';
 $treatwell_reviews_url = 'https://www.treatwell.at/ort/no-cap-barbers/';
 $map_embed_url         = 'https://www.google.com/maps?q=Hoher+Markt+3,+1010+Wien&output=embed';
@@ -24,6 +25,7 @@ $flag_en_url           = $asset_base_url . '/english.svg';
 $contact_email         = 'office@nocap-barbers.at';
 $contact_phone         = '01 4374527';
 $contact_phone_href    = 'tel:014374527';
+$partners_section      = function_exists( 'nocap_child_partner_defaults' ) ? nocap_child_partner_defaults() : array( 'items' => array() );
 
 $image_url = static function( $attachment_id, $size = 'full' ) {
 	$url = wp_get_attachment_image_url( (int) $attachment_id, $size );
@@ -33,6 +35,51 @@ $image_url = static function( $attachment_id, $size = 'full' ) {
 $media_url = static function( $attachment_id ) {
 	$url = wp_get_attachment_url( (int) $attachment_id );
 	return $url ? $url : '';
+};
+
+$product_image_url = static function( $product ) use ( $image_url ) {
+	$image_id = isset( $product['image'] ) ? (int) $product['image'] : 0;
+	$url      = $image_id ? $image_url( $image_id, 'large' ) : '';
+
+	if ( ! $url && ! empty( $product['image_url'] ) ) {
+		$url = $product['image_url'];
+	}
+
+	return $url;
+};
+
+$partner_logo_url = static function( $partner ) use ( $image_url ) {
+	$logo_id = isset( $partner['logo'] ) ? (int) $partner['logo'] : 0;
+	$url     = $logo_id ? $image_url( $logo_id, 'medium' ) : '';
+
+	if ( ! $url && ! empty( $partner['logo_url'] ) ) {
+		$url = $partner['logo_url'];
+	}
+
+	return $url;
+};
+
+$product_logo_url = static function( $product, $partners ) use ( $image_url, $partner_logo_url ) {
+	$logo_id = isset( $product['logo'] ) ? (int) $product['logo'] : 0;
+	$url     = $logo_id ? $image_url( $logo_id, 'medium' ) : '';
+
+	if ( ! $url && ! empty( $product['logo_url'] ) ) {
+		$url = $product['logo_url'];
+	}
+
+	if ( $url || empty( $partners['items'] ) || empty( $product['title'] ) ) {
+		return $url;
+	}
+
+	$title = strtolower( (string) $product['title'] );
+	foreach ( $partners['items'] as $partner ) {
+		$name = strtolower( (string) ( $partner['name'] ?? '' ) );
+		if ( '' !== $name && ( false !== strpos( $title, $name ) || false !== strpos( $name, $title ) || ( false !== strpos( $title, 'keune' ) && false !== strpos( $name, 'keune' ) ) ) ) {
+			return $partner_logo_url( $partner );
+		}
+	}
+
+	return '';
 };
 
 $quote_image      = $image_url( 6103, 'large' );
@@ -148,6 +195,7 @@ if ( ! empty( $homepage_content ) ) {
 	$booking_url           = $settings['booking_url'];
 	$booking_cta           = $settings['booking_cta'];
 	$instagram_url         = $settings['instagram_url'];
+	$tiktok_url            = ! empty( $settings['tiktok_url'] ) ? $settings['tiktok_url'] : $tiktok_url;
 	$facebook_url          = $settings['facebook_url'];
 	$google_reviews_url    = $settings['google_reviews_url'];
 	$treatwell_reviews_url = $settings['treatwell_url'];
@@ -172,6 +220,7 @@ if ( ! empty( $homepage_content ) ) {
 	$reviews_section       = $homepage_content['reviews'];
 	$review_entries        = $reviews_section['items'];
 	$products_section      = $homepage_content['products'];
+	$partners_section      = ! empty( $homepage_content['partners'] ) && is_array( $homepage_content['partners'] ) ? $homepage_content['partners'] : $partners_section;
 	$gallery_section       = $homepage_content['gallery'];
 	$gallery_media         = $gallery_section['items'];
 	$team_section          = $homepage_content['team'];
@@ -239,11 +288,13 @@ if ( ! empty( $homepage_content ) ) {
 		'title'          => 'Was Kunden über uns sagen',
 	);
 	$products_section = array(
-		'title' => 'Produkte, denen wir vertrauen',
-		'intro' => 'Zwei Linien, zwei Stärken: Styling und Pflege.',
+		'title' => 'Partner denen wir vertrauen',
+		'intro' => '',
 		'items' => array(
 			array( 'image' => 5966, 'number' => 'Styling', 'kicker' => 'Texture + Hold', 'title' => 'REUZEL', 'text' => 'Tradition aus Rotterdam mit modernen Styling-Ergebnissen. Ideal für Pompadour, Textur oder kontrolliertes Volumen.', 'points' => array( 'Clay, Pomade und Grooming Tonics', 'Starker Halt ohne steifes Finish', 'Ideal für strukturierte Styles' ) ),
 			array( 'image' => 5941, 'number' => 'Pflege', 'kicker' => 'Care + Finish', 'title' => '1922 by J.M. Keune', 'text' => 'Pflege für Haare, Kopfhaut und Bart - entwickelt für saubere Routinen und lang haltbare Ergebnisse.', 'points' => array( 'Shampoo, Scalp und Beard Care', 'Sauberes, alltagstaugliches Pflege-System', 'Für sensible Kopfhaut und definierte Bärte' ) ),
+			array( 'image_url' => get_stylesheet_directory_uri() . '/assets/images/new_products/proraso.jpg', 'number' => 'Rasur', 'kicker' => 'Shave + Beard', 'title' => 'PRORASO', 'text' => 'Italienische Barber-Klassiker für Rasur, Bart und Haut. Frisch, direkt und verlässlich, wenn Konturen sauber bleiben sollen.', 'points' => array( 'Pre-shave, Rasiercreme und Aftershave', 'Starker Standard für saubere Konturen', 'Bewährt für Bartpflege im Shop' ) ),
+			array( 'image_url' => get_stylesheet_directory_uri() . '/assets/images/new_products/slick_gorilla.webp', 'number' => 'Textur', 'kicker' => 'Volume + Matte', 'title' => 'Slick Gorilla', 'text' => 'Moderne Texturprodukte für matte Looks mit Griff. Gut für lockere Styles, die leicht bleiben und trotzdem Form halten.', 'points' => array( 'Styling Powder, Clay und Sea Salt Finish', 'Volumen ohne schweres Produktgefühl', 'Ideal für messy, matte und natürliche Looks' ) ),
 		),
 	);
 	$gallery_section  = array(
@@ -323,10 +374,8 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 			<div class="nocap-actions" data-reveal style="--reveal-delay: 0.24s;"><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $hero['primary_cta'] ); ?></a><a class="nocap-btn nocap-btn-ghost" href="#kontakt"><?php echo esc_html( $hero['secondary_cta'] ); ?></a></div>
 			<div class="nocap-hero-signal" data-reveal style="--reveal-delay: 0.3s;" aria-label="<?php echo esc_attr( $hero_reviews['label'] ); ?>">
 				<a class="nocap-hero-reviews" href="<?php echo esc_url( $treatwell_reviews_url ); ?>" target="_blank" rel="noopener">
-					<span class="nocap-hero-reviews-kicker"><?php echo esc_html( $hero_reviews['eyebrow'] ); ?></span>
 					<span class="nocap-hero-reviews-main"><span class="nocap-hero-stars" aria-hidden="true">★★★★★</span><strong><?php echo esc_html( $hero_reviews['score'] ); ?></strong></span>
 					<span class="nocap-hero-reviews-foot"><span><?php echo esc_html( $hero_reviews['count'] ); ?> <?php echo esc_html( $hero_reviews['label'] ); ?></span><span class="nocap-hero-review-logos" aria-hidden="true"><?php if ( $treatwell_logo_url ) : ?><img src="<?php echo esc_url( $treatwell_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?><?php if ( $google_logo_url ) : ?><img src="<?php echo esc_url( $google_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?></span></span>
-					<span class="nocap-hero-review-sources"><span><?php echo esc_html( $hero_reviews['treatwell_meta'] ); ?></span><span><?php echo esc_html( $hero_reviews['google_meta'] ); ?></span></span>
 				</a>
 			</div>
 			<div class="nocap-proof" data-reveal style="--reveal-delay: 0.36s;"><span><?php echo esc_html( $hero['proof_2'] ); ?></span><span><?php echo esc_html( $hero['proof_3'] ); ?></span></div>
@@ -367,7 +416,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 
 	<section id="google" class="nocap-section nocap-reviews" aria-labelledby="nocap-reviews-title"><div class="nocap-shell"><div class="nocap-review-layout" data-reveal><aside class="nocap-review-badge" data-reveal style="--reveal-delay: 0.04s;" aria-label="Bewertungsquellen und Kennzahlen"><div class="nocap-review-ledger"><p class="nocap-review-ledger-kicker"><?php echo esc_html( $reviews_section['kicker'] ); ?></p><div class="nocap-review-scoreboard"><p class="nocap-review-score"><span class="nocap-review-score-value"><?php echo esc_html( $reviews_section['score'] ); ?></span><span class="nocap-review-score-max"><?php echo esc_html( $reviews_section['score_suffix'] ); ?></span> <span class="nocap-review-star" aria-hidden="true">&#9733;</span></p><p class="nocap-review-score-note"><?php echo esc_html( $reviews_section['score_note'] ); ?></p></div><div class="nocap-review-source-list"><a class="nocap-review-source" href="<?php echo esc_url( $treatwell_reviews_url ); ?>" target="_blank" rel="noopener"><span class="nocap-review-source-badge" aria-hidden="true"><?php if ( $treatwell_logo_url ) : ?><img src="<?php echo esc_url( $treatwell_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?></span><span class="nocap-review-source-copy-wrap"><span class="nocap-review-source-name">Treatwell</span><span class="nocap-review-source-meta"><?php echo esc_html( $reviews_section['treatwell_meta'] ); ?></span></span></a><a class="nocap-review-source" href="<?php echo esc_url( $google_reviews_url ); ?>" target="_blank" rel="noopener"><span class="nocap-review-source-badge" aria-hidden="true"><?php if ( $google_logo_url ) : ?><img src="<?php echo esc_url( $google_logo_url ); ?>" alt="" loading="lazy"><?php endif; ?></span><span class="nocap-review-source-copy-wrap"><span class="nocap-review-source-name">Google</span><span class="nocap-review-source-meta"><?php echo esc_html( $reviews_section['google_meta'] ); ?></span></span></a></div><div class="nocap-review-proofline" aria-hidden="true"><span></span><span></span><span></span></div></div><div class="nocap-review-badge-cta"><p class="nocap-review-badge-copy"><?php echo esc_html( $reviews_section['badge_copy'] ); ?></p><a class="nocap-review-booking" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener"><span><?php echo esc_html( $reviews_section['badge_cta'] ); ?></span><span class="nocap-review-booking-arrow" aria-hidden="true">&rarr;</span></a></div></aside><div class="nocap-review-content"><h2 id="nocap-reviews-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.08s;"><?php echo esc_html( $reviews_section['title'] ); ?></h2><div class="nocap-review-switch" data-reveal style="--reveal-delay: 0.26s;" role="tablist" aria-label="Bewertungsfokus"><?php foreach ( $review_entries as $review_index => $review_entry ) : ?><button class="nocap-review-chip<?php echo 0 === $review_index ? ' is-active' : ''; ?>" type="button" role="tab" aria-selected="<?php echo 0 === $review_index ? 'true' : 'false'; ?>" data-review-tab="<?php echo esc_attr( $review_entry['key'] ); ?>"><?php echo esc_html( $review_entry['label'] ); ?></button><?php endforeach; ?></div><div class="nocap-review-stream" data-reveal style="--reveal-delay: 0.32s;"><?php foreach ( $review_entries as $review_index => $review_entry ) : ?><a class="nocap-review-quote<?php echo 0 === $review_index ? ' is-active' : ''; ?>" role="tabpanel" aria-hidden="<?php echo 0 === $review_index ? 'false' : 'true'; ?>" data-review-panel="<?php echo esc_attr( $review_entry['key'] ); ?>" href="<?php echo esc_url( $review_entry['source_url'] ); ?>" target="_blank" rel="noopener"><p class="nocap-review-panel-label"><?php echo esc_html( $review_entry['headline'] ); ?></p><blockquote class="nocap-review-quote-copy"><p>&ldquo;<?php echo esc_html( $review_entry['quote'] ); ?>&rdquo;</p></blockquote><div class="nocap-review-meta"><p class="nocap-review-author"><?php echo esc_html( $review_entry['author'] ); ?></p><span class="nocap-review-verified"><span class="nocap-review-verified-icon" aria-hidden="true">&#10003;</span><?php echo esc_html( $reviews_section['verified_label'] ); ?></span></div></a><?php endforeach; ?></div></div></div></div></section>
 
-	<section id="products" class="nocap-section nocap-products" aria-labelledby="nocap-products-title"><div class="nocap-shell"><div class="nocap-products-head"><h2 id="nocap-products-title" class="nocap-section-title" data-reveal><?php echo esc_html( $products_section['title'] ); ?></h2><p class="nocap-section-intro" data-reveal style="--reveal-delay: 0.08s;"><?php echo esc_html( $products_section['intro'] ); ?></p></div><div class="nocap-products-atlas"><?php foreach ( $products_section['items'] as $product_index => $product ) : $product_img = $image_url( (int) $product['image'], 'large' ); ?><article class="nocap-product-feature<?php echo 1 === $product_index % 2 ? ' nocap-product-feature-alt' : ''; ?>" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.14 + ( $product_index * 0.06 ) ) ); ?>s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_img ); ?>);"><span class="nocap-product-number"><?php echo esc_html( $product['number'] ); ?></span></div><div class="nocap-product-copy"><p class="nocap-product-kicker"><?php echo esc_html( $product['kicker'] ); ?></p><h3><?php echo esc_html( $product['title'] ); ?></h3><p><?php echo esc_html( $product['text'] ); ?></p><ul class="nocap-product-points" aria-label="<?php echo esc_attr( $product['title'] ); ?> Highlights"><?php foreach ( $product['points'] as $point ) : ?><li><?php echo esc_html( $point ); ?></li><?php endforeach; ?></ul></div></article><?php endforeach; ?></div></div></section>
+	<section id="products" class="nocap-section nocap-products" aria-labelledby="nocap-products-title"><div class="nocap-shell"><div class="nocap-products-head"><h2 id="nocap-products-title" class="nocap-section-title" data-reveal><?php echo esc_html( $products_section['title'] ); ?></h2><?php if ( ! empty( $products_section['intro'] ) ) : ?><p class="nocap-section-intro" data-reveal style="--reveal-delay: 0.08s;"><?php echo esc_html( $products_section['intro'] ); ?></p><?php endif; ?></div><?php if ( ! empty( $partners_section['items'] ) ) : ?><div class="nocap-partner-runner" data-reveal style="--reveal-delay: 0.1s;" aria-label="NoCap Barbers Partner"><div class="nocap-partner-track"><?php for ( $partner_loop = 0; $partner_loop < 2; $partner_loop++ ) : foreach ( $partners_section['items'] as $partner ) : $partner_logo = $partner_logo_url( $partner ); if ( ! $partner_logo ) { continue; } ?><a class="nocap-partner-logo" href="<?php echo esc_url( $partner['url'] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $partner['name'] ); ?>"><img src="<?php echo esc_url( $partner_logo ); ?>" alt="<?php echo esc_attr( $partner['name'] ); ?>" loading="lazy" decoding="async"></a><?php endforeach; endfor; ?></div></div><?php endif; ?><div class="nocap-products-atlas"><?php foreach ( $products_section['items'] as $product_index => $product ) : $product_img = $product_image_url( $product ); $product_logo = $product_logo_url( $product, $partners_section ); ?><article class="nocap-product-feature<?php echo 1 === $product_index % 2 ? ' nocap-product-feature-alt' : ''; ?>" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.14 + ( $product_index * 0.06 ) ) ); ?>s;"><div class="nocap-product-media" style="--product-image:url(<?php echo esc_url( $product_img ); ?>);"><?php if ( $product_logo ) : ?><span class="nocap-product-logo"><img src="<?php echo esc_url( $product_logo ); ?>" alt="<?php echo esc_attr( $product['title'] ); ?>" loading="lazy" decoding="async"></span><?php endif; ?><span class="nocap-product-number"><?php echo esc_html( $product['number'] ); ?></span></div><div class="nocap-product-copy"><?php if ( $product_logo ) : ?><span class="nocap-product-copy-logo"><img src="<?php echo esc_url( $product_logo ); ?>" alt="" loading="lazy" decoding="async"></span><?php endif; ?><p class="nocap-product-kicker"><?php echo esc_html( $product['kicker'] ); ?></p><h3><?php echo esc_html( $product['title'] ); ?></h3><p><?php echo esc_html( $product['text'] ); ?></p><ul class="nocap-product-points" aria-label="<?php echo esc_attr( $product['title'] ); ?> Highlights"><?php foreach ( $product['points'] as $point ) : ?><li><?php echo esc_html( $point ); ?></li><?php endforeach; ?></ul></div></article><?php endforeach; ?></div></div></section>
 
 	<section id="gallerie" class="nocap-section" aria-labelledby="nocap-gallery-title"><div class="nocap-shell"><div class="nocap-gallery-head"><div><p class="nocap-kicker nocap-kicker-dark" data-reveal><?php echo esc_html( $gallery_section['kicker'] ); ?></p><h2 id="nocap-gallery-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;"><?php echo esc_html( $gallery_section['title'] ); ?></h2></div></div><div class="nocap-gallery-wall" aria-label="NoCap Barbers Galerie"><?php foreach ( $gallery_media as $gallery_index => $gallery_item ) : ?><figure class="<?php echo esc_attr( 'nocap-gallery-item ' . $gallery_item['class'] ); ?>" data-reveal data-reveal-style="<?php echo esc_attr( 0 === $gallery_index % 3 ? 'scale' : ( 1 === $gallery_index % 3 ? 'tilt' : 'lift' ) ); ?>" style="--reveal-delay: <?php echo esc_attr( (string) ( ( $gallery_index % 5 ) * 0.045 ) ); ?>s;"><?php if ( 'video' === $gallery_item['type'] ) : ?><video class="nocap-gallery-video" aria-label="<?php echo esc_attr( $gallery_item['label'] ); ?>" autoplay muted loop playsinline preload="metadata"><source src="<?php echo esc_url( $gallery_item['video_url'] ); ?>" type="video/mp4"></video><?php else : ?><?php echo wp_get_attachment_image( (int) $gallery_item['image'], 'large', false, array( 'class' => 'nocap-gallery-image', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => $gallery_item['alt'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php endif; ?></figure><?php endforeach; ?></div><div class="nocap-gallery-cta-row" data-reveal style="--reveal-delay: 0.12s;" aria-label="Galerie Aktionen"><a class="nocap-gallery-cta nocap-gallery-cta-instagram" href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener"><span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span><span class="nocap-gallery-cta-copy"><span><?php echo esc_html( $gallery_section['instagram_label'] ); ?></span><strong><?php echo esc_html( $gallery_section['instagram_handle'] ); ?></strong></span></a><a class="nocap-gallery-cta nocap-gallery-cta-booking" href="<?php echo esc_url( $booking_cta ); ?>" target="_blank" rel="noopener"><span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 2h2v2h6V2h2v2h2.5A2.5 2.5 0 0 1 22 6.5v12A2.5 2.5 0 0 1 19.5 21h-15A2.5 2.5 0 0 1 2 18.5v-12A2.5 2.5 0 0 1 4.5 4H7V2Zm12.5 8h-15v8.5c0 .28.22.5.5.5h14c.28 0 .5-.22.5-.5V10ZM5 6c-.28 0-.5.22-.5.5V8h15V6.5c0-.28-.22-.5-.5-.5H5Zm3 7h3v3H8v-3Z" fill="currentColor"/></svg></span><span class="nocap-gallery-cta-copy"><span><?php echo esc_html( $gallery_section['booking_label'] ); ?></span><strong><?php echo esc_html( $gallery_section['booking_strong'] ); ?></strong></span></a></div></div></section>
 
