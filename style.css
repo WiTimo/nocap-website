@@ -2734,6 +2734,59 @@ Text Domain: salient-nocap-child
 }
 
 @media (max-width: 1180px) {
+  .home.nocap-frontpage-refresh .nocap-modern-home {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-hero {
+    order: 10;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services {
+    order: 20;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-shop-news {
+    order: 30;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-quote {
+    order: 40;
+  }
+
+  .home.nocap-frontpage-refresh #uber-uns {
+    order: 50;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-reviews {
+    order: 60;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-meaning-section {
+    order: 70;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-products {
+    order: 80;
+  }
+
+  .home.nocap-frontpage-refresh #gallerie {
+    order: 90;
+  }
+
+  .home.nocap-frontpage-refresh #team {
+    order: 100;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-faq {
+    order: 110;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-contact {
+    order: 120;
+  }
+
   .home.nocap-frontpage-refresh .nocap-shell {
     width: calc(100% - 2rem);
   }
@@ -3554,10 +3607,6 @@ Text Domain: salient-nocap-child
 
   .home.nocap-frontpage-refresh .nocap-quote-stage {
     order: -1;
-  }
-
-  .home.nocap-frontpage-refresh .nocap-story-flow .nocap-story-node:nth-child(n+2) {
-    display: none;
   }
 
   .home.nocap-frontpage-refresh .nocap-story-lead {
