@@ -136,22 +136,27 @@ if ( ! function_exists( 'nocap_child_tiktok_url' ) ) {
 }
 
 if ( ! function_exists( 'nocap_child_brand_logo_url' ) ) {
-	function nocap_child_brand_logo_url() {
+	function nocap_child_brand_logo_url( $placement = 'header' ) {
 		if ( function_exists( 'nocap_homepage_content' ) ) {
 			$content = nocap_homepage_content( 'de' );
-			$logo_raw = isset( $content['settings']['brand_logo'] ) ? trim( (string) $content['settings']['brand_logo'] ) : '';
-			$logo     = '';
+			$settings = isset( $content['settings'] ) && is_array( $content['settings'] ) ? $content['settings'] : array();
+			$keys     = 'footer' === $placement ? array( 'footer_logo', 'brand_logo', 'header_logo' ) : array( 'header_logo', 'brand_logo', 'footer_logo' );
 
-			if ( '' !== $logo_raw ) {
-				if ( ctype_digit( $logo_raw ) ) {
-					$logo = wp_get_attachment_image_url( (int) $logo_raw, 'full' );
-				} elseif ( filter_var( $logo_raw, FILTER_VALIDATE_URL ) ) {
-					$logo = $logo_raw;
+			foreach ( $keys as $key ) {
+				$logo_raw = isset( $settings[ $key ] ) ? trim( (string) $settings[ $key ] ) : '';
+				$logo     = '';
+
+				if ( '' !== $logo_raw ) {
+					if ( ctype_digit( $logo_raw ) ) {
+						$logo = wp_get_attachment_image_url( (int) $logo_raw, 'full' );
+					} elseif ( filter_var( $logo_raw, FILTER_VALIDATE_URL ) ) {
+						$logo = $logo_raw;
+					}
 				}
-			}
 
-			if ( $logo ) {
-				return $logo;
+				if ( $logo ) {
+					return $logo;
+				}
 			}
 		}
 
@@ -240,8 +245,10 @@ if ( ! function_exists( 'nocap_child_seed_homepage_extension_content' ) ) {
 		}
 
 		foreach ( array(
-			'tiktok_url' => 'https://www.tiktok.com/@nocap.barbershop',
-			'brand_logo' => '',
+			'tiktok_url'   => 'https://www.tiktok.com/@nocap.barbershop',
+			'brand_logo'   => '',
+			'header_logo'  => '',
+			'footer_logo'  => '',
 		) as $key => $value ) {
 			if ( ! array_key_exists( $key, $content['settings'] ) ) {
 				$content['settings'][ $key ] = $value;
@@ -306,18 +313,29 @@ if ( ! function_exists( 'nocap_child_normalize_brand_logo_setting' ) ) {
 	function nocap_child_normalize_brand_logo_setting() {
 		$content = get_option( 'nocap_homepage_content', array() );
 
-		if ( ! is_array( $content ) || empty( $content['settings']['brand_logo'] ) || ! function_exists( 'attachment_url_to_postid' ) ) {
+		if ( ! is_array( $content ) || ! isset( $content['settings'] ) || ! is_array( $content['settings'] ) || ! function_exists( 'attachment_url_to_postid' ) ) {
 			return;
 		}
 
-		$brand_logo = trim( (string) $content['settings']['brand_logo'] );
-		if ( '' === $brand_logo || ctype_digit( $brand_logo ) || ! filter_var( $brand_logo, FILTER_VALIDATE_URL ) ) {
-			return;
+		$changed = false;
+		foreach ( array( 'brand_logo', 'header_logo', 'footer_logo' ) as $key ) {
+			if ( empty( $content['settings'][ $key ] ) ) {
+				continue;
+			}
+
+			$brand_logo = trim( (string) $content['settings'][ $key ] );
+			if ( '' === $brand_logo || ctype_digit( $brand_logo ) || ! filter_var( $brand_logo, FILTER_VALIDATE_URL ) ) {
+				continue;
+			}
+
+			$attachment_id = (int) attachment_url_to_postid( $brand_logo );
+			if ( $attachment_id > 0 ) {
+				$content['settings'][ $key ] = $attachment_id;
+				$changed = true;
+			}
 		}
 
-		$attachment_id = (int) attachment_url_to_postid( $brand_logo );
-		if ( $attachment_id > 0 ) {
-			$content['settings']['brand_logo'] = $attachment_id;
+		if ( $changed ) {
 			update_option( 'nocap_homepage_content', $content, false );
 		}
 	}
@@ -329,6 +347,8 @@ if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 			'settings'     => array(
 				'tiktok_url'        => 'https://www.tiktok.com/@nocap.barbershop',
 				'brand_logo'        => '',
+				'header_logo'       => '',
+				'footer_logo'       => '',
 				'hero_news_enabled' => '1',
 			),
 			'partners'     => nocap_child_partner_defaults(),
@@ -376,8 +396,23 @@ if ( ! function_exists( 'nocap_child_localize_extension_defaults' ) ) {
 	}
 }
 
+if ( ! function_exists( 'nocap_child_is_homepage_content_admin' ) ) {
+	function nocap_child_is_homepage_content_admin() {
+		if ( ! is_admin() || ! function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+		return $screen && 'toplevel_page_nocap-homepage-content' === $screen->id;
+	}
+}
+
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_fields' ) ) {
 	function nocap_child_homepage_extension_admin_fields() {
+		if ( ! nocap_child_is_homepage_content_admin() ) {
+			return;
+		}
+
 		$defaults = nocap_child_homepage_extension_defaults();
 		$saved    = get_option( 'nocap_homepage_content', array() );
 		$content  = array_replace_recursive( $defaults, is_array( $saved ) ? $saved : array() );
@@ -401,6 +436,10 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_assets' ) ) {
 
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) ) {
 	function nocap_child_homepage_extension_admin_save_bar_style() {
+		if ( ! nocap_child_is_homepage_content_admin() ) {
+			return;
+		}
+
 		?>
 		<style>
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar {
@@ -499,6 +538,10 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 	function nocap_child_homepage_extension_admin_script() {
+		if ( ! nocap_child_is_homepage_content_admin() ) {
+			return;
+		}
+
 		?>
 		<script>
 			(function () {
@@ -670,7 +713,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 				};
 				var upgradeBrandLogoField = function () {
 					var input = form.querySelector('[name="nocap_homepage_content[settings][brand_logo]"]');
-					if (!input || input.dataset.nocapBrandLogoUpgraded) {
+					if (!input || input.type === 'hidden' || input.dataset.nocapBrandLogoUpgraded) {
 						return;
 					}
 
@@ -728,7 +771,18 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					wrapper.setAttribute('data-nocap-child-extension', 'settings-social-brand');
 					wrapper.innerHTML = '<h2>Logo & TikTok - Child Theme</h2><p class="description">Diese Werte ueberschreiben Fallbacks aus dem Child Theme.</p>';
 					grid.className = 'nocap-grid';
-					grid.appendChild(simpleField('nocap_homepage_content[settings][tiktok_url]', 'TikTok URL', settings.tiktok_url || ''));
+					if (!form.querySelector('[name="nocap_homepage_content[settings][header_logo]"]')) {
+						grid.appendChild(mediaField('nocap_homepage_content[settings][header_logo]', 'Header Logo', settings.header_logo || ''));
+					}
+					if (!form.querySelector('[name="nocap_homepage_content[settings][footer_logo]"]')) {
+						grid.appendChild(mediaField('nocap_homepage_content[settings][footer_logo]', 'Footer Logo', settings.footer_logo || ''));
+					}
+					if (!form.querySelector('[name="nocap_homepage_content[settings][tiktok_url]"]')) {
+						grid.appendChild(simpleField('nocap_homepage_content[settings][tiktok_url]', 'TikTok URL', settings.tiktok_url || ''));
+					}
+					if (!grid.children.length) {
+						return;
+					}
 					wrapper.appendChild(grid);
 					form.insertBefore(wrapper, saveBar);
 				};
@@ -850,6 +904,11 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 	}
 }
 
+add_action( 'admin_enqueue_scripts', 'nocap_child_homepage_extension_admin_assets', 20 );
+add_action( 'admin_head', 'nocap_child_homepage_extension_admin_fields', 20 );
+add_action( 'admin_head', 'nocap_child_homepage_extension_admin_save_bar_style', 21 );
+add_action( 'admin_footer', 'nocap_child_homepage_extension_admin_script', 20 );
+
 if ( ! function_exists( 'nocap_child_skip_link' ) ) {
 	function nocap_child_skip_link() {
 		if ( ! is_front_page() ) {
@@ -896,30 +955,41 @@ add_action( 'wp_footer', 'nocap_child_normalize_instagram_links', 99 );
 
 if ( ! function_exists( 'nocap_child_brand_social_footer_script' ) ) {
 	function nocap_child_brand_social_footer_script() {
-		$brand_logo_url = nocap_child_brand_logo_url();
-		$tiktok_url     = nocap_child_tiktok_url();
+		$header_logo_url = nocap_child_brand_logo_url( 'header' );
+		$footer_logo_url = nocap_child_brand_logo_url( 'footer' );
+		$tiktok_url      = nocap_child_tiktok_url();
 		?>
 		<script>
 			(function () {
-				var logoUrl = <?php echo wp_json_encode( esc_url_raw( $brand_logo_url ) ); ?>;
+				var headerLogoUrl = <?php echo wp_json_encode( esc_url_raw( $header_logo_url ) ); ?>;
+				var footerLogoUrl = <?php echo wp_json_encode( esc_url_raw( $footer_logo_url ) ); ?>;
 				var tiktokUrl = <?php echo wp_json_encode( esc_url_raw( $tiktok_url ) ); ?>;
 				var tikTokIcon = '<span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span>';
+				var replaceLogo = function (image, logoUrl) {
+					image.setAttribute('src', logoUrl);
+					image.setAttribute('data-src', logoUrl);
+					image.removeAttribute('srcset');
+					image.removeAttribute('data-srcset');
+					image.removeAttribute('sizes');
+					image.removeAttribute('data-sizes');
+					image.setAttribute('alt', 'NoCap Barbers');
+					image.classList.remove('lazyload', 'lazyloaded');
+				};
 
-				if (logoUrl) {
-					document.querySelectorAll('#header-outer #logo img, #header-outer .logo img, #footer-outer #block-3 img, #footer-outer .widget_media_image img').forEach(function (image) {
+				if (headerLogoUrl) {
+					document.querySelectorAll('#header-outer #logo img, #header-outer .logo img').forEach(function (image) {
+						replaceLogo(image, headerLogoUrl);
+					});
+				}
+
+				if (footerLogoUrl) {
+					document.querySelectorAll('#footer-outer #block-3 img, #footer-outer .widget_media_image img').forEach(function (image) {
 						var src = image.getAttribute('src') || '';
 						var alt = (image.getAttribute('alt') || '').toLowerCase();
-						if (image.closest('#footer-outer') && !image.closest('#block-3') && src.indexOf('logo') === -1 && alt.indexOf('nocap') === -1 && alt.indexOf('no cap') === -1) {
+						if (!image.closest('#block-3') && src.indexOf('logo') === -1 && alt.indexOf('nocap') === -1 && alt.indexOf('no cap') === -1) {
 							return;
 						}
-						image.setAttribute('src', logoUrl);
-						image.setAttribute('data-src', logoUrl);
-						image.removeAttribute('srcset');
-						image.removeAttribute('data-srcset');
-						image.removeAttribute('sizes');
-						image.removeAttribute('data-sizes');
-						image.setAttribute('alt', 'NoCap Barbers');
-						image.classList.remove('lazyload', 'lazyloaded');
+						replaceLogo(image, footerLogoUrl);
 					});
 				}
 
