@@ -310,8 +310,9 @@ if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 	function nocap_child_homepage_extension_defaults() {
 		return array(
 			'settings'     => array(
-				'tiktok_url' => 'https://www.tiktok.com/@nocap.barbershop',
-				'brand_logo' => '',
+				'tiktok_url'        => 'https://www.tiktok.com/@nocap.barbershop',
+				'brand_logo'        => '',
+				'hero_news_enabled' => '1',
 			),
 			'partners'     => nocap_child_partner_defaults(),
 			'hero_reviews' => array(
@@ -390,63 +391,74 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar {
 				position: fixed !important;
 				top: auto !important;
-				left: 50% !important;
-				right: auto !important;
-				bottom: 22px !important;
+				left: auto !important;
+				right: 28px !important;
+				bottom: 26px !important;
 				z-index: 100100;
 				display: inline-flex !important;
 				align-items: center;
-				justify-content: center;
-				gap: 14px;
+				justify-content: flex-end;
+				gap: 18px;
 				width: auto !important;
 				min-width: 0 !important;
-				max-width: calc(100vw - 48px) !important;
+				max-width: min(520px, calc(100vw - 56px)) !important;
 				height: auto !important;
-				min-height: 58px !important;
-				max-height: 82px !important;
-				padding: 12px 18px !important;
-				background: #111319;
-				border: 1px solid rgba(255, 255, 255, 0.18);
-				border-radius: 999px;
-				box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
-				transform: translate(-50%, 24px);
+				min-height: 74px !important;
+				max-height: none !important;
+				padding: 14px 16px 14px 22px !important;
+				background:
+					linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 24px),
+					linear-gradient(135deg, #111319 0%, #1a1f2a 100%);
+				border: 1px solid rgba(195, 154, 98, 0.42);
+				border-radius: 0;
+				clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+				box-shadow: 0 20px 54px rgba(0, 0, 0, 0.34);
+				transform: translateY(24px);
 				opacity: 0;
 				pointer-events: none;
 				transition: opacity 180ms ease, transform 180ms ease;
 				inset-block-start: auto !important;
-				inset-inline-start: 50% !important;
-				inset-inline-end: auto !important;
+				inset-inline-start: auto !important;
+				inset-inline-end: 28px !important;
 			}
 
 			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-save-bar,
 			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-save-bar {
 				opacity: 1;
 				pointer-events: auto;
-				transform: translate(-50%, 0);
+				transform: translateY(0);
 			}
 
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar::before {
-				content: "Ungespeicherte Änderungen";
-				color: rgba(255, 255, 255, 0.78);
-				font-size: 13px;
-				font-weight: 700;
+				content: "Änderungen bereit";
+				color: rgba(255, 255, 255, 0.74);
+				font-size: 12px;
+				font-weight: 800;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
 				white-space: nowrap;
 			}
 
 			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-save-bar::before {
-				content: "Speichert...";
+				content: "Speichert";
 			}
 
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar .button,
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar .button-primary,
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar input[type="submit"],
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar button[type="submit"] {
-				min-height: 44px;
-				padding: 0 24px;
-				border-radius: 999px;
+				min-height: 46px;
+				padding: 0 26px;
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 0;
+				background: linear-gradient(135deg, #c39a62 0%, #a87d42 100%) !important;
+				color: #111319 !important;
 				font-weight: 800;
-				font-size: 14px;
+				font-size: 13px;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
 				box-shadow: none;
+				clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
 			}
 
 			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-admin,
@@ -457,10 +469,12 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 			@media (max-width: 782px) {
 				body.toplevel_page_nocap-homepage-content .nocap-save-bar {
 					bottom: 14px !important;
-					width: auto !important;
+					right: 12px !important;
+					width: calc(100vw - 24px) !important;
 					max-width: calc(100vw - 24px) !important;
-					border-radius: 18px;
+					inset-inline-end: 12px !important;
 					flex-wrap: wrap;
+					justify-content: space-between;
 				}
 			}
 		</style>
@@ -537,6 +551,25 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					input.rows = 2;
 					input.value = value || '';
 					label.appendChild(text);
+					label.appendChild(input);
+					return label;
+				};
+				var checkboxField = function (name, labelText, value) {
+					var label = document.createElement('label');
+					var text = document.createElement('span');
+					var hidden = document.createElement('input');
+					var input = document.createElement('input');
+					label.className = 'nocap-field nocap-checkbox-field';
+					text.textContent = labelText;
+					hidden.type = 'hidden';
+					hidden.name = name;
+					hidden.value = '0';
+					input.type = 'checkbox';
+					input.name = name;
+					input.value = '1';
+					input.checked = String(value || '1') !== '0';
+					label.appendChild(text);
+					label.appendChild(hidden);
 					label.appendChild(input);
 					return label;
 				};
@@ -685,6 +718,18 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					wrapper.appendChild(grid);
 					form.insertBefore(wrapper, saveBar);
 				};
+				var insertNewsToggleInTopSection = function () {
+					var firstSection = form.querySelector('.nocap-admin-section');
+					var settings = data.settings || {};
+					if (!firstSection || firstSection.querySelector('[name="nocap_homepage_content[settings][hero_news_enabled]"]')) {
+						return;
+					}
+
+					var grid = firstSection.querySelector('.nocap-grid') || firstSection;
+					var field = checkboxField('nocap_homepage_content[settings][hero_news_enabled]', 'Shop News anzeigen', settings.hero_news_enabled || '1');
+					field.setAttribute('data-nocap-child-extension', 'hero-news-toggle-top');
+					grid.insertBefore(field, grid.firstChild);
+				};
 				var partnerCard = function (item, index) {
 					var card = document.createElement('div');
 					var title = document.createElement('div');
@@ -759,6 +804,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 				};
 
 				upgradeBrandLogoField();
+				insertNewsToggleInTopSection();
 				insertSettings();
 				insertPartners();
 				insertProductFallbackFields();
