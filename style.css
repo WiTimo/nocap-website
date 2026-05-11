@@ -66,56 +66,74 @@ Text Domain: salient-nocap-child
   overflow-x: hidden;
 }
 
-.home.nocap-frontpage-refresh #top nav {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.home.nocap-frontpage-refresh #top nav > ul {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.home.nocap-frontpage-refresh #top nav > ul.buttons {
-  flex: 0 0 auto;
-}
-
-.home.nocap-frontpage-refresh #top nav a {
-  position: relative;
-}
-
-.home.nocap-frontpage-refresh #header-outer #logo img,
-.home.nocap-frontpage-refresh #header-outer .logo img {
-  width: 142px !important;
+.home.nocap-frontpage-refresh #header-outer #logo img.stnd,
+.home.nocap-frontpage-refresh #header-outer #logo img.starting-logo,
+.home.nocap-frontpage-refresh #header-outer #logo img {
   max-width: none !important;
-  height: 46px !important;
-  max-height: 46px !important;
+  max-height: none !important;
   object-fit: contain;
   object-position: center;
-  display: block !important;
-}
-
-.home.nocap-frontpage-refresh #header-outer #logo img:not(.starting-logo):not(.mobile-only-logo),
-.home.nocap-frontpage-refresh #header-outer #logo img.starting-logo.mobile-only-logo {
-  display: none !important;
 }
 
 .home.nocap-frontpage-refresh #header-outer #logo {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 152px;
-  min-height: 74px;
-  line-height: 1;
+  display: block !important;
+  width: auto;
+  min-height: 0;
+  line-height: 0;
+}
+
+@media only screen and (min-width: 1000px) {
+  .home.nocap-frontpage-refresh #top nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .home.nocap-frontpage-refresh #top nav > ul {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .home.nocap-frontpage-refresh #top nav > ul.buttons {
+    flex: 0 0 auto;
+  }
+
+  .home.nocap-frontpage-refresh #top nav a {
+    position: relative;
+  }
+
+  .home.nocap-frontpage-refresh #header-outer[data-format="default"] #top > .container > .row {
+    position: relative;
+    min-height: 88px;
+  }
+
+  .home.nocap-frontpage-refresh #header-outer[data-format="default"] #top > .container > .row > .span_3 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 88px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .home.nocap-frontpage-refresh #header-outer[data-format="default"] #top > .container > .row > .span_3 #logo {
+    display: inline-flex !important;
+    position: relative;
+    top: auto;
+    transform: none;
+    margin-top: clamp(18px, 2vw, 22px);
+    pointer-events: auto;
+  }
 }
 
 .home.nocap-frontpage-refresh #footer-outer #block-3 img,
 .home.nocap-frontpage-refresh #footer-outer .widget_media_image img[alt*="NoCap"],
 .home.nocap-frontpage-refresh #footer-outer .widget_media_image img[alt*="No Cap"] {
-  width: min(460px, 100%) !important;
-  max-width: min(460px, 100%) !important;
+  width: min(150px, 100%) !important;
+  max-width: min(150px, 100%) !important;
   height: auto;
   object-fit: contain;
 }
@@ -149,6 +167,7 @@ Text Domain: salient-nocap-child
   overflow: hidden;
   box-sizing: border-box;
 }
+
 
 .home.nocap-frontpage-refresh .nocap-lang-switcher button {
   display: flex;
@@ -249,7 +268,9 @@ Text Domain: salient-nocap-child
 .home.nocap-frontpage-refresh .nocap-hero {
   position: relative;
   padding: 120px 0 86px;
-  min-height: min(100vh, 980px);
+  min-height: 100svh;
+  height: 100svh;
+  box-sizing: border-box;
   color: #ffffff;
   background: #08090d;
   overflow: hidden;
@@ -308,7 +329,7 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-hero-copy {
   position: relative;
-  max-width: 720px;
+  max-width: 820px;
   padding-top: 24px;
 }
 
@@ -317,6 +338,7 @@ Text Domain: salient-nocap-child
   color: #ffffff;
   font-size: clamp(2.2rem, 5.8vw, 5.15rem);
   text-wrap: balance;
+  font-family: "Roboto Slab", "Segoe UI", sans-serif;
 }
 
 .home.nocap-frontpage-refresh .nocap-lead {
@@ -1006,6 +1028,7 @@ Text Domain: salient-nocap-child
   width: 100%;
   justify-self: start;
   justify-content: center;
+  align-items: center;
   padding: 14px 18px;
   min-height: 54px;
   border-radius: 16px 4px 16px 4px;
@@ -1030,7 +1053,22 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:hover::after,
 .home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn:focus-visible::after {
-  transform: translateY(-50%);
+  transform: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn-primary::after {
+  flex: 0 0 auto;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  font-size: 15px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  transform: translateY(-0.5px);
+  transition: none;
+  background: transparent;
 }
 
 .home.nocap-frontpage-refresh .nocap-quote {
@@ -1798,7 +1836,7 @@ Text Domain: salient-nocap-child
   grid-template-columns: minmax(130px, 0.42fr) minmax(0, 0.58fr);
   gap: clamp(14px, 2vw, 22px);
   align-items: stretch;
-  padding-top: 0;
+  padding-top: clamp(22px, 3vw, 38px);
   min-height: clamp(240px, 24vw, 340px);
   border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
@@ -1858,29 +1896,42 @@ Text Domain: salient-nocap-child
   place-items: center;
   width: clamp(94px, 11vw, 148px);
   min-height: 54px;
-  padding: 10px 14px;
-  background: rgba(246, 241, 232, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(6px);
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  padding: 0;
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
 }
 
-.home.nocap-frontpage-refresh .nocap-product-logo img,
+.home.nocap-frontpage-refresh .nocap-product-logo img {
+  display: block;
+  width: 100%;
+  max-width: 120px;
+  max-height: 48px;
+  object-fit: contain;
+  object-position: left center;
+}
+
 .home.nocap-frontpage-refresh .nocap-product-copy-logo img {
   display: block;
   width: 100%;
-  max-width: 122px;
+  max-width: 110px;
   max-height: 42px;
   object-fit: contain;
-  filter: grayscale(1) contrast(1.06);
+  object-position: center;
 }
 
 .home.nocap-frontpage-refresh .nocap-product-copy-logo {
-  display: none;
-  width: 118px;
-  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: auto;
+  max-width: 160px;
+  min-height: 48px;
   margin: 0 0 16px;
-  place-items: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 
 .home.nocap-frontpage-refresh .nocap-product-media:hover::before {
@@ -2401,12 +2452,11 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-faq {
   position: relative;
-  margin-top: clamp(34px, 6vw, 86px);
-  padding-top: clamp(74px, 10vw, 140px);
-  background:
-    linear-gradient(90deg, rgba(17, 19, 25, 0.08) 1px, transparent 1px) 0 0 / 44px 44px,
-    linear-gradient(180deg, #f7f3eb 0%, #eee7da 100%);
+  margin-top: 0;
+  padding-top: clamp(108px, 16vw, 226px);
+  background: transparent;
   overflow: visible;
+  z-index: 1;
 }
 
 .home.nocap-frontpage-refresh .nocap-faq::before {
@@ -2415,27 +2465,18 @@ Text Domain: salient-nocap-child
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(110deg, rgba(195, 154, 98, 0.18), transparent 42%);
+  background: linear-gradient(90deg, rgba(17, 19, 25, 0.08) 1px, transparent 1px) 0 0 / 44px 44px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.65) 10%, #000 22%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.65) 10%, #000 22%, #000 100%);
 }
 
 .home.nocap-frontpage-refresh .nocap-faq::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: clamp(-86px, -6vw, -34px);
-  height: clamp(110px, 12vw, 176px);
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, #f0ece4 0%, rgba(247, 243, 235, 0.96) 46%, rgba(247, 243, 235, 0) 100%),
-    linear-gradient(90deg, rgba(17, 19, 25, 0.065) 1px, transparent 1px) center top / 44px 44px;
-  clip-path: polygon(0 0, 100% 22%, 100% 100%, 0 78%);
+  content: none;
 }
 
 .home.nocap-frontpage-refresh .nocap-faq-grid {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: grid;
   grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
   gap: clamp(28px, 5vw, 76px);
@@ -2810,6 +2851,7 @@ Text Domain: salient-nocap-child
     border-left: 0;
     border-top: 2px solid #111319;
     padding-top: 18px;
+    align-items: center;
   }
 
   .home.nocap-frontpage-refresh .nocap-booking-strip {
@@ -2839,7 +2881,8 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-hero {
-    min-height: 82vh;
+    min-height: 100svh;
+    height: 100svh;
     padding: 102px 0 58px;
   }
 
@@ -2921,20 +2964,9 @@ Text Domain: salient-nocap-child
     overflow-wrap: anywhere;
   }
 
-  .home.nocap-frontpage-refresh #top .nocap-lang-switcher {
-    position: fixed;
-    top: 14px;
-    right: 58px;
-    z-index: 10030;
-    background: rgba(8, 10, 13, 0.78);
-  }
-
-  .home.nocap-frontpage-refresh .nocap-lang-switcher button {
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-    padding: 0;
+  .home.nocap-frontpage-refresh .nocap-lang-switcher {
+    --lang-h: 36px;
+    --lang-w: 106px;
   }
 
   .home.nocap-frontpage-refresh .nocap-services-grid {
@@ -2942,7 +2974,9 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-services-cta .nocap-btn {
-    width: auto;
+    width: min(100%, 420px);
+    margin-inline: auto;
+    justify-self: center;
   }
 
   .home.nocap-frontpage-refresh .nocap-quote-media,
@@ -2956,15 +2990,21 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-review-switch {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    overflow: hidden;
+    padding: 4px;
+    gap: 4px;
   }
 
   .home.nocap-frontpage-refresh .nocap-review-chip {
     white-space: nowrap;
-    min-width: 140px;
+    min-width: 0;
+    padding: 8px 4px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    min-height: 42px;
   }
 
   .home.nocap-frontpage-refresh .nocap-review-quote {
@@ -3159,4 +3199,371 @@ Text Domain: salient-nocap-child
   .home.nocap-frontpage-refresh .nocap-product-stage::before {
     transition: none;
   }
+}
+
+/* === Gallery / Social CTA divider + spacing === */
+.home.nocap-frontpage-refresh .nocap-gallery-cta-row {
+  margin-top: clamp(40px, 6vw, 80px);
+  padding-top: clamp(28px, 4vw, 48px);
+  border-top: 1px solid rgba(17, 19, 23, 0.18);
+}
+
+/* === TikTok icon parity in header / footer === */
+.home.nocap-frontpage-refresh #header-outer .nocap-tiktok-li,
+.home.nocap-frontpage-refresh #footer-outer .nocap-tiktok-li {
+  list-style: none;
+}
+
+.home.nocap-frontpage-refresh #header-outer .nocap-tiktok-link i,
+.home.nocap-frontpage-refresh #footer-outer .nocap-tiktok-link i,
+.home.nocap-frontpage-refresh #social-in-menu .nocap-tiktok-link i,
+.home.nocap-frontpage-refresh #copyright .social .nocap-tiktok-link i {
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+}
+
+.home.nocap-frontpage-refresh #header-outer .nocap-tiktok-link,
+.home.nocap-frontpage-refresh #footer-outer .nocap-tiktok-link,
+.home.nocap-frontpage-refresh #social-in-menu .nocap-tiktok-link,
+.home.nocap-frontpage-refresh #copyright .social .nocap-tiktok-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home.nocap-frontpage-refresh #header-outer .nocap-tiktok-svg,
+.home.nocap-frontpage-refresh #footer-outer .nocap-tiktok-svg,
+.home.nocap-frontpage-refresh #social-in-menu .nocap-tiktok-svg,
+.home.nocap-frontpage-refresh #copyright .social .nocap-tiktok-svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.home.nocap-frontpage-refresh .nocap-social .nocap-tiktok-link {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #111319;
+  border: 1px solid rgba(17, 19, 23, 0.24);
+  text-decoration: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-social .nocap-tiktok-link:hover {
+  color: #ffffff;
+  border-color: var(--nc-accent-strong);
+  background: var(--nc-accent-strong);
+}
+
+/* === Fixed shop-news bottom banner (replaces inline section) === */
+.home.nocap-frontpage-refresh .nocap-shop-news.nocap-shop-news-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9990;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgba(158, 220, 136, 0.5);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.32);
+  transform: translateY(110%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  background: #0f3327;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news.nocap-shop-news-fixed.is-visible {
+  transform: translateY(0);
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news.nocap-shop-news-fixed.is-dismissed {
+  display: none !important;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shell {
+  width: 100%;
+  max-width: none;
+  padding: 10px 138px 10px 18px;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-grid {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  min-height: 42px;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-mark {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border: 1px solid #9edc88;
+  border-radius: 4px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 800;
+  color: #9edc88;
+  font-family: "Manrope", sans-serif;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-mark span {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
+  letter-spacing: inherit;
+  font-weight: inherit;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-mark span + span {
+  display: none;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-copy h2 {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(13px, 1.05vw, 15px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0;
+  white-space: normal;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-close {
+  position: absolute;
+  top: 50%;
+  right: 52px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+.home.nocap-frontpage-refresh .nocap-shop-news-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 760px) {
+  .home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shell {
+    padding: 10px 82px 10px 12px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-grid {
+    align-items: center;
+    gap: 9px;
+    min-height: 48px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-copy h2 {
+    font-size: clamp(12px, 3.6vw, 14px);
+    line-height: 1.28;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-shop-news-fixed .nocap-shop-news-mark {
+    padding: 3px 6px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-shop-news-close {
+    right: 52px;
+    top: 50%;
+    transform: translateY(-40%);
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+}
+
+/* === Mobile fixes (text alignment, services height, quote swap, about trim, off-canvas no-scroll, products) === */
+@media (max-width: 760px) {
+  .home.nocap-frontpage-refresh .nocap-shell {
+    width: calc(100% - 1.2rem);
+  }
+
+  /* Remove story node index circle to align content with headings above */
+  .home.nocap-frontpage-refresh .nocap-story-node-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-index {
+    display: none;
+  }
+
+  /* Kicker line: reduce width so kicker aligns closer to headings */
+  .home.nocap-frontpage-refresh .nocap-kicker::before {
+    width: 18px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-service-visual {
+    aspect-ratio: 16 / 11;
+    border-radius: 18px 4px 18px 4px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-quote-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-quote-stage {
+    order: -1;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-flow .nocap-story-node:nth-child(n+2) {
+    display: none;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-lead {
+    padding-right: 0;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-story-video-wrap,
+  .home.nocap-frontpage-refresh .nocap-story-video {
+    min-height: 30vh;
+    border-radius: 16px 4px 16px 4px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-feature,
+  .home.nocap-frontpage-refresh .nocap-product-feature-alt {
+    padding-top: 26px;
+    gap: 18px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-product-copy-logo {
+    margin-bottom: 12px;
+    max-width: 140px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-cta-row {
+    margin-top: 36px;
+    padding-top: 28px;
+    justify-items: center;
+    width: calc(100vw - 1.2rem);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-gallery-cta {
+    width: 100%;
+  }
+
+  /* Services CTA: center on mobile */
+  .home.nocap-frontpage-refresh .nocap-services-cta {
+    text-align: center;
+    align-items: center;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-services-cta-line {
+    max-width: none;
+  }
+
+  /* FAQ headings: more prominent on mobile */
+  .home.nocap-frontpage-refresh .nocap-faq-item h3 {
+    font-size: clamp(1.12rem, 4.5vw, 1.38rem);
+    font-weight: 800;
+    color: #111319;
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: 8px;
+  }
+
+  /* Social links: center */
+  .home.nocap-frontpage-refresh .nocap-social {
+    justify-content: center;
+  }
+
+  /* Booking strip: center text on mobile */
+  .home.nocap-frontpage-refresh .nocap-booking-strip {
+    text-align: center;
+    align-items: center;
+  }
+
+  /* Off-canvas mobile menu: lock scroll */
+  body.mobile-active,
+  body.mobile-menu-overlay-active,
+  body.material-ocm-open,
+  body.ascend-mobile-menu-open,
+  body.nocap-mobile-menu-locked {
+    position: fixed;
+    inset: var(--nocap-lock-top, 0) 0 auto 0;
+    width: 100%;
+    height: 100dvh;
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  body.mobile-active #ajax-content-wrap,
+  body.mobile-menu-overlay-active #ajax-content-wrap,
+  body.material-ocm-open #ajax-content-wrap,
+  body.ascend-mobile-menu-open #ajax-content-wrap,
+  body.nocap-mobile-menu-locked #ajax-content-wrap {
+    overflow: hidden !important;
+  }
+
+  body.mobile-active .off-canvas-menu-container,
+  body.mobile-active .off-canvas-menu-container .inner,
+  body.mobile-active .off-canvas-menu-container .inner-wrap,
+  body.mobile-menu-overlay-active .off-canvas-menu-container,
+  body.mobile-menu-overlay-active .off-canvas-menu-container .inner,
+  body.material-ocm-open .off-canvas-menu-container,
+  body.material-ocm-open .off-canvas-menu-container .inner,
+  body.nocap-mobile-menu-locked .off-canvas-menu-container,
+  body.nocap-mobile-menu-locked .off-canvas-menu-container .inner {
+    max-height: 100dvh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+  }
+
+  body.mobile-active .off-canvas-menu-container ul,
+  body.mobile-menu-overlay-active .off-canvas-menu-container ul,
+  body.material-ocm-open .off-canvas-menu-container ul,
+  body.nocap-mobile-menu-locked .off-canvas-menu-container ul {
+    overflow: hidden !important;
+  }
+
+  .home.nocap-frontpage-refresh .off-canvas-menu-container .nocap-lang-switcher-mobile {
+    margin: 18px auto 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home.nocap-frontpage-refresh .nocap-shell {
+    width: calc(100% - 1.8rem);
+  }
+
+  .home.nocap-frontpage-refresh .nocap-service-visual {
+    aspect-ratio: 16 / 10;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-lang-switcher {
+    --lang-w: 96px;
+    --lang-h: 34px;
+  }
+}
+
+/* === Scroll-to-top offset when news banner is active === */
+body.nocap-news-active #back-to-top,
+body.nocap-news-active a.back-to-top,
+body.nocap-news-active .back-to-top {
+  bottom: 74px !important;
+  transition: bottom 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }

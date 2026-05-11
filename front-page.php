@@ -397,12 +397,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 			<div class="nocap-shop-news-grid" data-reveal>
 				<div class="nocap-shop-news-mark" aria-hidden="true"><span>NEW</span></div>
 				<div class="nocap-shop-news-copy">
-					<p class="nocap-shop-news-kicker"><?php echo esc_html( $hero_news['kicker'] ); ?></p>
-					<h2 id="nocap-shop-news-title"><?php echo esc_html( $hero_news['title'] ); ?></h2>
-					<p><?php echo esc_html( $hero_news['text'] ); ?></p>
-				</div>
-				<div class="nocap-shop-news-address">
-					<span><?php echo esc_html( $hero_news['address'] ); ?></span>
+					<h2 id="nocap-shop-news-title"><span><?php echo esc_html( $hero_news['title'] ); ?></span> <span data-nocap-i18n="news_at_word">am</span> <span><?php echo esc_html( $hero_news['address'] ); ?></span></h2>
 				</div>
 			</div>
 		</div>

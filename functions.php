@@ -120,8 +120,16 @@ if ( ! function_exists( 'nocap_child_brand_logo_url' ) ) {
 	function nocap_child_brand_logo_url() {
 		if ( function_exists( 'nocap_homepage_content' ) ) {
 			$content = nocap_homepage_content( 'de' );
-			$logo_id = isset( $content['settings']['brand_logo'] ) ? (int) $content['settings']['brand_logo'] : 0;
-			$logo    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
+			$logo_raw = isset( $content['settings']['brand_logo'] ) ? trim( (string) $content['settings']['brand_logo'] ) : '';
+			$logo     = '';
+
+			if ( '' !== $logo_raw ) {
+				if ( ctype_digit( $logo_raw ) ) {
+					$logo = wp_get_attachment_image_url( (int) $logo_raw, 'full' );
+				} elseif ( filter_var( $logo_raw, FILTER_VALIDATE_URL ) ) {
+					$logo = $logo_raw;
+				}
+			}
 
 			if ( $logo ) {
 				return $logo;
@@ -276,6 +284,28 @@ if ( ! function_exists( 'nocap_child_seed_homepage_extension_content' ) ) {
 }
 add_action( 'init', 'nocap_child_seed_homepage_extension_content', 22 );
 
+if ( ! function_exists( 'nocap_child_normalize_brand_logo_setting' ) ) {
+	function nocap_child_normalize_brand_logo_setting() {
+		$content = get_option( 'nocap_homepage_content', array() );
+
+		if ( ! is_array( $content ) || empty( $content['settings']['brand_logo'] ) || ! function_exists( 'attachment_url_to_postid' ) ) {
+			return;
+		}
+
+		$brand_logo = trim( (string) $content['settings']['brand_logo'] );
+		if ( '' === $brand_logo || ctype_digit( $brand_logo ) || ! filter_var( $brand_logo, FILTER_VALIDATE_URL ) ) {
+			return;
+		}
+
+		$attachment_id = (int) attachment_url_to_postid( $brand_logo );
+		if ( $attachment_id > 0 ) {
+			$content['settings']['brand_logo'] = $attachment_id;
+			update_option( 'nocap_homepage_content', $content, false );
+		}
+	}
+}
+add_action( 'init', 'nocap_child_normalize_brand_logo_setting', 23 );
+
 if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 	function nocap_child_homepage_extension_defaults() {
 		return array(
@@ -342,6 +372,103 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_fields' ) ) {
 }
 add_action( 'admin_print_footer_scripts-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_fields', 5 );
 
+if ( ! function_exists( 'nocap_child_homepage_extension_admin_assets' ) ) {
+	function nocap_child_homepage_extension_admin_assets( $hook ) {
+		if ( 'toplevel_page_nocap-homepage-content' !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'nocap_child_homepage_extension_admin_assets' );
+
+if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) ) {
+	function nocap_child_homepage_extension_admin_save_bar_style() {
+		?>
+		<style>
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar {
+				position: fixed !important;
+				top: auto !important;
+				left: 50% !important;
+				right: auto !important;
+				bottom: 22px !important;
+				z-index: 100100;
+				display: inline-flex !important;
+				align-items: center;
+				justify-content: center;
+				gap: 14px;
+				width: auto !important;
+				min-width: 0 !important;
+				max-width: calc(100vw - 48px) !important;
+				height: auto !important;
+				min-height: 58px !important;
+				max-height: 82px !important;
+				padding: 12px 18px !important;
+				background: #111319;
+				border: 1px solid rgba(255, 255, 255, 0.18);
+				border-radius: 999px;
+				box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+				transform: translate(-50%, 24px);
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 180ms ease, transform 180ms ease;
+				inset-block-start: auto !important;
+				inset-inline-start: 50% !important;
+				inset-inline-end: auto !important;
+			}
+
+			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-save-bar,
+			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-save-bar {
+				opacity: 1;
+				pointer-events: auto;
+				transform: translate(-50%, 0);
+			}
+
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar::before {
+				content: "Ungespeicherte Änderungen";
+				color: rgba(255, 255, 255, 0.78);
+				font-size: 13px;
+				font-weight: 700;
+				white-space: nowrap;
+			}
+
+			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-save-bar::before {
+				content: "Speichert...";
+			}
+
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar .button,
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar .button-primary,
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar input[type="submit"],
+			body.toplevel_page_nocap-homepage-content .nocap-save-bar button[type="submit"] {
+				min-height: 44px;
+				padding: 0 24px;
+				border-radius: 999px;
+				font-weight: 800;
+				font-size: 14px;
+				box-shadow: none;
+			}
+
+			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-admin,
+			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-admin {
+				padding-bottom: 98px;
+			}
+
+			@media (max-width: 782px) {
+				body.toplevel_page_nocap-homepage-content .nocap-save-bar {
+					bottom: 14px !important;
+					width: auto !important;
+					max-width: calc(100vw - 24px) !important;
+					border-radius: 18px;
+					flex-wrap: wrap;
+				}
+			}
+		</style>
+		<?php
+	}
+}
+add_action( 'admin_head-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_save_bar_style' );
+
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 	function nocap_child_homepage_extension_admin_script() {
 		?>
@@ -354,6 +481,25 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 				if (!data || !form || !saveBar || form.querySelector('[data-nocap-child-extension]')) {
 					return;
 				}
+
+				var markDirty = function () {
+					document.body.classList.add('nocap-homepage-dirty');
+					document.body.classList.remove('nocap-homepage-saving');
+				};
+				var markSaving = function () {
+					document.body.classList.remove('nocap-homepage-dirty');
+					document.body.classList.add('nocap-homepage-saving');
+				};
+
+				saveBar.setAttribute('aria-live', 'polite');
+				form.addEventListener('input', markDirty, true);
+				form.addEventListener('change', markDirty, true);
+				form.addEventListener('click', function (event) {
+					if (event.target.closest('.nocap-add-card, .nocap-remove-card, .nocap-remove-media')) {
+						markDirty();
+					}
+				}, true);
+				form.addEventListener('submit', markSaving);
 
 				var labels = {
 					hero_reviews: 'Hero Bewertungs-Komponente - neue Felder',
@@ -381,34 +527,151 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					label.appendChild(input);
 					return label;
 				};
-				var simpleField = function (name, labelText, value, isMedia) {
+				var simpleField = function (name, labelText, value) {
 					var label = document.createElement('label');
 					var text = document.createElement('span');
 					var input = document.createElement('textarea');
-					label.className = isMedia ? 'nocap-field nocap-media-field' : 'nocap-field';
+					label.className = 'nocap-field';
 					text.textContent = labelText;
 					input.name = name;
 					input.rows = 2;
 					input.value = value || '';
 					label.appendChild(text);
-					if (isMedia) {
-						input = document.createElement('input');
-						input.type = 'number';
-						input.name = name;
-						input.value = value || '';
-						label.appendChild(input);
-						var button = document.createElement('button');
-						button.type = 'button';
-						button.className = 'button nocap-pick-media';
-						button.textContent = 'Datei aus Mediathek w\u00e4hlen';
-						label.appendChild(button);
-						var preview = document.createElement('span');
-						preview.className = 'nocap-media-preview';
-						label.appendChild(preview);
-						return label;
-					}
 					label.appendChild(input);
 					return label;
+				};
+				var mediaField = function (name, labelText, value) {
+					var label = document.createElement('label');
+					var text = document.createElement('span');
+					var input = document.createElement('input');
+					var button = document.createElement('button');
+					var remove = document.createElement('button');
+					var preview = document.createElement('span');
+					var frame = null;
+
+					label.className = 'nocap-field nocap-media-field';
+					text.textContent = labelText;
+					input.type = 'hidden';
+					input.name = name;
+					input.value = value || '';
+
+					button.type = 'button';
+					button.className = 'button nocap-pick-media';
+					button.textContent = 'Datei aus Mediathek w\u00e4hlen';
+
+					remove.type = 'button';
+					remove.className = 'button-link-delete nocap-remove-media';
+					remove.textContent = 'Entfernen';
+
+					preview.className = 'nocap-media-preview';
+
+					var syncPreview = function () {
+						preview.innerHTML = '';
+						if (!input.value) {
+							preview.classList.remove('has-value');
+							return;
+						}
+						preview.classList.add('has-value');
+						var img = document.createElement('img');
+						img.src = input.value.match(/^\d+$/) ? '' : input.value;
+						img.alt = '';
+						if (img.src) {
+							preview.appendChild(img);
+						}
+					};
+
+					button.addEventListener('click', function (event) {
+						event.preventDefault();
+						if (!window.wp || !wp.media) {
+							return;
+						}
+						if (!frame) {
+							frame = wp.media({
+								title: labelText,
+								button: { text: 'Auswählen' },
+								multiple: false
+							});
+							frame.on('select', function () {
+								var attachment = frame.state().get('selection').first().toJSON();
+								input.value = attachment.id || '';
+								preview.innerHTML = '';
+								preview.classList.add('has-value');
+								var img = document.createElement('img');
+								img.src = (attachment.sizes && attachment.sizes.medium && attachment.sizes.medium.url) || attachment.url || '';
+								img.alt = '';
+								preview.appendChild(img);
+								markDirty();
+							});
+						}
+						frame.open();
+					});
+
+					remove.addEventListener('click', function (event) {
+						event.preventDefault();
+						input.value = '';
+						syncPreview();
+						markDirty();
+					});
+
+					label.appendChild(text);
+					label.appendChild(input);
+					label.appendChild(button);
+					label.appendChild(remove);
+					label.appendChild(preview);
+					syncPreview();
+					return label;
+				};
+				var upgradeBrandLogoField = function () {
+					var input = form.querySelector('[name="nocap_homepage_content[settings][brand_logo]"]');
+					if (!input || input.dataset.nocapBrandLogoUpgraded) {
+						return;
+					}
+
+					var field = input.closest('label, .nocap-field, .redux-field-container, .form-field, p, div');
+					var container = field || input.parentNode;
+					var button = document.createElement('button');
+					var preview = document.createElement('span');
+					var frame = null;
+
+					input.type = 'number';
+					input.placeholder = '';
+					input.dataset.nocapBrandLogoUpgraded = '1';
+
+					button.type = 'button';
+					button.className = 'button nocap-pick-media';
+					button.textContent = 'Datei aus Mediathek w\u00e4hlen';
+
+					preview.className = 'nocap-media-preview';
+
+					var syncPreview = function () {
+						preview.innerHTML = '';
+						preview.classList.toggle('has-value', !!input.value);
+					};
+
+					button.addEventListener('click', function (event) {
+						event.preventDefault();
+						if (!window.wp || !wp.media) {
+							return;
+						}
+						if (!frame) {
+							frame = wp.media({
+								title: 'Brand Logo',
+								button: { text: 'Auswählen' },
+								multiple: false
+							});
+							frame.on('select', function () {
+								var attachment = frame.state().get('selection').first().toJSON();
+								input.value = attachment.id || '';
+								syncPreview();
+								markDirty();
+							});
+						}
+						frame.open();
+					});
+
+					container.appendChild(button);
+					container.appendChild(preview);
+					syncPreview();
 				};
 				var insertSettings = function () {
 					var wrapper = document.createElement('section');
@@ -416,10 +679,9 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					var settings = data.settings || {};
 					wrapper.className = 'nocap-admin-section';
 					wrapper.setAttribute('data-nocap-child-extension', 'settings-social-brand');
-					wrapper.innerHTML = '<h2>Logo & TikTok - Child Theme</h2><p class="description">Diese Werte ueberschreiben Fallbacks aus dem Child Theme. Brand Logo steuert Navbar und Footer Logo.</p>';
+					wrapper.innerHTML = '<h2>Logo & TikTok - Child Theme</h2><p class="description">Diese Werte ueberschreiben Fallbacks aus dem Child Theme.</p>';
 					grid.className = 'nocap-grid';
 					grid.appendChild(simpleField('nocap_homepage_content[settings][tiktok_url]', 'TikTok URL', settings.tiktok_url || ''));
-					grid.appendChild(simpleField('nocap_homepage_content[settings][brand_logo]', 'Brand Logo', settings.brand_logo || '', true));
 					wrapper.appendChild(grid);
 					form.insertBefore(wrapper, saveBar);
 				};
@@ -434,7 +696,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					grid.className = 'nocap-grid';
 					grid.appendChild(simpleField(base + '[name]', 'Name', item.name || ''));
 					grid.appendChild(simpleField(base + '[url]', 'Website URL', item.url || ''));
-					grid.appendChild(simpleField(base + '[logo]', 'Logo aus Mediathek', item.logo || '', true));
+					grid.appendChild(mediaField(base + '[logo]', 'Logo aus Mediathek', item.logo || ''));
 					grid.appendChild(simpleField(base + '[logo_url]', 'Fallback Logo URL', item.logo_url || ''));
 					card.appendChild(title);
 					card.appendChild(grid);
@@ -483,11 +745,10 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 							'Fallback Bild URL',
 							products[index] && products[index].image_url ? products[index].image_url : ''
 						));
-						grid.appendChild(simpleField(
+						grid.appendChild(mediaField(
 							'nocap_homepage_content[products][items][' + index + '][logo]',
 							'Produkt Logo aus Mediathek',
-							products[index] && products[index].logo ? products[index].logo : '',
-							true
+							products[index] && products[index].logo ? products[index].logo : ''
 						));
 						grid.appendChild(simpleField(
 							'nocap_homepage_content[products][items][' + index + '][logo_url]',
@@ -497,6 +758,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					});
 				};
 
+				upgradeBrandLogoField();
 				insertSettings();
 				insertPartners();
 				insertProductFallbackFields();
@@ -644,12 +906,20 @@ if ( ! function_exists( 'nocap_child_brand_social_footer_script' ) ) {
 					tiktok.setAttribute('aria-label', 'TikTok');
 					tiktok.setAttribute('target', '_blank');
 					tiktok.setAttribute('rel', 'noopener');
-					tiktok.innerHTML = tikTokIcon;
+					tiktok.classList.add('nocap-tiktok-link');
+
+					if (list.matches('.nocap-social')) {
+						tiktok.innerHTML = tikTokIcon;
+					} else {
+						tiktok.innerHTML = '<svg viewBox="0 0 24 24" class="nocap-tiktok-svg" style="display:inline-block;width:1em;height:1em;vertical-align:middle;" fill="currentColor" role="presentation" focusable="false" aria-hidden="true"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z"/></svg>';
+					}
 
 					if (list.tagName && list.tagName.toLowerCase() === 'ul' && instagram.closest('li')) {
-						var item = document.createElement('li');
+						var sourceLi = instagram.closest('li');
+						var item = sourceLi.cloneNode(false);
+						item.className = (sourceLi.className || '') + ' nocap-tiktok-li';
 						item.appendChild(tiktok);
-						instagram.closest('li').insertAdjacentElement('afterend', item);
+						sourceLi.insertAdjacentElement('afterend', item);
 					} else {
 						instagram.insertAdjacentElement('afterend', tiktok);
 					}

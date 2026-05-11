@@ -11,6 +11,7 @@
 
   var i18n = {
     de: {
+      "news_at_word": "am",
       "Home": "Home",
       "Über Uns": "Über Uns",
       "Über uns": "Über Uns",
@@ -133,6 +134,7 @@
       "geschlossen": "geschlossen"
     },
     en: {
+      "news_at_word": "at",
       "Home": "Home",
       "Über Uns": "About Us",
       "Über uns": "About Us",
@@ -308,7 +310,7 @@
       { id: "kontakt", label: "Kontakt" }
     ];
 
-    document.querySelectorAll("#top nav ul.sf-menu:not(.buttons), .off-canvas-menu-container ul:not(.buttons)").forEach(function (menu) {
+    document.querySelectorAll("#top nav ul.sf-menu:not(.buttons), .off-canvas-menu-container ul.menu:not(.secondary-header-items)").forEach(function (menu) {
       menu.querySelectorAll(".nocap-menu-generated").forEach(function (item) {
         item.remove();
       });
@@ -403,23 +405,23 @@
     });
   };
 
-  var buildLanguageSwitcher = function () {
+  var createLanguageSwitcher = function (extraClass) {
     var flagDe = home.getAttribute("data-flag-de") || "";
     var flagEn = home.getAttribute("data-flag-en") || "";
     var switcher = document.createElement("div");
-    switcher.className = "nocap-lang-switcher";
+    switcher.className = "nocap-lang-switcher" + (extraClass ? " " + extraClass : "");
     switcher.setAttribute("role", "group");
     switcher.setAttribute("aria-label", "Language");
     switcher.innerHTML =
       '<button type="button" data-nocap-lang="de" aria-label="Deutsch"><img src="' + flagDe + '" alt="">DE</button>' +
       '<button type="button" data-nocap-lang="en" aria-label="English"><img src="' + flagEn + '" alt="">EN</button>';
 
-    var nav = document.querySelector("#top nav");
-    if (nav) {
-      nav.appendChild(switcher);
-    } else {
-      document.body.appendChild(switcher);
-    }
+    var activeLanguage = home.getAttribute("data-current-language") || getInitialLanguage();
+    switcher.querySelectorAll("[data-nocap-lang]").forEach(function (button) {
+      var isActive = button.getAttribute("data-nocap-lang") === activeLanguage;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
 
     switcher.addEventListener("click", function (event) {
       var button = event.target.closest("[data-nocap-lang]");
@@ -430,6 +432,30 @@
       setStoredLanguage(language);
       applyLanguage(language);
     });
+
+    return switcher;
+  };
+
+  var buildLanguageSwitcher = function () {
+    var nav = document.querySelector("#top nav");
+    if (nav) {
+      nav.appendChild(createLanguageSwitcher("nocap-lang-switcher-header"));
+    }
+
+    var attachMobileSwitcher = function () {
+      var menu = document.querySelector(".off-canvas-menu-container .inner, .off-canvas-menu-container .inner-wrap, .off-canvas-menu-container");
+      if (!menu || menu.querySelector(".nocap-lang-switcher-mobile")) {
+        return;
+      }
+      menu.insertBefore(createLanguageSwitcher("nocap-lang-switcher-mobile"), menu.firstChild);
+    };
+
+    attachMobileSwitcher();
+    window.setTimeout(attachMobileSwitcher, 500);
+    if (typeof MutationObserver !== "undefined") {
+      var mobileSwitcherObserver = new MutationObserver(attachMobileSwitcher);
+      mobileSwitcherObserver.observe(document.body, { childList: true, subtree: true });
+    }
   };
 
   var applyLanguage = function (language) {
@@ -753,4 +779,76 @@
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", requestUpdate);
   requestUpdate();
+
+  var scrollLockY = 0;
+  var isMenuOpen = function () {
+    return document.body.classList.contains("mobile-active") ||
+      document.body.classList.contains("mobile-menu-overlay-active") ||
+      document.body.classList.contains("material-ocm-open") ||
+      document.body.classList.contains("ascend-mobile-menu-open") ||
+      document.documentElement.classList.contains("mobile-menu-open") ||
+      !!document.querySelector(".off-canvas-menu-container.open, .off-canvas-menu-container.active, .off-canvas-menu-container.menu-open, .off-canvas-menu-container[data-nectar-ocm-state='open']");
+  };
+  var syncMobileMenuLock = function () {
+    var shouldLock = isMenuOpen();
+    if (shouldLock && !document.body.classList.contains("nocap-mobile-menu-locked")) {
+      scrollLockY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      document.body.style.setProperty("--nocap-lock-top", "-" + scrollLockY + "px");
+      document.body.classList.add("nocap-mobile-menu-locked");
+    } else if (!shouldLock && document.body.classList.contains("nocap-mobile-menu-locked")) {
+      document.body.classList.remove("nocap-mobile-menu-locked");
+      document.body.style.removeProperty("--nocap-lock-top");
+      window.scrollTo(0, scrollLockY);
+    }
+  };
+  if (typeof MutationObserver !== "undefined") {
+    var menuLockObserver = new MutationObserver(syncMobileMenuLock);
+    menuLockObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    menuLockObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    document.querySelectorAll(".off-canvas-menu-container").forEach(function (menu) {
+      menuLockObserver.observe(menu, { attributes: true, attributeFilter: ["class", "data-nectar-ocm-state"] });
+    });
+  }
+  window.setInterval(syncMobileMenuLock, 250);
+  syncMobileMenuLock();
+
+  var shopNews = document.querySelector(".nocap-shop-news");
+  var hero = document.querySelector(".nocap-hero");
+  if (shopNews) {
+    shopNews.classList.add("nocap-shop-news-fixed");
+
+    if (!shopNews.querySelector(".nocap-shop-news-close")) {
+      var closeBtn = document.createElement("button");
+      closeBtn.type = "button";
+      closeBtn.className = "nocap-shop-news-close";
+      closeBtn.setAttribute("aria-label", "Schliessen");
+      closeBtn.innerHTML = "&times;";
+      closeBtn.addEventListener("click", function () {
+        shopNews.classList.remove("is-visible");
+        shopNews.classList.add("is-dismissed");
+        document.body.classList.remove("nocap-news-active");
+      });
+      shopNews.appendChild(closeBtn);
+    }
+
+    if (hero && typeof IntersectionObserver !== "undefined") {
+      var heroObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (shopNews.classList.contains("is-dismissed")) {
+            return;
+          }
+          if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
+            shopNews.classList.remove("is-visible");
+            document.body.classList.remove("nocap-news-active");
+          } else {
+            shopNews.classList.add("is-visible");
+            document.body.classList.add("nocap-news-active");
+          }
+        });
+      }, { threshold: [0, 0.25, 0.5] });
+      heroObserver.observe(hero);
+    } else {
+      shopNews.classList.add("is-visible");
+    }
+  }
 })();
