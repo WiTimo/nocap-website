@@ -95,11 +95,30 @@ if ( ! function_exists( 'nocap_child_update_homepage_cta_text' ) ) {
 		}
 	}
 }
-add_action( 'init', 'nocap_child_update_homepage_cta_text', 20 );
 
 if ( ! function_exists( 'nocap_child_asset_url' ) ) {
 	function nocap_child_asset_url( $path ) {
 		return get_stylesheet_directory_uri() . '/assets/' . ltrim( (string) $path, '/' );
+	}
+}
+
+if ( ! function_exists( 'nocap_child_normalize_asset_url' ) ) {
+	function nocap_child_normalize_asset_url( $url ) {
+		$url = (string) $url;
+
+		if ( '' === $url || false === strpos( $url, '/wp-content/themes/salient-nocap-child/assets/' ) ) {
+			return $url;
+		}
+
+		$path = wp_parse_url( $url, PHP_URL_PATH );
+		$needle = '/wp-content/themes/salient-nocap-child/assets/';
+		$asset_pos = is_string( $path ) ? strpos( $path, $needle ) : false;
+
+		if ( false === $asset_pos ) {
+			return $url;
+		}
+
+		return nocap_child_asset_url( substr( $path, $asset_pos + strlen( $needle ) ) );
 	}
 }
 
@@ -282,7 +301,6 @@ if ( ! function_exists( 'nocap_child_seed_homepage_extension_content' ) ) {
 		}
 	}
 }
-add_action( 'init', 'nocap_child_seed_homepage_extension_content', 22 );
 
 if ( ! function_exists( 'nocap_child_normalize_brand_logo_setting' ) ) {
 	function nocap_child_normalize_brand_logo_setting() {
@@ -304,7 +322,6 @@ if ( ! function_exists( 'nocap_child_normalize_brand_logo_setting' ) ) {
 		}
 	}
 }
-add_action( 'init', 'nocap_child_normalize_brand_logo_setting', 23 );
 
 if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 	function nocap_child_homepage_extension_defaults() {
@@ -371,7 +388,6 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_fields' ) ) {
 		<?php
 	}
 }
-add_action( 'admin_print_footer_scripts-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_fields', 5 );
 
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_assets' ) ) {
 	function nocap_child_homepage_extension_admin_assets( $hook ) {
@@ -382,7 +398,6 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_assets' ) ) {
 		wp_enqueue_media();
 	}
 }
-add_action( 'admin_enqueue_scripts', 'nocap_child_homepage_extension_admin_assets' );
 
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) ) {
 	function nocap_child_homepage_extension_admin_save_bar_style() {
@@ -481,7 +496,6 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 		<?php
 	}
 }
-add_action( 'admin_head-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_save_bar_style' );
 
 if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 	function nocap_child_homepage_extension_admin_script() {
@@ -835,7 +849,6 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 		<?php
 	}
 }
-add_action( 'admin_print_footer_scripts-toplevel_page_nocap-homepage-content', 'nocap_child_homepage_extension_admin_script', 20 );
 
 if ( ! function_exists( 'nocap_child_skip_link' ) ) {
 	function nocap_child_skip_link() {
@@ -1036,7 +1049,7 @@ if ( ! function_exists( 'nocap_child_seo_data' ) ) {
 		$logo_url    = $logo_url ? $logo_url : nocap_child_brand_logo_url();
 		$hero_image  = wp_get_attachment_image_url( 6142, 'full' );
 		$image_url   = $hero_image ? $hero_image : $logo_url;
-		$email       = ( 'nocap-barbers.local' === $host ) ? 'office@nocap-barbers.local' : 'office@nocap-barbers.at';
+		$email       = 'office@nocap-barbers.at';
 		$title       = 'Barber Shop 1010 Wien | NoCap Barbers | Premium Barber';
 		$description = 'NoCap Barbers am Hohen Markt 3 in 1010 Wien: moderne Haarschnitte, Fade Cuts, Bartpflege und ehrliche Beratung. Online Termin buchen.';
 
@@ -1178,6 +1191,97 @@ if ( ! function_exists( 'nocap_child_robots_txt' ) ) {
 	}
 }
 add_filter( 'robots_txt', 'nocap_child_robots_txt', 10, 2 );
+
+if ( ! function_exists( 'nocap_child_frontpage_local_business_schema' ) ) {
+	function nocap_child_frontpage_local_business_schema() {
+		if ( ! is_front_page() || ! nocap_child_has_primary_seo_plugin() ) {
+			return;
+		}
+
+		$seo      = nocap_child_seo_data();
+		$place_id = trailingslashit( $seo['site_url'] ) . '#barbershop';
+		$schema   = array(
+			'@context' => 'https://schema.org',
+			'@type'    => array( 'Barbershop', 'LocalBusiness' ),
+			'@id'      => $place_id,
+			'name'     => 'NoCap Barbers',
+			'url'      => $seo['site_url'],
+			'telephone' => $seo['phone'],
+			'email'    => $seo['email'],
+			'priceRange' => $seo['price_range'],
+			'image'    => $seo['image'],
+			'logo'     => $seo['logo'],
+			'address'  => array_merge( array( '@type' => 'PostalAddress' ), $seo['address'] ),
+			'areaServed' => array(
+				array(
+					'@type' => 'City',
+					'name'  => 'Wien',
+				),
+			),
+			'hasMap'   => 'https://www.google.com/maps?q=Hoher+Markt+3,+1010+Wien',
+			'sameAs'   => $seo['same_as'],
+			'potentialAction' => array(
+				'@type'  => 'ReserveAction',
+				'target' => $seo['booking_url'],
+				'name'   => 'Termin online buchen',
+			),
+			'makesOffer' => array(
+				array(
+					'@type' => 'Offer',
+					'itemOffered' => array(
+						'@type' => 'Service',
+						'name'  => 'Traditional Cut',
+						'serviceType' => 'Herrenhaarschnitt',
+					),
+				),
+				array(
+					'@type' => 'Offer',
+					'itemOffered' => array(
+						'@type' => 'Service',
+						'name'  => 'Fade Cut',
+						'serviceType' => 'Fade Haircut',
+					),
+				),
+				array(
+					'@type' => 'Offer',
+					'itemOffered' => array(
+						'@type' => 'Service',
+						'name'  => 'Beard Service',
+						'serviceType' => 'Bart trimmen und stylen',
+					),
+				),
+			),
+			'aggregateRating' => array(
+				'@type'       => 'AggregateRating',
+				'ratingValue' => '4.9',
+				'reviewCount' => '3700',
+			),
+			'openingHoursSpecification' => array(
+				array(
+					'@type'     => 'OpeningHoursSpecification',
+					'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Friday' ),
+					'opens'     => '10:00',
+					'closes'    => '19:00',
+				),
+				array(
+					'@type'     => 'OpeningHoursSpecification',
+					'dayOfWeek' => 'Thursday',
+					'opens'     => '10:00',
+					'closes'    => '20:00',
+				),
+				array(
+					'@type'     => 'OpeningHoursSpecification',
+					'dayOfWeek' => 'Saturday',
+					'opens'     => '10:00',
+					'closes'    => '17:00',
+				),
+			),
+		);
+
+		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+	}
+}
+add_action( 'wp_head', 'nocap_child_frontpage_local_business_schema', 35 );
 
 if ( ! function_exists( 'nocap_child_frontpage_schema' ) ) {
 	function nocap_child_frontpage_schema() {

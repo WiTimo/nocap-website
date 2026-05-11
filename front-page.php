@@ -45,7 +45,7 @@ $product_image_url = static function( $product ) use ( $image_url ) {
 		$url = $product['image_url'];
 	}
 
-	return $url;
+	return function_exists( 'nocap_child_normalize_asset_url' ) ? nocap_child_normalize_asset_url( $url ) : $url;
 };
 
 $partner_logo_url = static function( $partner ) use ( $image_url ) {
@@ -56,7 +56,7 @@ $partner_logo_url = static function( $partner ) use ( $image_url ) {
 		$url = $partner['logo_url'];
 	}
 
-	return $url;
+	return function_exists( 'nocap_child_normalize_asset_url' ) ? nocap_child_normalize_asset_url( $url ) : $url;
 };
 
 $product_logo_url = static function( $product, $partners ) use ( $image_url, $partner_logo_url ) {
@@ -65,6 +65,10 @@ $product_logo_url = static function( $product, $partners ) use ( $image_url, $pa
 
 	if ( ! $url && ! empty( $product['logo_url'] ) ) {
 		$url = $product['logo_url'];
+	}
+
+	if ( $url && function_exists( 'nocap_child_normalize_asset_url' ) ) {
+		$url = nocap_child_normalize_asset_url( $url );
 	}
 
 	if ( $url || empty( $partners['items'] ) || empty( $product['title'] ) ) {
