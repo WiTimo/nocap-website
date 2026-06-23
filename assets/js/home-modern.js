@@ -697,78 +697,111 @@
   initNavScrollSpy();
 
   var initHeroSound = function () {
-    var hero = document.querySelector(".nocap-hero");
     var soundUrl = home.getAttribute("data-scissors-sound") || "";
-    if (!hero || !soundUrl) {
+    if (!soundUrl) {
       return;
     }
 
     var audio = new Audio(soundUrl);
     var configuredVolume = parseFloat(home.getAttribute("data-scissors-volume") || "0.02");
     var maxVolume = Number.isFinite(configuredVolume) ? Math.max(0, Math.min(1, configuredVolume)) : 0.02;
-    var targetVolume = 0;
-    var currentVolume = 0;
     var started = false;
-    var frame = 0;
-    audio.loop = true;
+    var finished = false;
+    var fadeFrame = 0;
+    var fadeOutTimer = 0;
+    var metadataFallbackTimer = 0;
+    var fadeInMs = 260;
+    var fadeOutMs = 520;
+    var fallbackDurationMs = 1600;
+    audio.loop = false;
     audio.preload = "auto";
     audio.volume = 0;
 
-    var animateVolume = function () {
-      currentVolume += (targetVolume - currentVolume) * 0.035;
-      if (Math.abs(targetVolume - currentVolume) < 0.001) {
-        currentVolume = targetVolume;
-      }
-      audio.volume = Math.max(0, Math.min(1, currentVolume));
-
-      if (currentVolume > 0.001 || targetVolume > 0.001) {
-        frame = window.requestAnimationFrame(animateVolume);
-      } else {
-        frame = 0;
-      }
+    var cleanupStartListeners = function () {
+      ["pointerdown", "touchstart", "keydown"].forEach(function (eventName) {
+        document.removeEventListener(eventName, startAudio);
+      });
     };
 
-    var setTargetVolume = function (volume) {
-      targetVolume = Math.max(0, Math.min(maxVolume, volume));
-      if (!frame && started) {
-        frame = window.requestAnimationFrame(animateVolume);
+    var fadeTo = function (targetVolume, duration, onComplete) {
+      var startVolume = audio.volume;
+      var startTime = window.performance ? window.performance.now() : Date.now();
+
+      if (fadeFrame) {
+        window.cancelAnimationFrame(fadeFrame);
       }
+
+      var step = function (now) {
+        var progress = Math.min(1, (now - startTime) / duration);
+        audio.volume = startVolume + ((targetVolume - startVolume) * progress);
+
+        if (progress < 1) {
+          fadeFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        fadeFrame = 0;
+        audio.volume = targetVolume;
+        if (onComplete) {
+          onComplete();
+        }
+      };
+
+      fadeFrame = window.requestAnimationFrame(step);
     };
 
-    var updateFromHeroPosition = function () {
-      var rect = hero.getBoundingClientRect();
-      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      var visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
-      var visibleRatio = Math.min(1, visibleHeight / Math.min(rect.height, viewportHeight));
-      setTargetVolume(Math.pow(visibleRatio, 1.6) * maxVolume);
+    var fadeOutAndStop = function () {
+      if (finished) {
+        return;
+      }
+      finished = true;
+      fadeTo(0, fadeOutMs, function () {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+    };
+
+    var scheduleFadeOut = function () {
+      window.clearTimeout(metadataFallbackTimer);
+      window.clearTimeout(fadeOutTimer);
+      var durationMs = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration * 1000 : fallbackDurationMs;
+      var delay = Math.max(fadeInMs, durationMs - fadeOutMs);
+      fadeOutTimer = window.setTimeout(fadeOutAndStop, delay);
     };
 
     var startAudio = function () {
-      if (started) {
+      if (started || finished) {
         return;
       }
+
       audio.play().then(function () {
         started = true;
-        updateFromHeroPosition();
+        cleanupStartListeners();
+        fadeTo(maxVolume, fadeInMs);
+        if (audio.readyState >= 1) {
+          scheduleFadeOut();
+        } else {
+          audio.addEventListener("loadedmetadata", scheduleFadeOut, { once: true });
+          metadataFallbackTimer = window.setTimeout(fadeOutAndStop, fallbackDurationMs);
+        }
       }).catch(function () {
         started = false;
       });
     };
 
     ["pointerdown", "touchstart", "keydown"].forEach(function (eventName) {
-      document.addEventListener(eventName, startAudio, { once: true, passive: true });
+      document.addEventListener(eventName, startAudio, { passive: true });
     });
 
-    window.addEventListener("scroll", updateFromHeroPosition, { passive: true });
-    window.addEventListener("resize", updateFromHeroPosition);
+    audio.addEventListener("ended", fadeOutAndStop, { once: true });
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) {
-        setTargetVolume(0);
-      } else {
-        updateFromHeroPosition();
+      if (!document.hidden || !started || finished) {
+        return;
       }
+      window.clearTimeout(metadataFallbackTimer);
+      window.clearTimeout(fadeOutTimer);
+      fadeOutAndStop();
     });
-    updateFromHeroPosition();
     startAudio();
   };
 

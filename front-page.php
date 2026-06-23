@@ -16,6 +16,7 @@ $tiktok_url            = 'https://www.tiktok.com/@nocap.barbershop';
 $google_reviews_url    = 'https://www.google.com/search?q=NoCap+Barbers+Wien';
 $treatwell_reviews_url = 'https://www.treatwell.at/ort/no-cap-barbers/';
 $map_embed_url         = 'https://www.google.com/maps?q=Hoher+Markt+3,+1010+Wien&output=embed';
+$new_shop_map_embed_url = 'https://www.google.com/maps?q=Bauernmarkt+10,+1010+Wien&output=embed';
 $asset_base_url        = get_stylesheet_directory_uri() . '/assets/images';
 $about_video_url       = get_stylesheet_directory_uri() . '/assets/video/about-nocap-barber-best-barbershop-vienna.mp4';
 $google_logo_url       = $asset_base_url . '/google.jpg';
@@ -375,6 +376,23 @@ if ( isset( $homepage_content['settings']['hero_news_enabled'] ) ) {
 	$hero_news_enabled = '0' !== (string) $homepage_content['settings']['hero_news_enabled'];
 }
 
+$new_shop_map_source = ! empty( $hero_news['cta_url'] ) ? $hero_news['cta_url'] : 'https://www.google.com/maps?q=' . rawurlencode( (string) ( $hero_news['address'] ?? 'Bauernmarkt 10, 1010 Wien' ) );
+$new_shop_map_embed_url = add_query_arg( 'output', 'embed', $new_shop_map_source );
+$contact_locations = array(
+	array(
+		'label' => 'NoCap Barbers Hoher Markt',
+		'title' => 'NoCap Barbers am Hohen Markt 3 in 1010 Wien',
+		'address' => $contact_section['address'],
+		'map' => $map_embed_url,
+	),
+	array(
+		'label' => 'NoCap Barbers Bauernmarkt',
+		'title' => 'NoCap Barbers am Bauernmarkt 10 in 1010 Wien',
+		'address' => ! empty( $hero_news['address'] ) ? $hero_news['address'] : 'Bauernmarkt 10, 1010 Wien',
+		'map' => $new_shop_map_embed_url,
+	),
+);
+
 foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 	if ( ! empty( $homepage_content ) && 'video' === ( $gallery_item['type'] ?? '' ) ) {
 		$gallery_media[ $gallery_index ]['video_url'] = ! empty( $gallery_item['video'] ) ? $media_url( $gallery_item['video'] ) : '';
@@ -470,7 +488,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 
 	<section id="faq" class="nocap-section nocap-faq" aria-labelledby="nocap-faq-title"><div class="nocap-shell"><div class="nocap-faq-grid"><div class="nocap-faq-heading"><p class="nocap-kicker nocap-kicker-dark" data-reveal><?php echo esc_html( $faq_section['kicker'] ); ?></p><h2 id="nocap-faq-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;"><?php echo esc_html( $faq_section['title'] ); ?></h2></div><div class="nocap-faq-list"><?php foreach ( $faq_items as $faq_index => $faq_item ) : ?><article class="nocap-faq-item" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.1 + ( $faq_index * 0.06 ) ) ); ?>s;"><h3><?php echo esc_html( $faq_item['question'] ); ?></h3><p><?php echo esc_html( $faq_item['answer'] ); ?></p></article><?php endforeach; ?></div></div></div></section>
 
-	<section id="kontakt" class="nocap-section nocap-contact" aria-labelledby="nocap-contact-title"><div class="nocap-shell"><div class="nocap-contact-grid"><div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers am Hohen Markt 3 in 1010 Wien"></iframe></div><div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;"><h2 id="nocap-contact-title"><?php echo esc_html( $contact_section['title'] ); ?></h2><ul class="nocap-hours" aria-label="<?php echo esc_attr( $contact_section['hours_label'] ); ?>"><?php foreach ( $contact_section['hours'] as $hours_item ) : ?><li><span><?php echo esc_html( $hours_item['day'] ); ?></span><strong><?php echo esc_html( $hours_item['time'] ); ?></strong></li><?php endforeach; ?></ul><div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>"><?php echo esc_html( $contact_section['phone_label'] ); ?>: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><span><?php echo esc_html( $contact_section['address'] ); ?></span></div><div class="nocap-social" aria-label="Social links"><a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div></div></div></div></section>
+	<section id="kontakt" class="nocap-section nocap-contact" aria-labelledby="nocap-contact-title"><div class="nocap-shell"><div class="nocap-contact-grid"><div class="nocap-map-stack" data-reveal><?php foreach ( $contact_locations as $location ) : ?><article class="nocap-map"><iframe src="<?php echo esc_url( $location['map'] ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="<?php echo esc_attr( $location['title'] ); ?>"></iframe><div class="nocap-map-caption"><strong><?php echo esc_html( $location['label'] ); ?></strong><span><?php echo esc_html( $location['address'] ); ?></span></div></article><?php endforeach; ?></div><div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;"><h2 id="nocap-contact-title"><?php echo esc_html( $contact_section['title'] ); ?></h2><ul class="nocap-hours" aria-label="<?php echo esc_attr( $contact_section['hours_label'] ); ?>"><?php foreach ( $contact_section['hours'] as $hours_item ) : ?><li><span><?php echo esc_html( $hours_item['day'] ); ?></span><strong><?php echo esc_html( $hours_item['time'] ); ?></strong></li><?php endforeach; ?></ul><div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>"><?php echo esc_html( $contact_section['phone_label'] ); ?>: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><?php foreach ( $contact_locations as $location ) : ?><span><?php echo esc_html( $location['address'] ); ?></span><?php endforeach; ?></div><div class="nocap-social" aria-label="Social links"><a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div></div></div></div></section>
 </main>
 
 <?php

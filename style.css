@@ -2602,28 +2602,61 @@ Text Domain: salient-nocap-child
 
 .home.nocap-frontpage-refresh .nocap-contact-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   gap: clamp(22px, 3vw, 36px);
+  align-items: stretch;
+}
+
+.home.nocap-frontpage-refresh .nocap-map-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2vw, 24px);
 }
 
 .home.nocap-frontpage-refresh .nocap-map,
 .home.nocap-frontpage-refresh .nocap-contact-card {
   border-radius: var(--nc-radius-md);
   overflow: hidden;
-  min-height: 460px;
   box-shadow: none;
   border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.home.nocap-frontpage-refresh .nocap-map {
+  display: grid;
+  grid-template-rows: minmax(240px, 1fr) auto;
+  min-height: 320px;
+  background: #111319;
 }
 
 .home.nocap-frontpage-refresh .nocap-map iframe {
   width: 100%;
   height: 100%;
-  min-height: 460px;
+  min-height: 240px;
   border: 0;
   display: block;
 }
 
+.home.nocap-frontpage-refresh .nocap-map-caption {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  background: rgba(17, 19, 25, 0.94);
+  color: #ffffff;
+}
+
+.home.nocap-frontpage-refresh .nocap-map-caption strong {
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.home.nocap-frontpage-refresh .nocap-map-caption span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
 .home.nocap-frontpage-refresh .nocap-contact-card {
+  min-height: 100%;
   background: linear-gradient(180deg, #f5f1e8 0%, #ebe4d8 100%);
   color: #14161a;
   padding: clamp(20px, 2.4vw, 30px);
@@ -3346,9 +3379,12 @@ Text Domain: salient-nocap-child
   }
 
   .home.nocap-frontpage-refresh .nocap-map,
-  .home.nocap-frontpage-refresh .nocap-contact-card,
-  .home.nocap-frontpage-refresh .nocap-map iframe {
+  .home.nocap-frontpage-refresh .nocap-contact-card {
     min-height: 340px;
+  }
+
+  .home.nocap-frontpage-refresh .nocap-map iframe {
+    min-height: 260px;
   }
 
   .home.nocap-frontpage-refresh .nocap-contact-card {
