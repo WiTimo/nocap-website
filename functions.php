@@ -51,11 +51,22 @@ if ( ! function_exists( 'nocap_child_enqueue_assets' ) ) {
 		$script_rel_path = '/assets/js/home-modern.js';
 		$script_path     = get_stylesheet_directory() . $script_rel_path;
 		$script_version  = file_exists( $script_path ) ? (string) filemtime( $script_path ) : nocap_child_version();
+		$translations_rel_path = '/assets/js/home-translations-slavic.js';
+		$translations_path     = get_stylesheet_directory() . $translations_rel_path;
+		$translations_version  = file_exists( $translations_path ) ? (string) filemtime( $translations_path ) : nocap_child_version();
+
+		wp_enqueue_script(
+			'nocap-home-translations-slavic',
+			get_stylesheet_directory_uri() . $translations_rel_path,
+			array(),
+			$translations_version,
+			true
+		);
 
 		wp_enqueue_script(
 			'nocap-home-modern',
 			get_stylesheet_directory_uri() . $script_rel_path,
-			array(),
+			array( 'nocap-home-translations-slavic' ),
 			$script_version,
 			true
 		);
@@ -63,13 +74,55 @@ if ( ! function_exists( 'nocap_child_enqueue_assets' ) ) {
 		if ( function_exists( 'nocap_homepage_translations' ) ) {
 			wp_add_inline_script(
 				'nocap-home-modern',
-				'window.nocapHomeTranslations = ' . wp_json_encode( nocap_homepage_translations() ) . ';',
+				'(function (next) { window.nocapHomeTranslations = window.nocapHomeTranslations || {}; Object.keys(next).forEach(function (language) { window.nocapHomeTranslations[language] = Object.assign(window.nocapHomeTranslations[language] || {}, next[language]); }); })(' . wp_json_encode( nocap_homepage_translations() ) . ');',
 				'before'
 			);
 		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'nocap_child_enqueue_assets', 120 );
+
+if ( ! function_exists( 'nocap_child_stylesheet_cache_buster' ) ) {
+	function nocap_child_stylesheet_cache_buster( $src ) {
+		if ( false === strpos( $src, '/salient-nocap-child/style.css' ) ) {
+			return $src;
+		}
+
+		$stylesheet_path = get_stylesheet_directory() . '/style.css';
+		if ( ! file_exists( $stylesheet_path ) ) {
+			return $src;
+		}
+
+		return add_query_arg( 'ver', (string) filemtime( $stylesheet_path ), remove_query_arg( 'ver', $src ) );
+	}
+}
+add_filter( 'style_loader_src', 'nocap_child_stylesheet_cache_buster', 999 );
+
+if ( ! function_exists( 'nocap_child_favicon' ) ) {
+	function nocap_child_favicon() {
+		$favicon_url = '';
+		$favicon_type = 'image/svg+xml';
+		if ( function_exists( 'nocap_homepage_content' ) ) {
+			$content    = nocap_homepage_content( 'de' );
+			$favicon_id = isset( $content['settings']['favicon'] ) ? (int) $content['settings']['favicon'] : 0;
+			$favicon_url = $favicon_id ? wp_get_attachment_url( $favicon_id ) : '';
+			$favicon_type = $favicon_id ? (string) get_post_mime_type( $favicon_id ) : $favicon_type;
+		}
+		$favicon_url = $favicon_url ? $favicon_url : nocap_child_asset_url( 'images/favicon.svg' );
+		$favicon_type = $favicon_type ? $favicon_type : 'image/png';
+		?>
+		<link rel="icon" href="<?php echo esc_url( $favicon_url ); ?>" type="<?php echo esc_attr( $favicon_type ); ?>"<?php echo 'image/svg+xml' === $favicon_type ? ' sizes="any"' : ''; ?>>
+		<?php
+	}
+}
+
+if ( ! function_exists( 'nocap_child_replace_site_icon' ) ) {
+	function nocap_child_replace_site_icon() {
+		remove_action( 'wp_head', 'wp_site_icon', 99 );
+	}
+}
+add_action( 'after_setup_theme', 'nocap_child_replace_site_icon', 20 );
+add_action( 'wp_head', 'nocap_child_favicon', 2 );
 
 if ( ! function_exists( 'nocap_child_update_homepage_cta_text' ) ) {
 	function nocap_child_update_homepage_cta_text() {
@@ -341,6 +394,68 @@ if ( ! function_exists( 'nocap_child_normalize_brand_logo_setting' ) ) {
 	}
 }
 
+if ( ! function_exists( 'nocap_child_migrate_new_shop_section' ) ) {
+	function nocap_child_migrate_new_shop_section() {
+		if ( ! class_exists( 'NoCap_Homepage_Content' ) ) {
+			return;
+		}
+
+		$content  = get_option( 'nocap_homepage_content', array() );
+		$defaults = NoCap_Homepage_Content::defaults();
+		if ( ! is_array( $content ) || empty( $defaults['hero_news'] ) ) {
+			return;
+		}
+
+		$changed = false;
+		if ( empty( $content['hero_news'] ) || ! is_array( $content['hero_news'] ) ) {
+			$content['hero_news'] = $defaults['hero_news'];
+			$changed = true;
+		} else {
+			foreach ( $defaults['hero_news'] as $key => $value ) {
+				if ( ! array_key_exists( $key, $content['hero_news'] ) || '' === $content['hero_news'][ $key ] ) {
+					$content['hero_news'][ $key ] = $value;
+					$changed = true;
+					continue;
+				}
+				if ( is_array( $value ) && is_array( $content['hero_news'][ $key ] ) ) {
+					foreach ( array( 'de', 'en', 'ru', 'uk' ) as $lang ) {
+						if ( empty( $content['hero_news'][ $key ][ $lang ] ) && ! empty( $value[ $lang ] ) ) {
+							$content['hero_news'][ $key ][ $lang ] = $value[ $lang ];
+							$changed = true;
+						}
+					}
+				}
+			}
+
+			$old_title = (string) ( $content['hero_news']['title']['de'] ?? '' );
+			$old_text  = (string) ( $content['hero_news']['text']['de'] ?? '' );
+			if ( in_array( $old_title, array( 'Zweiter Shop kommt', 'Zweiter Shop kommt bald' ), true ) ) {
+				$content['hero_news']['title'] = $defaults['hero_news']['title'];
+				$changed = true;
+			}
+			if ( in_array( $old_text, array( 'Wir eröffnen bald am Bauernmarkt 10, 1010 Wien.', 'Wir erÃ¶ffnen bald am Bauernmarkt 10, 1010 Wien.' ), true ) ) {
+				$content['hero_news']['text'] = $defaults['hero_news']['text'];
+				$changed = true;
+			}
+		}
+
+		if ( ! isset( $content['settings'] ) || ! is_array( $content['settings'] ) ) {
+			$content['settings'] = array();
+		}
+		foreach ( array( 'flag_ru', 'flag_uk', 'scissors_sound', 'scissors_volume', 'favicon', 'seo_image', 'hero_news_enabled' ) as $key ) {
+			if ( ! array_key_exists( $key, $content['settings'] ) ) {
+				$content['settings'][ $key ] = $defaults['settings'][ $key ];
+				$changed = true;
+			}
+		}
+
+		if ( $changed ) {
+			update_option( 'nocap_homepage_content', $content, false );
+		}
+	}
+}
+add_action( 'init', 'nocap_child_migrate_new_shop_section', 30 );
+
 if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 	function nocap_child_homepage_extension_defaults() {
 		return array(
@@ -353,18 +468,23 @@ if ( ! function_exists( 'nocap_child_homepage_extension_defaults' ) ) {
 			),
 			'partners'     => nocap_child_partner_defaults(),
 			'hero_reviews' => array(
-				'eyebrow'        => array( 'de' => 'Bewertet auf Google & Treatwell', 'en' => 'Rated on Google & Treatwell' ),
-				'count'          => array( 'de' => '3700+', 'en' => '3700+' ),
-				'label'          => array( 'de' => 'Bewertungen', 'en' => 'reviews' ),
-				'score'          => array( 'de' => '4.9/5 Durchschnitt', 'en' => '4.9/5 average' ),
-				'treatwell_meta' => array( 'de' => '3000+ Treatwell', 'en' => '3000+ Treatwell' ),
-				'google_meta'    => array( 'de' => '700+ Google', 'en' => '700+ Google' ),
+				'eyebrow'        => array( 'de' => 'Bewertet auf Google & Treatwell', 'en' => 'Rated on Google & Treatwell', 'ru' => 'Оценки в Google и Treatwell', 'uk' => 'Оцінки в Google і Treatwell' ),
+				'count'          => array( 'de' => '3700+', 'en' => '3700+', 'ru' => '3700+', 'uk' => '3700+' ),
+				'label'          => array( 'de' => 'Bewertungen', 'en' => 'reviews', 'ru' => 'отзывов', 'uk' => 'відгуків' ),
+				'score'          => array( 'de' => '4.9/5 Durchschnitt', 'en' => '4.9/5 average', 'ru' => '4,9/5 в среднем', 'uk' => '4,9/5 у середньому' ),
+				'treatwell_meta' => array( 'de' => '3000+ Treatwell', 'en' => '3000+ Treatwell', 'ru' => '3000+ Treatwell', 'uk' => '3000+ Treatwell' ),
+				'google_meta'    => array( 'de' => '700+ Google', 'en' => '700+ Google', 'ru' => '700+ Google', 'uk' => '700+ Google' ),
 			),
 			'hero_news'    => array(
-				'kicker'  => array( 'de' => 'Neu in 1010 Wien', 'en' => 'New in 1010 Vienna' ),
-				'title'   => array( 'de' => 'Zweiter Shop kommt', 'en' => 'Second shop coming' ),
-				'text'    => array( 'de' => 'Wir eröffnen bald am Bauernmarkt 10, 1010 Wien.', 'en' => 'We are opening soon at Bauernmarkt 10, 1010 Vienna.' ),
-				'address' => array( 'de' => 'Bauernmarkt 10, 1010 Wien', 'en' => 'Bauernmarkt 10, 1010 Vienna' ),
+				'image'     => 6142,
+				'badge'     => array( 'de' => 'NEU', 'en' => 'NEW' ),
+				'kicker'    => array( 'de' => 'Neu in 1010 Wien', 'en' => 'New in 1010 Vienna' ),
+				'title'     => array( 'de' => 'Unser zweiter Shop am Bauernmarkt', 'en' => 'Our second shop at Bauernmarkt' ),
+				'text'      => array( 'de' => 'NoCap Barbers wächst. Mit unserem neuen Standort am Bauernmarkt bringen wir präzise Cuts, ehrliche Beratung und entspannte Atmosphäre an eine zweite Adresse im Herzen Wiens.', 'en' => 'NoCap Barbers is growing. Our new Bauernmarkt location brings precise cuts, honest advice and a relaxed atmosphere to a second address in the heart of Vienna.' ),
+				'address'   => array( 'de' => 'Bauernmarkt 10, 1010 Wien', 'en' => 'Bauernmarkt 10, 1010 Vienna' ),
+				'meta'      => array( 'de' => 'Weitere Informationen und Online-Termine folgen.', 'en' => 'More information and online appointments are coming soon.' ),
+				'cta_label' => array( 'de' => 'Standort ansehen', 'en' => 'View location' ),
+				'cta_url'   => 'https://www.google.com/maps?q=Bauernmarkt+10,+1010+Wien',
 			),
 		);
 	}
@@ -431,6 +551,14 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_assets' ) ) {
 		}
 
 		wp_enqueue_media();
+		$translations_path = get_stylesheet_directory() . '/assets/js/home-translations-slavic.js';
+		wp_enqueue_script(
+			'nocap-home-translations-slavic-admin',
+			get_stylesheet_directory_uri() . '/assets/js/home-translations-slavic.js',
+			array(),
+			file_exists( $translations_path ) ? (string) filemtime( $translations_path ) : nocap_child_version(),
+			false
+		);
 	}
 }
 
@@ -467,24 +595,17 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 				border-radius: 0;
 				clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
 				box-shadow: 0 20px 54px rgba(0, 0, 0, 0.34);
-				transform: translateY(24px);
-				opacity: 0;
-				pointer-events: none;
+				transform: translateY(0);
+				opacity: 1;
+				pointer-events: auto;
 				transition: opacity 180ms ease, transform 180ms ease;
 				inset-block-start: auto !important;
 				inset-inline-start: auto !important;
 				inset-inline-end: 28px !important;
 			}
 
-			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-save-bar,
-			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-save-bar {
-				opacity: 1;
-				pointer-events: auto;
-				transform: translateY(0);
-			}
-
 			body.toplevel_page_nocap-homepage-content .nocap-save-bar::before {
-				content: "Änderungen bereit";
+				content: "Speichern";
 				color: rgba(255, 255, 255, 0.74);
 				font-size: 12px;
 				font-weight: 800;
@@ -515,8 +636,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_save_bar_style' ) 
 				clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
 			}
 
-			body.toplevel_page_nocap-homepage-content.nocap-homepage-dirty .nocap-admin,
-			body.toplevel_page_nocap-homepage-content.nocap-homepage-saving .nocap-admin {
+			body.toplevel_page_nocap-homepage-content .nocap-admin {
 				padding-bottom: 98px;
 			}
 
@@ -573,12 +693,10 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 				form.addEventListener('submit', markSaving);
 
 				var labels = {
-					hero_reviews: 'Hero Bewertungs-Komponente - neue Felder',
-					hero_news: 'Shop News Anzeige - neue Felder'
+					hero_reviews: 'Hero Bewertungs-Komponente - neue Felder'
 				};
 				var fields = {
-					hero_reviews: ['eyebrow', 'count', 'label', 'score', 'treatwell_meta', 'google_meta'],
-					hero_news: ['kicker', 'title', 'text', 'address']
+					hero_reviews: ['eyebrow', 'count', 'label', 'score', 'treatwell_meta', 'google_meta']
 				};
 				var niceLabel = function (key) {
 					return key.replace(/_/g, ' ').replace(/\b\w/g, function (letter) {
@@ -590,7 +708,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					var text = document.createElement('span');
 					var input = document.createElement('textarea');
 					label.className = 'nocap-field';
-					text.textContent = lang === 'de' ? 'Deutsch' : 'English';
+					text.textContent = ({ de: 'Deutsch', en: 'English', ru: 'Русский', uk: 'Українська' })[lang] || lang;
 					input.name = 'nocap_homepage_content[' + section + '][' + key + '][' + lang + ']';
 					input.rows = 2;
 					input.value = value || '';
@@ -870,6 +988,22 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 						));
 					});
 				};
+				var hydrateSlavicFields = function () {
+					var translations = window.nocapHomeTranslations || {};
+					form.querySelectorAll('.nocap-lang-field').forEach(function (group) {
+						var de = group.querySelector('[name$="[de]"]');
+						if (!de || !de.value) {
+							return;
+						}
+						['ru', 'uk'].forEach(function (lang) {
+							var input = group.querySelector('[name$="[' + lang + ']"]');
+							var value = translations[lang] && translations[lang][de.value];
+							if (input && !input.value && value) {
+								input.value = value;
+							}
+						});
+					});
+				};
 
 				upgradeBrandLogoField();
 				insertNewsToggleInTopSection();
@@ -881,7 +1015,7 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 					var wrapper = document.createElement('section');
 					wrapper.className = 'nocap-admin-section';
 					wrapper.setAttribute('data-nocap-child-extension', section);
-					wrapper.innerHTML = '<h2>' + labels[section] + '</h2><p class="description">Neue Child-Theme Felder. Bewertungsfelder erscheinen in der Hero Section; Shop News erscheint unter den Services. CTA Text nutzt das bestehende Hero Feld Primary Cta.</p><div class="nocap-grid"></div>';
+					wrapper.innerHTML = '<h2>' + labels[section] + '</h2><p class="description">Zusätzliche Bewertungsfelder für die Hero Section.</p><div class="nocap-grid"></div>';
 
 					var grid = wrapper.querySelector('.nocap-grid');
 					fields[section].forEach(function (key) {
@@ -893,11 +1027,14 @@ if ( ! function_exists( 'nocap_child_homepage_extension_admin_script' ) ) {
 						group.appendChild(title);
 						group.appendChild(field(section, key, 'de', value.de));
 						group.appendChild(field(section, key, 'en', value.en));
+						group.appendChild(field(section, key, 'ru', value.ru));
+						group.appendChild(field(section, key, 'uk', value.uk));
 						grid.appendChild(group);
 					});
 
 					form.insertBefore(wrapper, saveBar);
 				});
+				hydrateSlavicFields();
 			})();
 		</script>
 		<?php
@@ -964,6 +1101,7 @@ if ( ! function_exists( 'nocap_child_brand_social_footer_script' ) ) {
 				var headerLogoUrl = <?php echo wp_json_encode( esc_url_raw( $header_logo_url ) ); ?>;
 				var footerLogoUrl = <?php echo wp_json_encode( esc_url_raw( $footer_logo_url ) ); ?>;
 				var tiktokUrl = <?php echo wp_json_encode( esc_url_raw( $tiktok_url ) ); ?>;
+				var tiktokHandle = '@' + (tiktokUrl.split('/').filter(Boolean).pop() || 'nocap.barbershop').replace(/^@/, '');
 				var tikTokIcon = '<span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span>';
 				var replaceLogo = function (image, logoUrl) {
 					image.setAttribute('src', logoUrl);
@@ -1011,7 +1149,8 @@ if ( ! function_exists( 'nocap_child_brand_social_footer_script' ) ) {
 					tiktok.className = 'nocap-gallery-cta nocap-gallery-cta-tiktok';
 					tiktok.setAttribute('href', tiktokUrl);
 					tiktok.setAttribute('aria-label', 'TikTok');
-					tiktok.innerHTML = '<span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span><span class="nocap-gallery-cta-copy"><span>TikTok</span><strong>@nocap.<br>barbershop</strong></span>';
+					tiktok.innerHTML = '<span class="nocap-gallery-cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M15.2 3c.35 2.43 1.72 3.88 4.05 4.03v3.08a7.1 7.1 0 0 1-4.01-1.24v5.92c0 3-1.82 5.21-4.64 5.21-2.7 0-4.85-2.05-4.85-4.72 0-2.93 2.45-5.03 5.35-4.59v3.2c-1.08-.34-2.18.36-2.18 1.46 0 .89.73 1.62 1.63 1.62 1.05 0 1.62-.68 1.62-1.95V3h3.03Z" fill="currentColor"/></svg></span><span class="nocap-gallery-cta-copy"><span>TikTok</span><strong></strong></span>';
+					tiktok.querySelector('strong').textContent = tiktokHandle;
 					var booking = row.querySelector('.nocap-gallery-cta-booking');
 					if (booking) {
 						booking.insertAdjacentElement('afterend', tiktok);
@@ -1117,7 +1256,12 @@ if ( ! function_exists( 'nocap_child_seo_data' ) ) {
 		$logo_id     = get_theme_mod( 'custom_logo' );
 		$logo_url    = $logo_id ? wp_get_attachment_image_url( $logo_id, 'full' ) : '';
 		$logo_url    = $logo_url ? $logo_url : nocap_child_brand_logo_url();
-		$hero_image  = wp_get_attachment_image_url( 6142, 'full' );
+		$seo_image_id = 0;
+		if ( function_exists( 'nocap_homepage_content' ) ) {
+			$content      = nocap_homepage_content( 'de' );
+			$seo_image_id = isset( $content['settings']['seo_image'] ) ? (int) $content['settings']['seo_image'] : 0;
+		}
+		$hero_image  = wp_get_attachment_image_url( $seo_image_id ? $seo_image_id : 6142, 'full' );
 		$image_url   = $hero_image ? $hero_image : $logo_url;
 		$email       = 'office@nocap-barbers.at';
 		$title       = 'Barber Shop 1010 Wien | NoCap Barbers | Premium Barber';

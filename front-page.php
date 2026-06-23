@@ -22,6 +22,10 @@ $google_logo_url       = $asset_base_url . '/google.jpg';
 $treatwell_logo_url    = $asset_base_url . '/treatwell.png';
 $flag_de_url           = $asset_base_url . '/german.svg';
 $flag_en_url           = $asset_base_url . '/english.svg';
+$flag_ru_url           = $asset_base_url . '/russia.svg';
+$flag_uk_url           = $asset_base_url . '/ukraine.svg';
+$scissors_sound_url    = get_stylesheet_directory_uri() . '/assets/sound/scissors.mp3';
+$scissors_volume       = '0.02';
 $contact_email         = 'office@nocap-barbers.at';
 $contact_phone         = '01 4374527';
 $contact_phone_href    = 'tel:014374527';
@@ -192,6 +196,16 @@ $review_entries = array(
 	),
 );
 
+$navigation_section = array(
+	'home'     => 'Home',
+	'services' => 'Service & Preise',
+	'about'    => 'Über Uns',
+	'gallery'  => 'Galerie',
+	'team'     => 'Team',
+	'faq'      => 'FAQ',
+	'contact'  => 'Kontakt',
+);
+
 $homepage_content = function_exists( 'nocap_homepage_content' ) ? nocap_homepage_content( 'de' ) : array();
 
 if ( ! empty( $homepage_content ) ) {
@@ -213,7 +227,15 @@ if ( ! empty( $homepage_content ) ) {
 	$treatwell_logo_url    = $treatwell_logo_url ? $treatwell_logo_url : $asset_base_url . '/treatwell.png';
 	$flag_de_url           = $media_url( $settings['flag_de'] );
 	$flag_en_url           = $media_url( $settings['flag_en'] );
+	$flag_ru_custom        = ! empty( $settings['flag_ru'] ) ? $media_url( $settings['flag_ru'] ) : '';
+	$flag_uk_custom        = ! empty( $settings['flag_uk'] ) ? $media_url( $settings['flag_uk'] ) : '';
+	$scissors_sound_custom = ! empty( $settings['scissors_sound'] ) ? $media_url( $settings['scissors_sound'] ) : '';
+	$flag_ru_url           = $flag_ru_custom ? $flag_ru_custom : $flag_ru_url;
+	$flag_uk_url           = $flag_uk_custom ? $flag_uk_custom : $flag_uk_url;
+	$scissors_sound_url    = $scissors_sound_custom ? $scissors_sound_custom : $scissors_sound_url;
+	$scissors_volume       = isset( $settings['scissors_volume'] ) ? (string) $settings['scissors_volume'] : $scissors_volume;
 	$hero                  = $homepage_content['hero'];
+	$navigation_section    = ! empty( $homepage_content['navigation'] ) ? $homepage_content['navigation'] : $navigation_section;
 	$hero['video_url']     = $media_url( isset( $hero['video'] ) ? $hero['video'] : 0 );
 	$services_section      = $homepage_content['services'];
 	$service_items         = $services_section['items'];
@@ -323,6 +345,7 @@ if ( ! empty( $homepage_content ) ) {
 	$contact_section  = array(
 		'title'       => 'Kontakt',
 		'hours_label' => 'Öffnungszeiten',
+		'phone_label' => 'Tel.',
 		'address'     => 'Hoher Markt 3, 1010 Wien',
 		'hours'       => array(
 			array( 'day' => 'Montag - Mittwoch, Freitag', 'time' => '10:00 - 19:00' ),
@@ -345,6 +368,8 @@ if ( ! empty( $homepage_content['hero_reviews'] ) && is_array( $homepage_content
 if ( ! empty( $homepage_content['hero_news'] ) && is_array( $homepage_content['hero_news'] ) ) {
 	$hero_news = array_replace_recursive( $hero_news, $homepage_content['hero_news'] );
 }
+
+$hero_news['image_url'] = ! empty( $hero_news['image'] ) ? $image_url( (int) $hero_news['image'], 'large' ) : '';
 
 if ( isset( $homepage_content['settings']['hero_news_enabled'] ) ) {
 	$hero_news_enabled = '0' !== (string) $homepage_content['settings']['hero_news_enabled'];
@@ -369,7 +394,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 }
 ?>
 
-<main id="nocap-main" class="nocap-modern-home" role="main" data-flag-de="<?php echo esc_url( $flag_de_url ); ?>" data-flag-en="<?php echo esc_url( $flag_en_url ); ?>">
+<main id="nocap-main" class="nocap-modern-home" role="main" data-flag-de="<?php echo esc_url( $flag_de_url ); ?>" data-flag-en="<?php echo esc_url( $flag_en_url ); ?>" data-flag-ru="<?php echo esc_url( $flag_ru_url ); ?>" data-flag-uk="<?php echo esc_url( $flag_uk_url ); ?>" data-scissors-sound="<?php echo esc_url( $scissors_sound_url ); ?>" data-scissors-volume="<?php echo esc_attr( $scissors_volume ); ?>" data-nav-home="<?php echo esc_attr( $navigation_section['home'] ); ?>" data-nav-services="<?php echo esc_attr( $navigation_section['services'] ); ?>" data-nav-about="<?php echo esc_attr( $navigation_section['about'] ); ?>" data-nav-gallery="<?php echo esc_attr( $navigation_section['gallery'] ); ?>" data-nav-team="<?php echo esc_attr( $navigation_section['team'] ); ?>" data-nav-faq="<?php echo esc_attr( $navigation_section['faq'] ); ?>" data-nav-contact="<?php echo esc_attr( $navigation_section['contact'] ); ?>">
 	<section id="home" class="nocap-hero" aria-labelledby="nocap-hero-title">
 		<div class="nocap-hero-media" data-reveal style="--reveal-delay: 0.12s;">
 			<video id="nocap-hero-video" class="nocap-hero-video" autoplay muted loop playsinline preload="auto"><source src="<?php echo esc_url( $hero['video_url'] ); ?>" type="video/mp4"></video>
@@ -377,6 +402,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 			<div class="nocap-hero-overlay"></div>
 		</div>
 		<div class="nocap-shell"><div class="nocap-hero-copy">
+			<div class="nocap-hero-language" data-nocap-language-switcher data-reveal aria-label="<?php esc_attr_e( 'Sprache wählen', 'salient-nocap-child' ); ?>"></div>
 			<p class="nocap-kicker" data-reveal><?php echo esc_html( $hero['kicker'] ); ?></p>
 			<h1 id="nocap-hero-title" data-reveal style="--reveal-delay: 0.08s;"><?php echo esc_html( $hero['title'] ); ?></h1>
 			<p class="nocap-lead" data-reveal style="--reveal-delay: 0.16s;"><?php echo esc_html( $hero['lead'] ); ?></p>
@@ -391,6 +417,33 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 		</div></div>
 	</section>
 
+	<?php if ( $hero_news_enabled ) : ?>
+	<section id="new-shop" class="nocap-section nocap-new-shop" aria-labelledby="nocap-new-shop-title">
+		<div class="nocap-shell">
+			<div class="nocap-new-shop-grid">
+				<div class="nocap-new-shop-media">
+					<?php if ( ! empty( $hero_news['image_url'] ) ) : ?>
+						<img src="<?php echo esc_url( $hero_news['image_url'] ); ?>" alt="<?php echo esc_attr( $hero_news['title'] ); ?>" loading="eager" decoding="async">
+					<?php endif; ?>
+					<span class="nocap-new-shop-badge"><?php echo esc_html( $hero_news['badge'] ); ?></span>
+				</div>
+				<div class="nocap-new-shop-copy">
+					<p class="nocap-kicker nocap-kicker-dark"><?php echo esc_html( $hero_news['kicker'] ); ?></p>
+					<h2 id="nocap-new-shop-title" class="nocap-section-title"><?php echo esc_html( $hero_news['title'] ); ?></h2>
+					<p class="nocap-new-shop-text"><?php echo esc_html( $hero_news['text'] ); ?></p>
+					<div class="nocap-new-shop-details">
+						<p class="nocap-new-shop-address"><?php echo esc_html( $hero_news['address'] ); ?></p>
+						<?php if ( ! empty( $hero_news['meta'] ) ) : ?><p class="nocap-new-shop-meta"><?php echo esc_html( $hero_news['meta'] ); ?></p><?php endif; ?>
+					</div>
+					<?php if ( ! empty( $hero_news['cta_label'] ) && ! empty( $hero_news['cta_url'] ) ) : ?>
+						<a class="nocap-btn nocap-btn-primary nocap-new-shop-cta" href="<?php echo esc_url( $hero_news['cta_url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $hero_news['cta_label'] ); ?></a>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<section id="service" class="nocap-section nocap-services" aria-labelledby="nocap-service-title">
 		<div class="nocap-shell"><div class="nocap-services-head"><div><p class="nocap-kicker nocap-kicker-dark" data-reveal><?php echo esc_html( $services_section['kicker'] ); ?></p><h2 id="nocap-service-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;"><?php echo esc_html( $services_section['title'] ); ?></h2></div></div>
 			<div class="nocap-services-grid"><div class="nocap-services-list">
@@ -400,19 +453,6 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 			</div><div class="nocap-services-cta" data-reveal style="--reveal-delay: 0.34s;"><p class="nocap-services-cta-line"><?php echo esc_html( $services_section['cta_text'] ); ?></p><a class="nocap-btn nocap-btn-primary" href="<?php echo esc_url( $booking_url ); ?>" target="_blank" rel="noopener"><?php echo esc_html( $services_section['cta_label'] ); ?></a></div></div>
 		</div>
 	</section>
-
-	<?php if ( $hero_news_enabled ) : ?>
-	<section class="nocap-shop-news" aria-labelledby="nocap-shop-news-title">
-		<div class="nocap-shell">
-			<div class="nocap-shop-news-grid" data-reveal>
-				<div class="nocap-shop-news-mark" aria-hidden="true"><span>NEW</span></div>
-				<div class="nocap-shop-news-copy">
-					<h2 id="nocap-shop-news-title"><span><?php echo esc_html( $hero_news['title'] ); ?></span> <span data-nocap-i18n="news_at_word">am</span> <span><?php echo esc_html( $hero_news['address'] ); ?></span></h2>
-				</div>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
 
 	<section class="nocap-section nocap-quote" aria-labelledby="nocap-quote-title"><div class="nocap-shell"><div class="nocap-quote-grid"><div class="nocap-quote-copy"><p class="nocap-kicker" data-reveal><?php echo esc_html( $quote_section['kicker'] ); ?></p><h2 id="nocap-quote-title" data-reveal style="--reveal-delay: 0.04s;"><?php echo esc_html( $quote_section['title'] ); ?></h2><div class="nocap-quote-meta" data-reveal style="--reveal-delay: 0.1s;"><span><?php echo esc_html( $quote_section['author'] ); ?></span><span><?php echo esc_html( $quote_section['meta'] ); ?></span></div></div><div class="nocap-quote-stage" data-reveal style="--reveal-delay: 0.14s;"><div class="nocap-quote-media"<?php echo $quote_media_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></div><div class="nocap-quote-caption"><span><?php echo esc_html( $quote_section['caption_1'] ); ?></span><span><?php echo esc_html( $quote_section['caption_2'] ); ?></span></div></div></div></div></section>
 
@@ -430,7 +470,7 @@ foreach ( $gallery_media as $gallery_index => $gallery_item ) {
 
 	<section id="faq" class="nocap-section nocap-faq" aria-labelledby="nocap-faq-title"><div class="nocap-shell"><div class="nocap-faq-grid"><div class="nocap-faq-heading"><p class="nocap-kicker nocap-kicker-dark" data-reveal><?php echo esc_html( $faq_section['kicker'] ); ?></p><h2 id="nocap-faq-title" class="nocap-section-title" data-reveal style="--reveal-delay: 0.04s;"><?php echo esc_html( $faq_section['title'] ); ?></h2></div><div class="nocap-faq-list"><?php foreach ( $faq_items as $faq_index => $faq_item ) : ?><article class="nocap-faq-item" data-reveal style="--reveal-delay: <?php echo esc_attr( (string) ( 0.1 + ( $faq_index * 0.06 ) ) ); ?>s;"><h3><?php echo esc_html( $faq_item['question'] ); ?></h3><p><?php echo esc_html( $faq_item['answer'] ); ?></p></article><?php endforeach; ?></div></div></div></section>
 
-	<section id="kontakt" class="nocap-section nocap-contact" aria-labelledby="nocap-contact-title"><div class="nocap-shell"><div class="nocap-contact-grid"><div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers am Hohen Markt 3 in 1010 Wien"></iframe></div><div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;"><h2 id="nocap-contact-title"><?php echo esc_html( $contact_section['title'] ); ?></h2><ul class="nocap-hours" aria-label="<?php echo esc_attr( $contact_section['hours_label'] ); ?>"><?php foreach ( $contact_section['hours'] as $hours_item ) : ?><li><span><?php echo esc_html( $hours_item['day'] ); ?></span><strong><?php echo esc_html( $hours_item['time'] ); ?></strong></li><?php endforeach; ?></ul><div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>">Tel.: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><span><?php echo esc_html( $contact_section['address'] ); ?></span></div><div class="nocap-social" aria-label="Social links"><a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div></div></div></div></section>
+	<section id="kontakt" class="nocap-section nocap-contact" aria-labelledby="nocap-contact-title"><div class="nocap-shell"><div class="nocap-contact-grid"><div class="nocap-map" data-reveal><iframe src="<?php echo esc_url( $map_embed_url ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NoCap Barbers am Hohen Markt 3 in 1010 Wien"></iframe></div><div class="nocap-contact-card" data-reveal style="--reveal-delay: 0.1s;"><h2 id="nocap-contact-title"><?php echo esc_html( $contact_section['title'] ); ?></h2><ul class="nocap-hours" aria-label="<?php echo esc_attr( $contact_section['hours_label'] ); ?>"><?php foreach ( $contact_section['hours'] as $hours_item ) : ?><li><span><?php echo esc_html( $hours_item['day'] ); ?></span><strong><?php echo esc_html( $hours_item['time'] ); ?></strong></li><?php endforeach; ?></ul><div class="nocap-contact-links"><a href="<?php echo esc_attr( $contact_phone_href ); ?>"><?php echo esc_html( $contact_section['phone_label'] ); ?>: <?php echo esc_html( $contact_phone ); ?></a><a href="mailto:<?php echo esc_attr( $contact_email ); ?>"><?php echo esc_html( $contact_email ); ?></a><span><?php echo esc_html( $contact_section['address'] ); ?></span></div><div class="nocap-social" aria-label="Social links"><a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener" aria-label="Facebook"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M13.5 9H15V6h-1.8C10.98 6 10 7.13 10 8.8V10H8v3h2v7h3v-7h2.1l.4-3H13v-.8c0-.7.2-1.2 1.5-1.2Z" fill="currentColor"/></svg></span></a><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener" aria-label="Instagram"><span class="nocap-social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="presentation" focusable="false"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7Zm5 3.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5Zm4.75-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1Z" fill="currentColor"/></svg></span></a></div></div></div></div></section>
 </main>
 
 <?php

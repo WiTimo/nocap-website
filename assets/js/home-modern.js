@@ -283,10 +283,25 @@
 
   var getInitialLanguage = function () {
     var stored = getStoredLanguage();
-    if (stored === "de" || stored === "en") {
+    if (stored === "de" || stored === "en" || stored === "ru" || stored === "uk") {
       return stored;
     }
-    return (navigator.language || "").toLowerCase().indexOf("de") === 0 ? "de" : "en";
+
+    var browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || ""];
+
+    for (var index = 0; index < browserLanguages.length; index += 1) {
+      var languageCode = String(browserLanguages[index] || "").toLowerCase().split("-")[0];
+      if (languageCode === "ua") {
+        languageCode = "uk";
+      }
+      if (languageCode === "de" || languageCode === "en" || languageCode === "ru" || languageCode === "uk") {
+        return languageCode;
+      }
+    }
+
+    return "en";
   };
 
   var translationLookup = {};
@@ -298,16 +313,17 @@
   });
 
   var translatableNodes = [];
+  var translatableNodeSet = typeof WeakSet !== "undefined" ? new WeakSet() : null;
 
   var normalizePrimaryNavigation = function () {
     var orders = [
-      { id: "home", label: "Home" },
-      { id: "service", label: "Service & Preise" },
-      { id: "uber-uns", label: "Über Uns" },
-      { id: "gallerie", label: "Galerie" },
-      { id: "team", label: "Team" },
-      { id: "faq", label: "FAQ" },
-      { id: "kontakt", label: "Kontakt" }
+      { id: "home", label: home.getAttribute("data-nav-home") || "Home" },
+      { id: "service", label: home.getAttribute("data-nav-services") || "Service & Preise" },
+      { id: "uber-uns", label: home.getAttribute("data-nav-about") || "Über Uns" },
+      { id: "gallerie", label: home.getAttribute("data-nav-gallery") || "Galerie" },
+      { id: "team", label: home.getAttribute("data-nav-team") || "Team" },
+      { id: "faq", label: home.getAttribute("data-nav-faq") || "FAQ" },
+      { id: "kontakt", label: home.getAttribute("data-nav-contact") || "Kontakt" }
     ];
 
     document.querySelectorAll("#top nav ul.sf-menu:not(.buttons), .off-canvas-menu-container ul.menu:not(.secondary-header-items)").forEach(function (menu) {
@@ -390,31 +406,44 @@
     var candidates = Array.prototype.slice.call(document.querySelectorAll(scopedSelector + ", #top nav a, .off-canvas-menu-container a"));
 
     candidates.forEach(function (node) {
-      if (node.children.length || node.closest(".nocap-lang-switcher") || node.closest(".nocap-social") || node.closest("#social-in-menu")) {
+      if (node.children.length || node.getAttribute("aria-hidden") === "true" || node.closest("[aria-hidden='true']") || node.closest(".nocap-lang-switcher") || node.closest(".nocap-social") || node.closest("#social-in-menu")) {
         return;
       }
 
       var text = (node.textContent || "").trim().replace(/\s+/g, " ");
+      if (!text && !node.hasAttribute("data-nocap-i18n")) {
+        return;
+      }
+
       var key = node.getAttribute("data-nocap-i18n") || translationLookup[text];
       if (!key) {
         return;
       }
 
       node.setAttribute("data-nocap-i18n", key);
-      translatableNodes.push(node);
+      if (!translatableNodeSet || !translatableNodeSet.has(node)) {
+        translatableNodes.push(node);
+        if (translatableNodeSet) {
+          translatableNodeSet.add(node);
+        }
+      }
     });
   };
 
   var createLanguageSwitcher = function (extraClass) {
     var flagDe = home.getAttribute("data-flag-de") || "";
     var flagEn = home.getAttribute("data-flag-en") || "";
+    var flagRu = home.getAttribute("data-flag-ru") || "";
+    var flagUk = home.getAttribute("data-flag-uk") || "";
     var switcher = document.createElement("div");
     switcher.className = "nocap-lang-switcher" + (extraClass ? " " + extraClass : "");
     switcher.setAttribute("role", "group");
     switcher.setAttribute("aria-label", "Language");
     switcher.innerHTML =
       '<button type="button" data-nocap-lang="de" aria-label="Deutsch"><img src="' + flagDe + '" alt="">DE</button>' +
-      '<button type="button" data-nocap-lang="en" aria-label="English"><img src="' + flagEn + '" alt="">EN</button>';
+      '<button type="button" data-nocap-lang="en" aria-label="English"><img src="' + flagEn + '" alt="">EN</button>' +
+      '<button type="button" data-nocap-lang="ru" aria-label="Русский"><img src="' + flagRu + '" alt="">RU</button>' +
+      '<button type="button" data-nocap-lang="uk" aria-label="Українська"><img src="' + flagUk + '" alt="">UA</button>';
 
     var activeLanguage = home.getAttribute("data-current-language") || getInitialLanguage();
     switcher.querySelectorAll("[data-nocap-lang]").forEach(function (button) {
@@ -437,64 +466,32 @@
   };
 
   var buildLanguageSwitcher = function () {
-    var nav = document.querySelector("#top nav");
-    if (nav) {
-      nav.appendChild(createLanguageSwitcher("nocap-lang-switcher-header"));
-    }
-
-    var attachFloatingSwitcher = function () {
-      if (document.querySelector(".nocap-lang-switcher-floating")) {
-        return;
-      }
-
-      if (window.innerWidth < 761) {
-        return;
-      }
-
-      if (window.innerWidth >= 761 && window.innerWidth < 1000) {
-        document.body.appendChild(createLanguageSwitcher("nocap-lang-switcher-floating"));
-        return;
-      }
-
-      var headerSwitcher = document.querySelector(".nocap-lang-switcher-header");
-      if (!headerSwitcher) {
-        return;
-      }
-
-      var rect = headerSwitcher.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        return;
-      }
-
-      document.body.appendChild(createLanguageSwitcher("nocap-lang-switcher-floating"));
-    };
-
-    var attachMobileSwitcher = function () {
-      var menu = document.querySelector(".off-canvas-menu-container .inner, .off-canvas-menu-container .inner-wrap, .off-canvas-menu-container");
-      if (!menu || menu.querySelector(".nocap-lang-switcher-mobile")) {
-        return;
-      }
-      menu.insertBefore(createLanguageSwitcher("nocap-lang-switcher-mobile"), menu.firstChild);
-    };
-
-    attachMobileSwitcher();
-    attachFloatingSwitcher();
-    window.setTimeout(attachMobileSwitcher, 500);
-    window.setTimeout(attachFloatingSwitcher, 500);
-    if (typeof MutationObserver !== "undefined") {
-      var mobileSwitcherObserver = new MutationObserver(attachMobileSwitcher);
-      mobileSwitcherObserver.observe(document.body, { childList: true, subtree: true });
+    var mount = document.querySelector("[data-nocap-language-switcher]");
+    if (mount && !mount.querySelector(".nocap-lang-switcher")) {
+      mount.appendChild(createLanguageSwitcher("nocap-lang-switcher-hero"));
     }
   };
 
   var applyLanguage = function (language) {
     var strings = i18n[language] || i18n.en;
-    document.documentElement.lang = language === "de" ? "de" : "en";
+    document.documentElement.lang = language;
     home.setAttribute("data-current-language", language);
 
+    document.querySelectorAll("[aria-hidden='true'] [data-nocap-i18n], [aria-hidden='true'][data-nocap-i18n]").forEach(function (node) {
+      node.removeAttribute("data-nocap-i18n");
+      if (node.closest(".nocap-review-proofline")) {
+        node.textContent = "";
+      }
+    });
+
+    rememberTranslatableText();
+
     translatableNodes.forEach(function (node) {
-      var key = node.getAttribute("data-nocap-i18n");
-      if (key && strings[key]) {
+      var currentText = (node.textContent || "").trim().replace(/\s+/g, " ");
+      var key = node.getAttribute("data-nocap-i18n") || translationLookup[currentText];
+
+      if (key && Object.prototype.hasOwnProperty.call(strings, key)) {
+        node.setAttribute("data-nocap-i18n", key);
         node.textContent = strings[key];
       }
     });
@@ -699,6 +696,84 @@
   initLanguage();
   initNavScrollSpy();
 
+  var initHeroSound = function () {
+    var hero = document.querySelector(".nocap-hero");
+    var soundUrl = home.getAttribute("data-scissors-sound") || "";
+    if (!hero || !soundUrl) {
+      return;
+    }
+
+    var audio = new Audio(soundUrl);
+    var configuredVolume = parseFloat(home.getAttribute("data-scissors-volume") || "0.02");
+    var maxVolume = Number.isFinite(configuredVolume) ? Math.max(0, Math.min(1, configuredVolume)) : 0.02;
+    var targetVolume = 0;
+    var currentVolume = 0;
+    var started = false;
+    var frame = 0;
+    audio.loop = true;
+    audio.preload = "auto";
+    audio.volume = 0;
+
+    var animateVolume = function () {
+      currentVolume += (targetVolume - currentVolume) * 0.035;
+      if (Math.abs(targetVolume - currentVolume) < 0.001) {
+        currentVolume = targetVolume;
+      }
+      audio.volume = Math.max(0, Math.min(1, currentVolume));
+
+      if (currentVolume > 0.001 || targetVolume > 0.001) {
+        frame = window.requestAnimationFrame(animateVolume);
+      } else {
+        frame = 0;
+      }
+    };
+
+    var setTargetVolume = function (volume) {
+      targetVolume = Math.max(0, Math.min(maxVolume, volume));
+      if (!frame && started) {
+        frame = window.requestAnimationFrame(animateVolume);
+      }
+    };
+
+    var updateFromHeroPosition = function () {
+      var rect = hero.getBoundingClientRect();
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      var visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0));
+      var visibleRatio = Math.min(1, visibleHeight / Math.min(rect.height, viewportHeight));
+      setTargetVolume(Math.pow(visibleRatio, 1.6) * maxVolume);
+    };
+
+    var startAudio = function () {
+      if (started) {
+        return;
+      }
+      audio.play().then(function () {
+        started = true;
+        updateFromHeroPosition();
+      }).catch(function () {
+        started = false;
+      });
+    };
+
+    ["pointerdown", "touchstart", "keydown"].forEach(function (eventName) {
+      document.addEventListener(eventName, startAudio, { once: true, passive: true });
+    });
+
+    window.addEventListener("scroll", updateFromHeroPosition, { passive: true });
+    window.addEventListener("resize", updateFromHeroPosition);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        setTargetVolume(0);
+      } else {
+        updateFromHeroPosition();
+      }
+    });
+    updateFromHeroPosition();
+    startAudio();
+  };
+
+  initHeroSound();
+
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var revealNodes = document.querySelectorAll("[data-reveal]");
   var revealStyles = ["lift", "slide-left", "tilt", "scale"];
@@ -845,43 +920,4 @@
   window.setInterval(syncMobileMenuLock, 250);
   syncMobileMenuLock();
 
-  var shopNews = document.querySelector(".nocap-shop-news");
-  var hero = document.querySelector(".nocap-hero");
-  if (shopNews) {
-    shopNews.classList.add("nocap-shop-news-fixed");
-
-    if (!shopNews.querySelector(".nocap-shop-news-close")) {
-      var closeBtn = document.createElement("button");
-      closeBtn.type = "button";
-      closeBtn.className = "nocap-shop-news-close";
-      closeBtn.setAttribute("aria-label", "Schliessen");
-      closeBtn.innerHTML = "&times;";
-      closeBtn.addEventListener("click", function () {
-        shopNews.classList.remove("is-visible");
-        shopNews.classList.add("is-dismissed");
-        document.body.classList.remove("nocap-news-active");
-      });
-      shopNews.appendChild(closeBtn);
-    }
-
-    if (hero && typeof IntersectionObserver !== "undefined") {
-      var heroObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (shopNews.classList.contains("is-dismissed")) {
-            return;
-          }
-          if (entry.isIntersecting && entry.intersectionRatio > 0.25) {
-            shopNews.classList.remove("is-visible");
-            document.body.classList.remove("nocap-news-active");
-          } else {
-            shopNews.classList.add("is-visible");
-            document.body.classList.add("nocap-news-active");
-          }
-        });
-      }, { threshold: [0, 0.25, 0.5] });
-      heroObserver.observe(hero);
-    } else {
-      shopNews.classList.add("is-visible");
-    }
-  }
 })();
